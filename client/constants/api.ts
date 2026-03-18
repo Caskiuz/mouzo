@@ -34,8 +34,8 @@ export const getApiBaseUrl = (): string => {
   }
 
   // Production fallback
-  console.log('⚠️ Using fallback URL: https://nemy-app.replit.app');
-  return "https://nemy-app.replit.app";
+  console.log('✅ Using production URL: https://nemy-backend.onrender.com');
+  return "https://nemy-backend.onrender.com";
 };
 
 export const API_CONFIG = {
