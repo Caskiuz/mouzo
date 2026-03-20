@@ -1,8 +1,4 @@
 # ============================================
-# NEMY - Professional .gitignore
-# ============================================
-
-# ============================================
 # Environment & Secrets
 # ============================================
 .env
@@ -12,19 +8,9 @@
 ca.pem
 
 # ============================================
-# Dependencies
+# Dependencies & Build
 # ============================================
 node_modules/
-.pnp
-.pnp.js
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-
-# ============================================
-# Build Outputs
-# ============================================
 dist/
 build/
 out/
@@ -42,15 +28,16 @@ static-build/
 .expo-shared/
 
 # ============================================
-# Logs
+# Logs & Temp
 # ============================================
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-backend-tunnel.log
+.cache/
+tmp/
+temp/
+*.tmp
+*.swp
+*~
 
 # ============================================
 # Database & Backups
@@ -63,104 +50,11 @@ backups/
 export_*.sql
 
 # ============================================
-# Testing & Development
-# ============================================
-coverage/
-.nyc_output/
-test-*.js
-*test*.ts
-!*.test.ts
-diagnose-*.ts
-fix-*.ts
-fix-*.js
-fix-*.sql
-sync-*.ts
-sync-*.js
-sync-*.sql
-create-test-*.sql
-test-*.bat
-verify-*.bat
-diagnose*.bat
-emergency-*.js
-process-*.js
-transfer-*.js
-
-# ============================================
-# Documentation (Keep only README.md)
+# Documentation (solo README.md)
 # ============================================
 *.md
 !README.md
-
-# Block ALL documentation files
-GPS_*.md
-AIVEN_*.md
-RENDER_*.md
-DEPLOY_*.md
-MIGRATION_*.md
-INSTALL_*.md
-GUIDE_*.md
-SUMMARY_*.md
-FEATURES_*.md
-ADMIN-*.md
-ANALISIS-*.md
-AUDIT-*.md
-CASH-*.md
-CHECKLIST-*.md
-COMO_*.md
-CORRECCION-*.md
-CORRECCIONES-*.md
-CRITICAL-*.md
-DATOS-*.md
-DEPLOYMENT-*.md
-DIAGNOSTICO-*.md
-ESPECIFICACION-*.md
-FINANCE-*.md
-FINANCIAL-*.md
-FLUJO-*.md
-GUIA-*.md
-IMPLEMENTACION-*.md
-IMPLEMENTATION-*.md
-INSTRUCCIONES-*.md
-INTEGRIDAD-*.md
-LOGIN_*.md
-MANUAL_*.md
-MARKUP-*.md
-MEJORAS-*.md
-NUEVA-*.md
-POLITICA-*.md
-PRODUCTION_*.md
-QUICK-*.md
-REPLIT-*.md
-RESET-*.md
-RESUMEN-*.md
-RETIROS-*.md
-ROLE_*.md
-RUTAS-*.md
-SECURE-*.md
-SMART_*.md
-SOLUCION-*.md
-TERMINOS-*.md
-WALLET-*.md
-WITHDRAWAL-*.md
-WORLD_*.md
-design_guidelines.md
 replit.md
-
-# Block ALL SQL files
-*.sql
-!setup-db-local.sql
-
-# Block ALL installation scripts
-install-*.sh
-install-*.bat
-setup-*.sh
-setup-*.bat
-
-# Block ALL environment variable files
-*_ENV_*.txt
-*_VARS.txt
-RENDER_*.txt
-AIVEN_*.txt
 
 # ============================================
 # Scripts & Batch Files
@@ -169,59 +63,41 @@ AIVEN_*.txt
 !start-local.bat
 *.sh
 !start-production.sh
-backup-*.bat
-build-*.bat
-cargar-*.bat
-check-*.bat
-create-*.bat
-diagnose*.bat
-diagnostico.bat
-export-*.bat
-fix-*.bat
-liberar-*.bat
-reset-*.bat
-start-production.bat
-sync-*.bat
-test-*.bat
-tunnel-*.bat
+
+# ============================================
+# Test & Fix Scripts
+# ============================================
+test-*.js
+test-*.ts
+fix-*.js
+fix-*.ts
+fix-*.sql
+diagnose-*.ts
+diagnose-*.bat
+sync-*.ts
+sync-*.js
+verify-*.js
 verify-*.bat
+emergency-*.js
+process-*.js
+transfer-*.js
+create-test-*.sql
+audit-*.js
+compare-*.js
+analyze-*.js
+login-*.js
 
 # ============================================
-# Temporary & Cache
-# ============================================
-.cache/
-tmp/
-temp/
-*.tmp
-*.swp
-*.swo
-*~
-
-# ============================================
-# IDE & Editors
-# ============================================
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-.project
-.classpath
-.settings/
-
-# ============================================
-# OS Files
+# OS & IDE
 # ============================================
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 desktop.ini
+.vscode/
+.idea/
 
 # ============================================
-# Uploads (Keep structure, ignore files)
+# Uploads (mantener estructura)
 # ============================================
 server/uploads/profiles/*
 !server/uploads/profiles/.gitkeep
@@ -231,97 +107,73 @@ server/uploads/products/*
 !server/uploads/products/.gitkeep
 
 # ============================================
-# Attached Assets & Images
+# Assets adjuntos / temporales
 # ============================================
 attached_assets/
 
 # ============================================
-# Backup & Old Files
+# Archivos específicos a ignorar
 # ============================================
-*.BACKUP.*
-*.OLD.*
-*.old
-*-old.*
-*-backup.*
-*Compact.*
-*Complete.*
-*Fixed.*
-*Direct.*
-
-# ============================================
-# Specific Files to Ignore
-# ============================================
-add-test-orders.sql
-analyze-routes.js
-audit-quick-endpoint.js
 bundletool.jar
 cloudflared.exe
-compare-routes.js
-create-available-orders.js
-create-delivery-zones.sql
-create-withdrawal-table.sql
 ecosystem.config.json
-init-commissions.sql
-insert-delivery-zones.sql
-load-real-data.sql
-login-business.js
-my-app@1.0.0
-mysql
-nemy_backup.sql
-npm
-offline.html
 pm2-no-daemon.js
 production-start.js
-rebuild-transactions.sql
-seed-data.sql
-seed-simple.sql
-setup-weekly-settlement-system.sql
+offline.html
 sw.js
-temp_commissions.sql
+manifest.json
+my-app@1.0.0
+mysql
+npm
 tsx
+rmdir
+*.txt
+backend-tunnel.log
+package-lock.json
+e2e.spec.ts
+playwright.config.ts
+jest.config.ts
 
 # ============================================
-# Server - Keep only essential
+# Server - archivos temporales/debug
 # ============================================
-server/apiRoutes.BACKUP.ts
-server/apiRoutesCompact.BACKUP.ts
-server/clearFinancialData*.ts
-server/createCashOrders.sql
-server/fixCommissions.sql
-server/fixDeliveredOrder.ts
-server/fixOrderEarnings.ts
-server/migrateCashOrders.ts
-server/reprocessDeliveries.ts
-server/resetFinancial*.ts
-server/runCashTests.ts
-server/syncDriverEarnings.ts
-server/testBusinessStats.ts
-server/testFinancialAudit.ts
-server/tsx
-server/MANUAL_CASH_TEST.md
+server/*.BACKUP.ts
+server/clear*.ts
+server/fix*.ts
+server/migrate*.ts
+server/reprocess*.ts
+server/reset*.ts
+server/run*.ts
+server/sync*.ts
+server/test*.ts
+server/*.sql
+server/*.md
 server/ROUTE_MAP.ts
 server/routes-consolidated.ts
+server/routes-backup/
 server/tests/
+server/tsx
 
 # ============================================
-# Scripts folder - Keep only essential
+# Scripts folder
 # ============================================
 scripts/*.sql
 scripts/*.ts
 !scripts/build.js
 
 # ============================================
-# Keep Essential Files
+# Replit
 # ============================================
-!package.json
-!tsconfig.json
-!drizzle.config.ts
-!app.json
-!eas.json
-!babel.config.js
-!metro.config.js
-!eslint.config.js
-!.replit
-!README.md
-!.env.example
-!.env.production.example
+.replit
+.config/
+.local/
+replit_integrations/
+client/replit_integrations/
+server/replit_integrations/
+
+# ============================================
+# Tests
+# ============================================
+tests/
+test-results/
+coverage/
