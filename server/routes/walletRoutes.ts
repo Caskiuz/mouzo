@@ -108,7 +108,7 @@ router.get("/balance", authenticateToken, async (req, res) => {
             order.total,
             order.deliveryFee,
             order.productosBase || order.subtotal,
-            order.mouzoCommission || undefined,
+            order.nemyCommission || undefined,
           );
 
           await db

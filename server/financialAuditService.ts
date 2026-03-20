@@ -61,8 +61,8 @@ export class FinancialAuditService {
 
       for (const order of allOrders) {
         // Nueva lógica: total = costo producto + 15% comisión MOUZO + costo delivery
-        const mouzoCommission = Math.round(order.subtotal * 0.15);
-        const expectedTotal = order.subtotal + mouzoCommission + order.deliveryFee;
+        const nemyCommission = Math.round(order.subtotal * 0.15);
+        const expectedTotal = order.subtotal + nemyCommission + order.deliveryFee;
         if (order.total !== expectedTotal) {
           invalidOrders.push(`${order.id.slice(-6)}: expected ${expectedTotal}, got ${order.total}`);
         }

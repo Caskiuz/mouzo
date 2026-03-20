@@ -134,8 +134,8 @@ export default function CheckoutScreen({ route }: any) {
 
   const deliveryFee = route?.params?.calculatedDeliveryFee ?? (dynamicDeliveryFee ?? (business?.deliveryFee ? business.deliveryFee / 100 : 0));
   
-  const mouzoCommission = subtotal * 0.15;
-  const total = subtotal + mouzoCommission + deliveryFee - couponDiscount;
+  const nemyCommission = subtotal * 0.15;
+  const total = subtotal + nemyCommission + deliveryFee - couponDiscount;
 
   // Calcular delivery fee dinámico cuando cambia la dirección
   useEffect(() => {
@@ -310,7 +310,7 @@ export default function CheckoutScreen({ route }: any) {
 
       // Calcular valores para backend (subtotal es precio base)
       const productosBase = Math.round(subtotal * 100);
-      const mouzoCommission = Math.round(subtotal * 0.15 * 100);
+      const nemyCommission = Math.round(subtotal * 0.15 * 100);
       const totalAmount = Math.round(total * 100);
       
       const orderResponse = await apiRequest("POST", "/api/orders", {
@@ -320,7 +320,7 @@ export default function CheckoutScreen({ route }: any) {
         items: JSON.stringify(cart.items),
         status: "pending",
         productosBase: productosBase,
-        mouzoCommission: mouzoCommission,
+        nemyCommission: nemyCommission,
         subtotal: productosBase,
         deliveryFee: Math.round(deliveryFee * 100),
         total: totalAmount,
@@ -965,7 +965,7 @@ export default function CheckoutScreen({ route }: any) {
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             Comision MOUZO (15%)
           </ThemedText>
-          <ThemedText type="body">${mouzoCommission.toFixed(2)}</ThemedText>
+          <ThemedText type="body">${nemyCommission.toFixed(2)}</ThemedText>
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>

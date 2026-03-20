@@ -173,7 +173,7 @@ export default function OrderTrackingScreen() {
             status: apiOrder.status,
             subtotal: apiOrder.subtotal / 100,
             productosBase: apiOrder.productosBase ? apiOrder.productosBase / 100 : undefined,
-            mouzoCommission: apiOrder.mouzoCommission ? apiOrder.mouzoCommission / 100 : undefined,
+            nemyCommission: apiOrder.nemyCommission ? apiOrder.nemyCommission / 100 : undefined,
             deliveryFee: apiOrder.deliveryFee / 100,
             total: apiOrder.total / 100,
             paymentMethod: apiOrder.paymentMethod,
@@ -316,8 +316,8 @@ export default function OrderTrackingScreen() {
       })
     : null;
 
-  const mouzoCommission = order.mouzoCommission
-    ? order.mouzoCommission / 100
+  const nemyCommission = order.nemyCommission
+    ? order.nemyCommission / 100
     : order.subtotal * 0.15;
 
   return (
@@ -547,7 +547,7 @@ export default function OrderTrackingScreen() {
               <ThemedText type="small" style={{ color: theme.textSecondary }}>
                 Comision MOUZO (15%)
               </ThemedText>
-              <ThemedText type="small">${mouzoCommission.toFixed(2)}</ThemedText>
+              <ThemedText type="small">${nemyCommission.toFixed(2)}</ThemedText>
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="small" style={{ color: theme.textSecondary }}>

@@ -98,7 +98,7 @@ export interface Order {
   status: OrderStatus;
   subtotal: number;
   productosBase?: number;
-  mouzoCommission?: number;
+  nemyCommission?: number;
   deliveryFee: number;
   total: number;
   paymentMethod: "card";

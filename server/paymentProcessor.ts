@@ -27,13 +27,13 @@ async function calculateCommissionsForOrder(order: {
   total: number;
   deliveryFee?: number | null;
   productosBase?: number | null;
-  mouzoCommission?: number | null;
+  nemyCommission?: number | null;
 }): Promise<PaymentDistribution> {
   const commissions = await financialService.calculateCommissions(
     order.total,
     order.deliveryFee || 0,
     order.productosBase || undefined,
-    order.mouzoCommission || undefined
+    order.nemyCommission || undefined
   );
   return {
     platformAmount: commissions.platform,
@@ -71,7 +71,7 @@ export async function createPaymentIntent(orderData: {
         total: orders.total,
         deliveryFee: orders.deliveryFee,
         productosBase: orders.productosBase,
-        mouzoCommission: orders.mouzoCommission,
+        nemyCommission: orders.nemyCommission,
       })
       .from(orders)
       .where(eq(orders.id, orderData.orderId))

@@ -9,16 +9,16 @@ export class NewCommissionService {
    */
   static calculateCommissions(subtotal: number, deliveryFee: number) {
     const productAmount = subtotal; // Precio base de productos
-    const mouzoCommission = Math.round(productAmount * 0.15); // 15% sobre productos
+    const nemyCommission = Math.round(productAmount * 0.15); // 15% sobre productos
     
     return {
       // Lo que recibe cada parte
       business: productAmount, // 100% de productos
       driver: deliveryFee, // 100% de delivery
-      mouzo: mouzoCommission, // 15% sobre productos
+      mouzo: nemyCommission, // 15% sobre productos
       
       // Totales para verificación
-      total: productAmount + deliveryFee + mouzoCommission,
+      total: productAmount + deliveryFee + nemyCommission,
       productBase: productAmount,
       deliveryBase: deliveryFee
     };

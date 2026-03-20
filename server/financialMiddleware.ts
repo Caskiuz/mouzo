@@ -9,7 +9,7 @@ export async function validateOrderFinancials(
   next: NextFunction
 ) {
   try {
-    const { subtotal, deliveryFee, total, productosBase, mouzoCommission, couponDiscount } = req.body;
+    const { subtotal, deliveryFee, total, productosBase, nemyCommission, couponDiscount } = req.body;
 
     // Validar que los campos existan
     if (subtotal === undefined || deliveryFee === undefined || total === undefined) {
@@ -28,8 +28,8 @@ export async function validateOrderFinancials(
     // Validar total: subtotal (base) + comision (15%) + deliveryFee - descuento
     const baseSubtotal = productosBase ?? subtotal;
     const platformCommission =
-      typeof mouzoCommission === "number" && mouzoCommission > 0
-        ? mouzoCommission
+      typeof nemyCommission === "number" && nemyCommission > 0
+        ? nemyCommission
         : Math.round(baseSubtotal * 0.15);
     const discount = couponDiscount || 0;
     const calculatedTotal = baseSubtotal + platformCommission + deliveryFee - discount;
@@ -168,7 +168,7 @@ export async function calculateCommissions(
   next: NextFunction
 ) {
   try {
-    const { total, deliveryFee = 0, productosBase, mouzoCommission } = req.body;
+    const { total, deliveryFee = 0, productosBase, nemyCommission } = req.body;
 
     if (!total) {
       return res.status(400).json({
@@ -180,7 +180,7 @@ export async function calculateCommissions(
       total,
       deliveryFee || 0,
       productosBase || undefined,
-      mouzoCommission || undefined
+      nemyCommission || undefined
     );
 
     // Agregar comisiones al body para uso posterior

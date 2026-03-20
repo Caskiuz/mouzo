@@ -249,7 +249,7 @@ router.put("/orders/:id/status", authenticateToken, requireRole("delivery_driver
             order.total || 0,
             order.deliveryFee || 0,
             order.productosBase || order.subtotal,
-            order.mouzoCommission || undefined
+            order.nemyCommission || undefined
           );
 
           console.log(`💳 Card payment - distributing commissions`);

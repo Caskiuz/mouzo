@@ -66,7 +66,7 @@ export const orders = mysqlTable("orders", {
   status: text("status").notNull().default("pending"), // pending, accepted, preparing, on_the_way, delivered, cancelled
   subtotal: int("subtotal").notNull(),
   productosBase: int("productos_base").default(0), // Precio base sin markup MOUZO
-  mouzoCommission: int("mouzo_commission").default(0), // 15% markup MOUZO
+  nemyCommission: int("nemy_commission").default(0), // 15% markup MOUZO
   deliveryFee: int("delivery_fee").notNull(),
   total: int("total").notNull(),
   paymentMethod: text("payment_method").notNull(),

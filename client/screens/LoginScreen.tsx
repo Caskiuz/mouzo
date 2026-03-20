@@ -94,17 +94,17 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     if (biometricAvailable) {
       const storedPhone = await import(
         "@react-native-async-storage/async-storage"
-      ).then((m) => m.default.getItem("@mouzo_biometric_phone"));
+      ).then((m) => m.default.getItem("@nemy_biometric_phone"));
       setShowBiometricOption(!!storedPhone);
     }
   };
 
   const formatPhoneDisplay = (value: string) => {
     const numbers = value.replace(/\D/g, "");
-    if (numbers.length <= 3) return numbers;
-    if (numbers.length <= 6)
-      return `${numbers.slice(0, 3)} ${numbers.slice(3)}`;
-    return `${numbers.slice(0, 3)} ${numbers.slice(3, 6)} ${numbers.slice(6, 10)}`;
+    if (numbers.length <= 4) return numbers;
+    if (numbers.length <= 7)
+      return `${numbers.slice(0, 4)} ${numbers.slice(4)}`;
+    return `${numbers.slice(0, 4)} ${numbers.slice(4, 7)} ${numbers.slice(7, 11)}`;
   };
 
   const handlePhoneChange = (text: string) => {
@@ -119,8 +119,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     if (loginMode === "sms") {
       if (!phone) {
         newErrors.phone = "El teléfono es requerido";
-      } else if (phone.length < 10) {
-        newErrors.phone = "Ingresa 10 dígitos";
+      } else if (phone.length < 11) {
+        newErrors.phone = "Ingresa 11 dígitos";
       }
     } else {
       if (!identifier) {
@@ -143,8 +143,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
     try {
       const digits = identifier.replace(/\D/g, "");
-      const normalizedPhone = digits.length === 10
-        ? `+52${digits}`
+      const normalizedPhone = digits.length === 11
+        ? `+58${digits}`
         : identifier.replace(/\s+/g, "");
       const result = await loginWithPassword(identifier, password);
 
@@ -168,7 +168,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
     try {
       const digits = phone.replace(/\D/g, "");
-      const normalizedPhone = digits.length === 10 ? `+52${digits}` : `+${digits}`;
+      const normalizedPhone = digits.length === 11 ? `+58${digits}` : `+${digits}`;
       const result = await requestPhoneLogin(normalizedPhone);
 
       if (result?.userNotFound) {
@@ -209,7 +209,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       await Share.share({
         message:
-          "Descubre MOUZO - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.replit.app",
+          "Descubre MOUZO - Tu delivery local de confianza en San Cristóbal. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.app",
         title: "MOUZO - Delivery Local",
       });
     } catch (error) {
@@ -292,7 +292,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       style={styles.inputBoxIcon}
                     />
                     <TextInput
-                      placeholder="correo@ejemplo.com o +52..."
+                      placeholder="correo@ejemplo.com o +58..."
                       value={identifier}
                       onChangeText={(text) => {
                         setIdentifier(text);
@@ -361,7 +361,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                 <View style={styles.phoneInputContainer}>
                   <View style={styles.countryCode}>
                     <ThemedText type="body" style={styles.countryCodeText}>
-                      +52
+                      +58
                     </ThemedText>
                   </View>
                   <View style={styles.inputBox}>
@@ -372,7 +372,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       style={styles.inputBoxIcon}
                     />
                     <TextInput
-                      placeholder="317 123 4567"
+                      placeholder="0414 123 4567"
                       value={formatPhoneDisplay(phone)}
                       onChangeText={handlePhoneChange}
                       keyboardType="phone-pad"
@@ -380,7 +380,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       placeholderTextColor="#999999"
                       style={styles.textInput}
                       selectionColor={MouzoColors.primary}
-                      maxLength={12}
+                      maxLength={13}
                       testID="input-phone"
                     />
                   </View>

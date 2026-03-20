@@ -27,18 +27,18 @@ router.get("/platform-earnings", authenticateToken, requireRole("admin", "super_
     // Calcular comisiones por período
     const todayEarnings = deliveredOrders
       .filter(o => new Date(o.createdAt) >= today)
-      .reduce((sum, o) => sum + (o.mouzoCommission || 0), 0);
+      .reduce((sum, o) => sum + (o.nemyCommission || 0), 0);
 
     const weekEarnings = deliveredOrders
       .filter(o => new Date(o.createdAt) >= weekAgo)
-      .reduce((sum, o) => sum + (o.mouzoCommission || 0), 0);
+      .reduce((sum, o) => sum + (o.nemyCommission || 0), 0);
 
     const monthEarnings = deliveredOrders
       .filter(o => new Date(o.createdAt) >= monthStart)
-      .reduce((sum, o) => sum + (o.mouzoCommission || 0), 0);
+      .reduce((sum, o) => sum + (o.nemyCommission || 0), 0);
 
     const totalEarnings = deliveredOrders
-      .reduce((sum, o) => sum + (o.mouzoCommission || 0), 0);
+      .reduce((sum, o) => sum + (o.nemyCommission || 0), 0);
 
     // Obtener transacciones de la plataforma
     const allTransactions = await db.select().from(transactions);
@@ -59,7 +59,7 @@ router.get("/platform-earnings", authenticateToken, requireRole("admin", "super_
         id: order.id,
         orderId: order.id,
         date: order.createdAt,
-        amount: order.mouzoCommission || 0,
+        amount: order.nemyCommission || 0,
         type: "commission",
         businessName: order.businessName,
         status: order.status,
@@ -187,7 +187,7 @@ router.get("/top-businesses", authenticateToken, requireRole("admin", "super_adm
         orders: 0,
       };
       
-      current.total += order.mouzoCommission || 0;
+      current.total += order.nemyCommission || 0;
       current.orders += 1;
       businessEarnings.set(order.businessId, current);
     }
@@ -235,7 +235,7 @@ router.get("/earnings-chart", authenticateToken, requireRole("admin", "super_adm
       if (orderDate >= startDate) {
         const dateKey = orderDate.toISOString().split("T")[0];
         const current = dailyEarnings.get(dateKey) || 0;
-        dailyEarnings.set(dateKey, current + (order.mouzoCommission || 0));
+        dailyEarnings.set(dateKey, current + (order.nemyCommission || 0));
       }
     }
 
@@ -275,7 +275,7 @@ router.post("/export-csv", authenticateToken, requireRole("admin", "super_admin"
     const csvHeader = "Fecha,Pedido ID,Negocio,Comisión (MXN),Estado\n";
     const csvRows = filteredOrders.map(order => {
       const date = new Date(order.createdAt).toLocaleDateString("es-MX");
-      const commission = ((order.mouzoCommission || 0) / 100).toFixed(2);
+      const commission = ((order.nemyCommission || 0) / 100).toFixed(2);
       return `${date},${order.id},${order.businessName},${commission},${order.status}`;
     }).join("\n");
 

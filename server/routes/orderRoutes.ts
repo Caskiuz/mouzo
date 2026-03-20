@@ -65,12 +65,12 @@ router.post("/", authenticateToken, validateOrderFinancials, async (req, res) =>
     }
 
     const productosBase = req.body.productosBase ?? req.body.subtotal;
-    const mouzoCommission =
-      typeof req.body.mouzoCommission === "number" && req.body.mouzoCommission > 0
-        ? req.body.mouzoCommission
+    const nemyCommission =
+      typeof req.body.nemyCommission === "number" && req.body.nemyCommission > 0
+        ? req.body.nemyCommission
         : Math.round(productosBase * 0.15);
     const couponDiscount = req.body.couponDiscount || 0;
-    const calculatedTotal = productosBase + mouzoCommission + deliveryFee - couponDiscount;
+    const calculatedTotal = productosBase + nemyCommission + deliveryFee - couponDiscount;
 
     const orderData = {
       userId: req.user!.id,
@@ -81,7 +81,7 @@ router.post("/", authenticateToken, validateOrderFinancials, async (req, res) =>
       status: req.body.status || "pending",
       subtotal: productosBase,
       productosBase,
-      mouzoCommission,
+      nemyCommission,
       deliveryFee,
       total: calculatedTotal,
       paymentMethod: req.body.paymentMethod,
@@ -369,7 +369,7 @@ router.post(
         order.total,
         order.deliveryFee,
         order.productosBase || order.subtotal,
-        order.mouzoCommission || undefined
+        order.nemyCommission || undefined
       );
 
       // Update order with commission breakdown and confirmation

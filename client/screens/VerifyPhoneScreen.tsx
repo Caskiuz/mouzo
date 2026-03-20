@@ -23,9 +23,9 @@ import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 
-const PENDING_BUSINESS_DRAFT_KEY = "@mouzo_pending_business_draft";
-const PENDING_BUSINESS_ONBOARDING_KEY = "@mouzo_pending_business_onboarding";
-const PENDING_DRIVER_ONBOARDING_KEY = "@mouzo_pending_driver_onboarding";
+const PENDING_BUSINESS_DRAFT_KEY = "@nemy_pending_business_draft";
+const PENDING_BUSINESS_ONBOARDING_KEY = "@nemy_pending_business_onboarding";
+const PENDING_DRIVER_ONBOARDING_KEY = "@nemy_pending_driver_onboarding";
 
 type VerifyPhoneScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "VerifyPhone">;

@@ -79,7 +79,7 @@ export class UnifiedFinancialService {
     totalAmount: number,
     deliveryFee: number = 0,
     productosBase?: number,
-    mouzoCommission?: number
+    nemyCommission?: number
   ): Promise<{
     platform: number;
     business: number;
@@ -89,7 +89,7 @@ export class UnifiedFinancialService {
     const safeTotal = Math.max(0, totalAmount || 0);
     const safeDeliveryFee = Math.max(0, deliveryFee || 0);
 
-    // Si nos dan productosBase o mouzoCommission, respetarlos para backwards compatibility
+    // Si nos dan productosBase o nemyCommission, respetarlos para backwards compatibility
     let productBase = productosBase && productosBase > 0
       ? productosBase
       : safeTotal - safeDeliveryFee;
@@ -100,8 +100,8 @@ export class UnifiedFinancialService {
       productBase = baseWithoutDelivery > 0 ? Math.round(baseWithoutDelivery / 1.15) : 0;
     }
 
-    const platformAmount = mouzoCommission && mouzoCommission > 0
-      ? mouzoCommission
+    const platformAmount = nemyCommission && nemyCommission > 0
+      ? nemyCommission
       : Math.round(productBase * 0.15);
 
     const businessAmount = productBase;

@@ -28,7 +28,7 @@ import { UserRole } from "@/types";
 import { useToast } from "@/contexts/ToastContext";
 
 const foodBgImage = require("../../assets/images/food-ingredients-bg.png");
-const PENDING_BUSINESS_DRAFT_KEY = "@mouzo_pending_business_draft";
+const PENDING_BUSINESS_DRAFT_KEY = "@nemy_pending_business_draft";
 
 type SignupScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Signup">;
@@ -95,14 +95,14 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
 
   const formatPhoneDisplay = (value: string) => {
     const numbers = value.replace(/\D/g, "");
-    if (numbers.length <= 3) return numbers;
-    if (numbers.length <= 6)
-      return `${numbers.slice(0, 3)} ${numbers.slice(3)}`;
-    return `${numbers.slice(0, 3)} ${numbers.slice(3, 6)} ${numbers.slice(6, 10)}`;
+    if (numbers.length <= 4) return numbers;
+    if (numbers.length <= 7)
+      return `${numbers.slice(0, 4)} ${numbers.slice(4)}`;
+    return `${numbers.slice(0, 4)} ${numbers.slice(4, 7)} ${numbers.slice(7, 11)}`;
   };
 
   const handlePhoneChange = (text: string) => {
-    const numbers = text.replace(/\D/g, "").slice(0, 10);
+    const numbers = text.replace(/\D/g, "").slice(0, 11);
     setPhone(numbers);
     if (role === "business_owner" && !businessPhone) {
       setBusinessPhone(numbers);
@@ -140,8 +140,8 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
 
     if (!phone) {
       newErrors.phone = "El teléfono es requerido";
-    } else if (phone.length < 10) {
-      newErrors.phone = "Ingresa 10 dígitos";
+    } else if (phone.length < 11) {
+      newErrors.phone = "Ingresa 11 dígitos";
     }
 
     if (role === "business_owner") {
@@ -167,7 +167,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     try {
-      const formattedPhone = phone.startsWith('+') ? phone : `+52${phone}`;
+      const formattedPhone = phone.startsWith('+') ? phone : `+58${phone}`;
       const result = await signup(
         name,
         role,
@@ -208,7 +208,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
     try {
       await Share.share({
         message:
-          "Descubre MOUZO - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.replit.app",
+          "Descubre MOUZO - Tu delivery local de confianza en San Cristóbal. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.app",
         title: "MOUZO - Delivery Local",
       });
     } catch (error) {
@@ -367,7 +367,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
               <View style={styles.phoneInputContainer}>
                 <View style={styles.countryCode}>
                   <ThemedText type="body" style={styles.countryCodeText}>
-                    +52
+                    +58
                   </ThemedText>
                 </View>
                 <View
@@ -383,7 +383,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                     style={styles.inputBoxIcon}
                   />
                   <TextInput
-                    placeholder="317 123 4567"
+                    placeholder="0414 123 4567"
                     value={formatPhoneDisplay(phone)}
                     onChangeText={handlePhoneChange}
                     keyboardType="phone-pad"
@@ -391,8 +391,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                     placeholderTextColor="#999999"
                     style={styles.textInput}
                     selectionColor={MouzoColors.primary}
-                    maxLength={12}
-                    testID="input-phone"
+                    maxLength={13}
                   />
                 </View>
               </View>
@@ -543,12 +542,12 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                     <TextInput
                       placeholder="Ej: 317 123 4567"
                       value={formatPhoneDisplay(businessPhone)}
-                      onChangeText={(text) => setBusinessPhone(text.replace(/\D/g, "").slice(0, 10))}
+                      onChangeText={(text) => setBusinessPhone(text.replace(/\D/g, "").slice(0, 11))}
                       keyboardType="phone-pad"
                       placeholderTextColor="#999999"
                       style={styles.textInput}
                       selectionColor={MouzoColors.primary}
-                      maxLength={12}
+                      maxLength={13}
                     />
                   </View>
                 </View>

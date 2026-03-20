@@ -100,8 +100,8 @@ export default function CartScreen() {
   
   // Precio base de productos (sin comision)
   const productosBase = subtotal;
-  const mouzoCommission = productosBase * 0.15;
-  const total = productosBase + mouzoCommission + deliveryFee;
+  const nemyCommission = productosBase * 0.15;
+  const total = productosBase + nemyCommission + deliveryFee;
   const canProceed = subtotal >= minimumOrder;
 
   const handleCheckout = () => {
@@ -300,7 +300,7 @@ export default function CartScreen() {
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             Comision MOUZO (15%)
           </ThemedText>
-          <ThemedText type="body">${mouzoCommission.toFixed(2)}</ThemedText>
+          <ThemedText type="body">${nemyCommission.toFixed(2)}</ThemedText>
         </View>
         <View style={styles.summaryRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>

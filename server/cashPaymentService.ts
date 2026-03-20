@@ -120,7 +120,7 @@ async function processCashCommissions(orderId: string) {
       order.total,
       order.deliveryFee || 0,
       order.productosBase || undefined,
-      order.mouzoCommission || undefined
+      order.nemyCommission || undefined
     );
 
     const platformAmount = commissions.platform;

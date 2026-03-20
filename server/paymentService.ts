@@ -217,7 +217,7 @@ export async function processSuccessfulPayment(paymentIntentId: string) {
       payment.amount,
       order.deliveryFee || 0,
       order.productosBase || undefined,
-      order.mouzoCommission || undefined
+      order.nemyCommission || undefined
     );
 
     const platformAmount = commissions.platform;
