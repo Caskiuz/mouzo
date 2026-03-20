@@ -79,8 +79,8 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 
-  if (!process.env.STRIPE_SECRET_KEY) console.warn('⚠️  Stripe not configured');
   if (!process.env.TWILIO_ACCOUNT_SID) console.warn('⚠️  Twilio not configured');
+  if (!process.env.MOUZO_PAGO_MOVIL_PHONE) console.warn('⚠️  Pago Móvil no configurado - agrega MOUZO_PAGO_MOVIL_PHONE en .env');
 
   import('./businessHoursCron').then(({ startBusinessHoursCron }) => startBusinessHoursCron()).catch(console.error);
   import('./weeklySettlementCron').then(({ WeeklySettlementCron }) => WeeklySettlementCron.start()).catch(console.error);

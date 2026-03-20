@@ -25,12 +25,10 @@ export const users = mysqlTable("users", {
   biometricEnabled: boolean("biometric_enabled").notNull().default(false), // For biometric authentication
   verificationCode: text("verification_code"),
   verificationExpires: timestamp("verification_expires"),
-  stripeCustomerId: text("stripe_customer_id"),
-  stripePaymentMethodId: text("stripe_payment_method_id"),
-  cardLast4: text("card_last4"),
-  cardBrand: text("card_brand"),
-  stripeAccountId: text("stripe_account_id"), // Para repartidores con Stripe Connect
-  bankAccount: text("bank_account"), // JSON con datos bancarios (SPEI/CLABE)
+  pagoMovilPhone: text("pago_movil_phone"),
+  pagoMovilBank: text("pago_movil_bank"),
+  pagoMovilCedula: text("pago_movil_cedula"),
+  bankAccount: text("bank_account"),
   isActive: boolean("is_active").notNull().default(true), // Para desactivar cuentas
   isOnline: boolean("is_online").notNull().default(false), // Para repartidores online/offline
   lastActiveAt: timestamp("last_active_at"), // Última actividad
@@ -70,7 +68,14 @@ export const orders = mysqlTable("orders", {
   deliveryFee: int("delivery_fee").notNull(),
   total: int("total").notNull(),
   paymentMethod: text("payment_method").notNull(),
-  paymentIntentId: text("payment_intent_id"),
+  pagoMovilReference: text("pago_movil_reference"),
+  pagoMovilProofUrl: text("pago_movil_proof_url"),
+  pagoMovilPhone: text("pago_movil_phone"),
+  pagoMovilBank: text("pago_movil_bank"),
+  pagoMovilStatus: text("pago_movil_status").default("pending"),
+  pagoMovilVerifiedBy: varchar("pago_movil_verified_by", { length: 255 }),
+  pagoMovilVerifiedAt: timestamp("pago_movil_verified_at"),
+  pagoMovilRejectedReason: text("pago_movil_rejected_reason"),
   deliveryAddress: text("delivery_address").notNull(),
   deliveryPersonId: text("delivery_person_id"),
   notes: text("notes"),
@@ -104,11 +109,10 @@ export const orders = mysqlTable("orders", {
   callAttempted: boolean("call_attempted").default(false), // Si ya se intentó llamar al negocio
   callAttemptedAt: timestamp("call_attempted_at"), // Cuando se intentó la llamada
   // Campos adicionales de pago
-  stripePaymentIntentId: text("stripe_payment_intent_id"), // ID de PaymentIntent para webhooks
-  paidAt: timestamp("paid_at"), // Cuando se pagó
-  refundedAt: timestamp("refunded_at"), // Cuando se reembolsó
-  driverPaidAt: timestamp("driver_paid_at"), // Cuando se pagó al repartidor
-  driverPaymentStatus: text("driver_payment_status").default("pending"), // pending, completed, failed
+  paidAt: timestamp("paid_at"),
+  refundedAt: timestamp("refunded_at"),
+  driverPaidAt: timestamp("driver_paid_at"),
+  driverPaymentStatus: text("driver_payment_status").default("pending"),
   // Confirmación de recepción por cliente
   confirmedByCustomer: boolean("confirmed_by_customer").default(false), // Si el cliente confirmó recepción
   confirmedByCustomerAt: timestamp("confirmed_by_customer_at"), // Cuándo confirmó
@@ -182,9 +186,9 @@ export const businesses = mysqlTable("businesses", {
   isSlammed: boolean("is_slammed").notNull().default(false), // Negocio saturado
   slammedExtraMinutes: int("slammed_extra_minutes").default(20), // Minutos extra cuando está saturado
   slammedAt: timestamp("slammed_at"), // Cuando se activó el modo saturado
-  // Stripe Connect
-  stripeAccountId: text("stripe_account_id"), // ID de cuenta Stripe Connect
-  stripeAccountStatus: text("stripe_account_status").default("pending"), // pending, active, restricted
+  pagoMovilPhone: text("pago_movil_phone"),
+  pagoMovilBank: text("pago_movil_bank"),
+  pagoMovilCedula: text("pago_movil_cedula"),
   verificationCode: text("verification_code"),
   verificationExpires: timestamp("verification_expires"),
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
@@ -223,9 +227,7 @@ export const transactions = mysqlTable("transactions", {
   description: text("description"),
   status: text("status").notNull().default("completed"), // pending, completed, failed, cancelled
   metadata: text("metadata"), // JSON con info adicional
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
-  stripeTransferId: text("stripe_transfer_id"),
-  stripeRefundId: text("stripe_refund_id"),
+  pagoMovilReference: text("pago_movil_reference"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 });
@@ -240,10 +242,10 @@ export const payments = mysqlTable("payments", {
   businessId: varchar("business_id", { length: 255 }).notNull(),
   driverId: varchar("driver_id", { length: 255 }),
   amount: int("amount").notNull(), // en centavos
-  currency: text("currency").notNull().default("MXN"),
-  status: text("status").notNull().default("pending"), // pending, succeeded, failed, refunded
-  paymentMethod: text("payment_method").notNull().default("card"),
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  currency: text("currency").notNull().default("VES"),
+  status: text("status").notNull().default("pending"),
+  paymentMethod: text("payment_method").notNull().default("pago_movil"),
+  pagoMovilReference: text("pago_movil_reference"),
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
@@ -336,26 +338,25 @@ export const products = mysqlTable("products", {
   ),
 });
 
-// Stripe Connect Accounts - Cuentas conectadas de Stripe
-export const stripeConnectAccounts = mysqlTable("stripe_connect_accounts", {
-  id: varchar("id", { length: 255 })
-    .primaryKey()
-    .default(sql`(UUID())`),
+// Pago Móvil Verifications
+export const pagoMovilVerifications = mysqlTable("pago_movil_verifications", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  orderId: varchar("order_id", { length: 255 }).notNull(),
   userId: varchar("user_id", { length: 255 }).notNull(),
-  businessId: varchar("business_id", { length: 255 }),
-  stripeAccountId: varchar("stripe_account_id", { length: 255 })
-    .notNull()
-    .unique(),
-  accountType: text("account_type").notNull(), // business, driver
-  onboardingComplete: boolean("onboarding_complete").notNull().default(false),
-  chargesEnabled: boolean("charges_enabled").notNull().default(false),
-  payoutsEnabled: boolean("payouts_enabled").notNull().default(false),
-  detailsSubmitted: boolean("details_submitted").notNull().default(false),
-  requirements: text("requirements"), // JSON con requerimientos pendientes
+  reference: varchar("reference", { length: 50 }).notNull().unique(),
+  amount: int("amount").notNull(),
+  proofUrl: text("proof_url"),
+  clientPhone: varchar("client_phone", { length: 20 }),
+  clientBank: varchar("client_bank", { length: 50 }),
+  destPhone: varchar("dest_phone", { length: 20 }),
+  destBank: varchar("dest_bank", { length: 50 }),
+  destCedula: varchar("dest_cedula", { length: 20 }),
+  status: varchar("status", { length: 20 }).notNull().default("pending"),
+  verifiedBy: varchar("verified_by", { length: 255 }),
+  verifiedAt: timestamp("verified_at"),
+  rejectedReason: text("rejected_reason"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: timestamp("updated_at").default(
-    sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`,
-  ),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 });
 
 // Withdrawals - Retiros de fondos
@@ -367,9 +368,7 @@ export const withdrawals = mysqlTable("withdrawals", {
   userId: varchar("user_id", { length: 255 }).notNull(),
   amount: int("amount").notNull(), // en centavos
   status: varchar("status", { length: 50 }).notNull().default("pending"), // pending, processing, completed, failed, cancelled
-  stripeTransferId: text("stripe_transfer_id"),
-  stripePayoutId: text("stripe_payout_id"),
-  method: varchar("method", { length: 50 }).notNull().default("stripe"), // stripe, bank_transfer, cash
+  method: varchar("method", { length: 50 }).notNull().default("pago_movil"),
   bankAccount: text("bank_account"), // JSON con datos bancarios
   failureReason: text("failure_reason"),
   processedAt: timestamp("processed_at"),
@@ -386,12 +385,10 @@ export const withdrawalRequests = mysqlTable("withdrawal_requests", {
   amount: int("amount").notNull(), // en centavos
   method: varchar("method", { length: 50 }).notNull(), // stripe, bank_transfer
   status: varchar("status", { length: 50 }).notNull().default("pending"), // pending, completed, failed, cancelled
-  // Datos bancarios para transferencia SPEI
-  bankClabe: varchar("bank_clabe", { length: 18 }), // CLABE interbancaria (18 dígitos)
-  bankName: text("bank_name"),
+  pagoMovilPhone: varchar("pago_movil_phone", { length: 20 }),
+  pagoMovilBank: varchar("pago_movil_bank", { length: 50 }),
+  pagoMovilCedula: varchar("pago_movil_cedula", { length: 20 }),
   accountHolder: text("account_holder"),
-  // Stripe
-  stripePayoutId: text("stripe_payout_id"),
   // Admin
   approvedBy: varchar("approved_by", { length: 255 }),
   errorMessage: text("error_message"),
@@ -443,7 +440,7 @@ export const auditLogs = mysqlTable("audit_logs", {
 
 export type SystemSetting = typeof systemSettings.$inferSelect;
 export type Product = typeof products.$inferSelect;
-export type StripeConnectAccount = typeof stripeConnectAccounts.$inferSelect;
+export type PagoMovilVerification = typeof pagoMovilVerifications.$inferSelect;
 export type Withdrawal = typeof withdrawals.$inferSelect;
 export type WithdrawalRequest = typeof withdrawalRequests.$inferSelect;
 export type DeliveryDriver = typeof deliveryDrivers.$inferSelect;
