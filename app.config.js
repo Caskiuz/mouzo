@@ -1,16 +1,16 @@
 export default {
   expo: {
-    name: "NEMY",
-    slug: "nemy-app",
+    name: "MOUZO",
+    slug: "mouzo",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "nemy",
+    scheme: "mouzo",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.nemy.app",
+      bundleIdentifier: "com.mouzo.app",
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "Necesitamos tu ubicacion para asignarte pedidos y mostrar tu posicion en tiempo real."
       }
@@ -22,7 +22,7 @@ export default {
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
-      package: "com.nemy.app",
+      package: "com.mouzo.app",
       config: {
         googleMaps: {
           apiKey: "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
@@ -64,7 +64,7 @@ export default {
         projectId: "8c58541f-bf02-4e36-bcf9-a2e64b126a5b"
       },
       // CRITICAL: Backend URL for production builds
-      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://nemy-backend.onrender.com"
+      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://mouzo-backend.onrender.com"
     },
     owner: "caskiuzs-organization"
   }

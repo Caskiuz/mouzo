@@ -42,7 +42,7 @@ router.post("/send-code", authenticateToken, requireRole("business_owner"), asyn
       const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
       
       await client.messages.create({
-        body: `Tu código de verificación NEMY es: ${code}`,
+        body: `Tu código de verificación MOUZO es: ${code}`,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
       });

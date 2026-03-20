@@ -1,4 +1,4 @@
-// Twilio Verify API Integration for NEMY - Phone-only Authentication
+// Twilio Verify API Integration for MOUZO - Phone-only Authentication
 import twilio from "twilio";
 
 const client = twilio(
@@ -23,7 +23,7 @@ export async function sendVerificationCode(
         to: formatPhoneNumber(phoneNumber),
         channel: "sms",
         locale: "es",
-        customFriendlyName: "NEMY Autlán",
+        customFriendlyName: "MOUZO Autlán",
       });
 
     console.log(

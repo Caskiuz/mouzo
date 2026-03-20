@@ -21,7 +21,7 @@ import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest, apiRequestRaw } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
@@ -134,8 +134,8 @@ export default function CheckoutScreen({ route }: any) {
 
   const deliveryFee = route?.params?.calculatedDeliveryFee ?? (dynamicDeliveryFee ?? (business?.deliveryFee ? business.deliveryFee / 100 : 0));
   
-  const nemyCommission = subtotal * 0.15;
-  const total = subtotal + nemyCommission + deliveryFee - couponDiscount;
+  const mouzoCommission = subtotal * 0.15;
+  const total = subtotal + mouzoCommission + deliveryFee - couponDiscount;
 
   // Calcular delivery fee dinámico cuando cambia la dirección
   useEffect(() => {
@@ -233,11 +233,11 @@ export default function CheckoutScreen({ route }: any) {
 
       const { error } = await stripeModule.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: "NEMY",
+        merchantDisplayName: "MOUZO",
         style: "automatic",
         appearance: {
           colors: {
-            primary: NemyColors.primary,
+            primary: MouzoColors.primary,
           },
         },
       });
@@ -310,7 +310,7 @@ export default function CheckoutScreen({ route }: any) {
 
       // Calcular valores para backend (subtotal es precio base)
       const productosBase = Math.round(subtotal * 100);
-      const nemyCommission = Math.round(subtotal * 0.15 * 100);
+      const mouzoCommission = Math.round(subtotal * 0.15 * 100);
       const totalAmount = Math.round(total * 100);
       
       const orderResponse = await apiRequest("POST", "/api/orders", {
@@ -320,7 +320,7 @@ export default function CheckoutScreen({ route }: any) {
         items: JSON.stringify(cart.items),
         status: "pending",
         productosBase: productosBase,
-        nemyCommission: nemyCommission,
+        mouzoCommission: mouzoCommission,
         subtotal: productosBase,
         deliveryFee: Math.round(deliveryFee * 100),
         total: totalAmount,
@@ -488,7 +488,7 @@ export default function CheckoutScreen({ route }: any) {
                       styles.modalAddress,
                       {
                         borderColor: isSelected
-                          ? NemyColors.primary
+                          ? MouzoColors.primary
                           : theme.border,
                         backgroundColor: theme.backgroundSecondary,
                       },
@@ -509,7 +509,7 @@ export default function CheckoutScreen({ route }: any) {
                       <Feather
                         name="check-circle"
                         size={18}
-                        color={NemyColors.primary}
+                        color={MouzoColors.primary}
                       />
                     ) : null}
                   </Pressable>
@@ -527,10 +527,10 @@ export default function CheckoutScreen({ route }: any) {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="plus" size={16} color={NemyColors.primary} />
+                <Feather name="plus" size={16} color={MouzoColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
                 >
                   Nueva dirección
                 </ThemedText>
@@ -545,10 +545,10 @@ export default function CheckoutScreen({ route }: any) {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="map" size={16} color={NemyColors.primary} />
+                <Feather name="map" size={16} color={MouzoColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
                 >
                   Ver todas
                 </ThemedText>
@@ -579,7 +579,7 @@ export default function CheckoutScreen({ route }: any) {
         >
           <View style={styles.sectionHeader}>
             <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-              <Feather name="map-pin" size={20} color={NemyColors.primary} />
+              <Feather name="map-pin" size={20} color={MouzoColors.primary} />
               <ThemedText type="h4" style={styles.sectionTitle}>
                 Dirección de entrega
               </ThemedText>
@@ -591,8 +591,8 @@ export default function CheckoutScreen({ route }: any) {
               }}
               style={styles.inlineLink}
             >
-              <Feather name="edit-3" size={16} color={NemyColors.primary} />
-              <ThemedText type="small" style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}>
+              <Feather name="edit-3" size={16} color={MouzoColors.primary} />
+              <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
                 Cambiar
               </ThemedText>
             </Pressable>
@@ -604,16 +604,16 @@ export default function CheckoutScreen({ route }: any) {
                 styles.addressCard,
                 {
                   backgroundColor: theme.backgroundSecondary,
-                  borderColor: NemyColors.primary,
+                  borderColor: MouzoColors.primary,
                   borderStyle: "dashed",
                 },
               ]}
             >
               <View style={styles.addressContent}>
-                <Feather name="plus" size={20} color={NemyColors.primary} />
+                <Feather name="plus" size={20} color={MouzoColors.primary} />
                 <ThemedText
                   type="body"
-                  style={{ color: NemyColors.primary, marginLeft: Spacing.sm }}
+                  style={{ color: MouzoColors.primary, marginLeft: Spacing.sm }}
                 >
                   Agregar dirección
                 </ThemedText>
@@ -633,7 +633,7 @@ export default function CheckoutScreen({ route }: any) {
                     backgroundColor: theme.backgroundSecondary,
                     borderColor:
                       selectedAddress?.id === addr.id
-                        ? NemyColors.primary
+                        ? MouzoColors.primary
                         : "transparent",
                   },
                 ]}
@@ -654,7 +654,7 @@ export default function CheckoutScreen({ route }: any) {
                   <Feather
                     name="check-circle"
                     size={20}
-                    color={NemyColors.primary}
+                    color={MouzoColors.primary}
                   />
                 ) : null}
               </Pressable>
@@ -667,8 +667,8 @@ export default function CheckoutScreen({ route }: any) {
                 onPress={() => navigation.navigate("AddAddress", { address: selectedAddress, fromCheckout: true } as never)}
                 style={[styles.manageAddressButton, { backgroundColor: theme.backgroundSecondary }]}
               >
-                <Feather name="edit-2" size={16} color={NemyColors.primary} />
-                <ThemedText type="small" style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}>
+                <Feather name="edit-2" size={16} color={MouzoColors.primary} />
+                <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
                   Editar esta
                 </ThemedText>
               </Pressable>
@@ -676,8 +676,8 @@ export default function CheckoutScreen({ route }: any) {
                 onPress={() => navigation.navigate("SavedAddresses" as never)}
                 style={[styles.manageAddressButton, { backgroundColor: theme.backgroundSecondary }]}
               >
-                <Feather name="map" size={16} color={NemyColors.primary} />
-                <ThemedText type="small" style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}>
+                <Feather name="map" size={16} color={MouzoColors.primary} />
+                <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
                   Gestionar direcciones
                 </ThemedText>
               </Pressable>
@@ -689,7 +689,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="credit-card" size={20} color={NemyColors.primary} />
+            <Feather name="credit-card" size={20} color={MouzoColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Método de pago
             </ThemedText>
@@ -699,7 +699,7 @@ export default function CheckoutScreen({ route }: any) {
               styles.paymentOption,
               {
                 backgroundColor: theme.backgroundSecondary,
-                borderColor: NemyColors.primary,
+                borderColor: MouzoColors.primary,
               },
             ]}
           >
@@ -714,7 +714,7 @@ export default function CheckoutScreen({ route }: any) {
                 </ThemedText>
               </View>
             </View>
-            <Feather name="check-circle" size={20} color={NemyColors.primary} />
+            <Feather name="check-circle" size={20} color={MouzoColors.primary} />
           </View>
         </View>
 
@@ -723,16 +723,16 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="tag" size={20} color={NemyColors.primary} />
+            <Feather name="tag" size={20} color={MouzoColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Cupón de descuento
             </ThemedText>
           </View>
           
           {appliedCoupon ? (
-            <View style={[styles.appliedCouponBox, { backgroundColor: NemyColors.success + "15", borderColor: NemyColors.success }]}>
+            <View style={[styles.appliedCouponBox, { backgroundColor: MouzoColors.success + "15", borderColor: MouzoColors.success }]}>
               <View style={{ flex: 1 }}>
-                <ThemedText type="body" style={{ fontWeight: "600", color: NemyColors.success }}>
+                <ThemedText type="body" style={{ fontWeight: "600", color: MouzoColors.success }}>
                   {couponCode.toUpperCase()}
                 </ThemedText>
                 <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
@@ -740,7 +740,7 @@ export default function CheckoutScreen({ route }: any) {
                 </ThemedText>
               </View>
               <Pressable onPress={handleRemoveCoupon} style={styles.removeCouponButton}>
-                <Feather name="x" size={20} color={NemyColors.error} />
+                <Feather name="x" size={20} color={MouzoColors.error} />
               </Pressable>
             </View>
           ) : (
@@ -757,7 +757,7 @@ export default function CheckoutScreen({ route }: any) {
               <Pressable
                 onPress={handleApplyCoupon}
                 disabled={couponLoading || !couponCode.trim()}
-                style={[styles.applyCouponButton, { backgroundColor: couponLoading || !couponCode.trim() ? theme.textSecondary : NemyColors.primary }]}
+                style={[styles.applyCouponButton, { backgroundColor: couponLoading || !couponCode.trim() ? theme.textSecondary : MouzoColors.primary }]}
               >
                 {couponLoading ? (
                   <ActivityIndicator size="small" color="#FFF" />
@@ -776,7 +776,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="refresh-cw" size={20} color={NemyColors.primary} />
+            <Feather name="refresh-cw" size={20} color={MouzoColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Si algo no está disponible...
             </ThemedText>
@@ -805,10 +805,10 @@ export default function CheckoutScreen({ route }: any) {
                       styles.substitutionOption,
                       {
                         backgroundColor: isSelected
-                          ? NemyColors.primary + "15"
+                          ? MouzoColors.primary + "15"
                           : theme.backgroundSecondary,
                         borderColor: isSelected
-                          ? NemyColors.primary
+                          ? MouzoColors.primary
                           : "transparent",
                       },
                     ]}
@@ -818,13 +818,13 @@ export default function CheckoutScreen({ route }: any) {
                       name={info.icon}
                       size={20}
                       color={
-                        isSelected ? NemyColors.primary : theme.textSecondary
+                        isSelected ? MouzoColors.primary : theme.textSecondary
                       }
                     />
                     <ThemedText
                       type="small"
                       style={{
-                        color: isSelected ? NemyColors.primary : theme.text,
+                        color: isSelected ? MouzoColors.primary : theme.text,
                         marginTop: Spacing.xs,
                         fontWeight: isSelected ? "600" : "400",
                       }}
@@ -845,7 +845,7 @@ export default function CheckoutScreen({ route }: any) {
             }}
             style={styles.itemSubstitutionToggle}
           >
-            <ThemedText type="small" style={{ color: NemyColors.primary }}>
+            <ThemedText type="small" style={{ color: MouzoColors.primary }}>
               {showItemSubstitutions
                 ? "Usar misma opción para todos"
                 : "Elegir por producto"}
@@ -853,7 +853,7 @@ export default function CheckoutScreen({ route }: any) {
             <Feather
               name={showItemSubstitutions ? "chevron-up" : "chevron-down"}
               size={16}
-              color={NemyColors.primary}
+              color={MouzoColors.primary}
             />
           </Pressable>
 
@@ -897,7 +897,7 @@ export default function CheckoutScreen({ route }: any) {
                             styles.itemSubstitutionButton,
                             {
                               backgroundColor: isSelected
-                                ? NemyColors.primary
+                                ? MouzoColors.primary
                                 : theme.backgroundSecondary,
                             },
                           ]}
@@ -921,7 +921,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="shopping-bag" size={20} color={NemyColors.primary} />
+            <Feather name="shopping-bag" size={20} color={MouzoColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Resumen del pedido
             </ThemedText>
@@ -963,9 +963,9 @@ export default function CheckoutScreen({ route }: any) {
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
-            Comision NEMY (15%)
+            Comision MOUZO (15%)
           </ThemedText>
-          <ThemedText type="body">${nemyCommission.toFixed(2)}</ThemedText>
+          <ThemedText type="body">${mouzoCommission.toFixed(2)}</ThemedText>
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
@@ -975,17 +975,17 @@ export default function CheckoutScreen({ route }: any) {
         </View>
         {couponDiscount > 0 && (
           <View style={styles.totalRow}>
-            <ThemedText type="body" style={{ color: NemyColors.success }}>
+            <ThemedText type="body" style={{ color: MouzoColors.success }}>
               Cupón ({couponCode})
             </ThemedText>
-            <ThemedText type="body" style={{ color: NemyColors.success }}>
+            <ThemedText type="body" style={{ color: MouzoColors.success }}>
               -${couponDiscount.toFixed(2)}
             </ThemedText>
           </View>
         )}
         <View style={[styles.totalRow, styles.grandTotal]}>
           <ThemedText type="h3">Total</ThemedText>
-          <ThemedText type="h2" style={{ color: NemyColors.primary }}>
+          <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
             ${total.toFixed(2)}
           </ThemedText>
         </View>

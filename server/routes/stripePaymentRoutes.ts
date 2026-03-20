@@ -64,8 +64,8 @@ router.post("/create-payment-intent", authenticateToken, async (req, res) => {
     const amountInCents = Math.round(amount);
     const subtotalInCents = Math.round(subtotal || 0);
     
-    // Calculate NEMY commission (15% of subtotal)
-    const nemyCommission = Math.round(subtotalInCents * 0.15);
+    // Calculate MOUZO commission (15% of subtotal)
+    const mouzoCommission = Math.round(subtotalInCents * 0.15);
 
     // Create PaymentIntent WITHOUT transfer_data
     // Money stays in platform account until customer confirms delivery
@@ -80,7 +80,7 @@ router.post("/create-payment-intent", authenticateToken, async (req, res) => {
         orderId,
         subtotal: subtotalInCents.toString(),
         deliveryFee: (deliveryFee || 0).toString(),
-        nemyCommission: nemyCommission.toString(),
+        mouzoCommission: mouzoCommission.toString(),
       },
     });
 
@@ -92,8 +92,8 @@ router.post("/create-payment-intent", authenticateToken, async (req, res) => {
         paymentIntentId: paymentIntent.id,
         stripePaymentIntentId: paymentIntent.id,
         productosBase: subtotalInCents,
-        nemyCommission,
-        platformFee: nemyCommission,
+        mouzoCommission,
+        platformFee: mouzoCommission,
         businessEarnings: subtotalInCents, // Business gets 100% of products
         deliveryEarnings: deliveryFee || 0, // Delivery gets 100% of delivery fee
         updatedAt: new Date(),

@@ -1,6 +1,6 @@
-# NEMY - Plataforma de Delivery
+# MOUZO - Plataforma de Delivery
 
-> Del náhuatl "vivir" - Conectando negocios locales con la comunidad de Autlán, Jalisco
+> Conectando negocios locales con la comunidad de San Cristóbal, Venezuela
 
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
@@ -26,8 +26,8 @@
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/tu-usuario/nemy-app.git
-cd nemy-app
+git clone https://github.com/tu-usuario/mouzo.git
+cd mouzo
 
 # Instalar dependencias
 npm install
@@ -37,7 +37,7 @@ cp .env.example .env.local
 
 # Configurar base de datos
 mysql -u root -p
-CREATE DATABASE nemy_db_local;
+CREATE DATABASE mouzo_db_local;
 exit
 
 # Aplicar schema
@@ -52,12 +52,12 @@ Crea un archivo `.env.local` con las siguientes variables:
 
 ```env
 # Base de Datos
-DATABASE_URL=mysql://root:password@localhost:3306/nemy_db_local
+DATABASE_URL=mysql://root:password@localhost:3306/mouzo_db_local
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=nemy_db_local
+DB_NAME=mouzo_db_local
 
 # JWT
 JWT_SECRET=your_jwt_secret
@@ -116,16 +116,16 @@ El schema completo está en `shared/schema-mysql.ts`
 npm run db:push
 
 # Backup
-mysqldump -u root -p nemy_db_local > backup.sql
+mysqldump -u root -p mouzo_db_local > backup.sql
 
 # Restore
-mysql -u root -p nemy_db_local < backup.sql
+mysql -u root -p mouzo_db_local < backup.sql
 ```
 
 ## 🏗️ Estructura del Proyecto
 
 ```
-NEMY-APP/
+MOUZO/
 ├── client/              # Frontend React Native
 │   ├── components/      # Componentes reutilizables
 │   ├── screens/         # Pantallas de la app
@@ -145,7 +145,7 @@ NEMY-APP/
 ## 💳 Sistema de Pagos
 
 ### Comisiones
-- Plataforma NEMY: 15% de markup sobre productos
+- Plataforma MOUZO: 15% de markup sobre productos
 - Negocio: 100% del precio base de productos
 - Repartidor: 100% de la tarifa de entrega
 
@@ -224,7 +224,7 @@ npm run check:types
 
 ## 📄 Licencia
 
-Propietario - NEMY © 2026
+Propietario - MOUZO © 2026
 
 ## 🆘 Soporte
 
@@ -232,4 +232,4 @@ Para soporte técnico, contacta al equipo de desarrollo.
 
 ---
 
-**Hecho con ❤️ en Autlán, Jalisco, México**
+**Hecho con ❤️ en San Cristóbal, Venezuela**

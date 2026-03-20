@@ -7,7 +7,7 @@ import HomeScreen from "@/screens/HomeScreen";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 import { useScreenOptions } from "@/hooks/useScreenOptions";
-import { Spacing, NemyColors } from "@/constants/theme";
+import { Spacing, MouzoColors } from "@/constants/theme";
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -23,8 +23,8 @@ function HeaderTitle() {
         style={styles.headerIcon}
         contentFit="contain"
       />
-      <ThemedText type="h3" style={{ color: NemyColors.primary }}>
-        NEMY
+      <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
+        MOUZO
       </ThemedText>
     </View>
   );

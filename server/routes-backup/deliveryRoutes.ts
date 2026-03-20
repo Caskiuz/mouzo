@@ -249,7 +249,7 @@ router.put("/orders/:id/status", authenticateToken, requireRole("delivery_driver
             order.total || 0,
             order.deliveryFee || 0,
             order.productosBase || order.subtotal,
-            order.nemyCommission || undefined
+            order.mouzoCommission || undefined
           );
 
           console.log(`💳 Card payment - distributing commissions`);
@@ -258,7 +258,7 @@ router.put("/orders/:id/status", authenticateToken, requireRole("delivery_driver
           await db
             .update(orders)
             .set({
-              platformFee: commissions.nemy,
+              platformFee: commissions.mouzo,
               businessEarnings: commissions.business,
               deliveryEarnings: commissions.driver,
             })

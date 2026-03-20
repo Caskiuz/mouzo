@@ -37,7 +37,7 @@ export function startAutoConfirmCron() {
             order.total,
             order.deliveryFee,
             order.productosBase || order.subtotal,
-            order.nemyCommission || undefined
+            order.mouzoCommission || undefined
           );
 
           // Update order with confirmation

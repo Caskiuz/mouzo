@@ -197,7 +197,7 @@ export default function LoyaltyScreen() {
   const subscriptions: Subscription[] = [
     {
       id: 'basic',
-      name: 'NEMY Plus',
+      name: 'MOUZO Plus',
       price: 99,
       benefits: [
         'Entrega gratis ilimitada',
@@ -209,10 +209,10 @@ export default function LoyaltyScreen() {
     },
     {
       id: 'premium',
-      name: 'NEMY Premium',
+      name: 'MOUZO Premium',
       price: 199,
       benefits: [
-        'Todo de NEMY Plus',
+        'Todo de MOUZO Plus',
         '15% descuento en todos los pedidos',
         'Entrega express gratis',
         'Cashback del 5%',

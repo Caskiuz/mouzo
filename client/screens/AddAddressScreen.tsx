@@ -24,7 +24,7 @@ import { apiRequest } from '@/lib/query-client';
 import { isInCoverageArea, AUTLAN_CENTER } from '@/utils/coverage';
 import { checkDuplicateAddress, suggestSimilarAddresses, Address } from '@/utils/addressValidation';
 import { useDebounce, usePerformanceMonitor } from '@/hooks/usePerformance';
-import { Spacing, BorderRadius, NemyColors, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, MouzoColors, Shadows } from '@/constants/theme';
 import * as Location from 'expo-location';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddAddress'>;
@@ -167,9 +167,9 @@ export default function AddAddressScreen() {
       >
         {/* Error banner */}
         {error && (
-          <View style={[styles.banner, { backgroundColor: NemyColors.error + '15', borderColor: NemyColors.error + '40' }]}>
-            <Feather name="alert-circle" size={16} color={NemyColors.error} />
-            <ThemedText type="small" style={{ color: NemyColors.error, flex: 1, marginLeft: Spacing.sm }}>
+          <View style={[styles.banner, { backgroundColor: MouzoColors.error + '15', borderColor: MouzoColors.error + '40' }]}>
+            <Feather name="alert-circle" size={16} color={MouzoColors.error} />
+            <ThemedText type="small" style={{ color: MouzoColors.error, flex: 1, marginLeft: Spacing.sm }}>
               {error}
             </ThemedText>
           </View>
@@ -177,9 +177,9 @@ export default function AddAddressScreen() {
 
         {/* Success banner */}
         {success && (
-          <View style={[styles.banner, { backgroundColor: NemyColors.success + '15', borderColor: NemyColors.success + '40' }]}>
-            <Feather name="check-circle" size={16} color={NemyColors.success} />
-            <ThemedText type="small" style={{ color: NemyColors.success, flex: 1, marginLeft: Spacing.sm }}>
+          <View style={[styles.banner, { backgroundColor: MouzoColors.success + '15', borderColor: MouzoColors.success + '40' }]}>
+            <Feather name="check-circle" size={16} color={MouzoColors.success} />
+            <ThemedText type="small" style={{ color: MouzoColors.success, flex: 1, marginLeft: Spacing.sm }}>
               {existingAddress?.id ? 'Dirección actualizada' : 'Dirección guardada correctamente'}
             </ThemedText>
           </View>
@@ -189,7 +189,7 @@ export default function AddAddressScreen() {
         <Pressable
           style={[
             styles.gpsButton,
-            { backgroundColor: NemyColors.primary, opacity: locating ? 0.7 : 1 },
+            { backgroundColor: MouzoColors.primary, opacity: locating ? 0.7 : 1 },
             Shadows.sm,
           ]}
           onPress={async () => {
@@ -251,7 +251,7 @@ export default function AddAddressScreen() {
                   style={[styles.suggestionItem, { backgroundColor: theme.card, borderColor: theme.border }]}
                   onPress={() => handleSuggestionSelect(addr)}
                 >
-                  <ThemedText type="small" style={{ color: NemyColors.primary, fontWeight: '600' }}>
+                  <ThemedText type="small" style={{ color: MouzoColors.primary, fontWeight: '600' }}>
                     {addr.label}
                   </ThemedText>
                   <ThemedText type="caption" style={{ color: theme.textSecondary, marginTop: 2 }}>
@@ -264,13 +264,13 @@ export default function AddAddressScreen() {
 
           {/* Duplicate warning */}
           {duplicateWarning && (
-            <View style={[styles.banner, { backgroundColor: NemyColors.warning + '15', borderColor: NemyColors.warning + '40' }]}>
-              <Feather name="alert-triangle" size={16} color={NemyColors.warning} />
+            <View style={[styles.banner, { backgroundColor: MouzoColors.warning + '15', borderColor: MouzoColors.warning + '40' }]}>
+              <Feather name="alert-triangle" size={16} color={MouzoColors.warning} />
               <View style={{ flex: 1, marginLeft: Spacing.sm }}>
-                <ThemedText type="small" style={{ color: NemyColors.warning, fontWeight: '600' }}>
+                <ThemedText type="small" style={{ color: MouzoColors.warning, fontWeight: '600' }}>
                   Similar a "{duplicateWarning.label}"
                 </ThemedText>
-                <ThemedText type="caption" style={{ color: NemyColors.warning }}>
+                <ThemedText type="caption" style={{ color: MouzoColors.warning }}>
                   {duplicateWarning.street}
                 </ThemedText>
               </View>
@@ -317,8 +317,8 @@ export default function AddAddressScreen() {
             style={[
               styles.mapButton,
               {
-                backgroundColor: coordinates ? NemyColors.primary + '15' : theme.card,
-                borderColor: coordinates ? NemyColors.primary : theme.border,
+                backgroundColor: coordinates ? MouzoColors.primary + '15' : theme.card,
+                borderColor: coordinates ? MouzoColors.primary : theme.border,
               },
               Shadows.sm,
             ]}
@@ -334,13 +334,13 @@ export default function AddAddressScreen() {
             <Feather
               name={coordinates ? 'check-circle' : 'map-pin'}
               size={20}
-              color={coordinates ? NemyColors.primary : theme.textSecondary}
+              color={coordinates ? MouzoColors.primary : theme.textSecondary}
             />
             <ThemedText
               type="body"
               style={{
                 marginLeft: Spacing.sm,
-                color: coordinates ? NemyColors.primary : theme.textSecondary,
+                color: coordinates ? MouzoColors.primary : theme.textSecondary,
                 fontWeight: '600',
               }}
             >
@@ -348,9 +348,9 @@ export default function AddAddressScreen() {
             </ThemedText>
           </Pressable>
         ) : (
-          <View style={[styles.banner, { backgroundColor: NemyColors.primary + '10', borderColor: NemyColors.primary + '30' }]}>
-            <Feather name="globe" size={16} color={NemyColors.primary} />
-            <ThemedText type="small" style={{ color: NemyColors.primary, flex: 1, marginLeft: Spacing.sm }}>
+          <View style={[styles.banner, { backgroundColor: MouzoColors.primary + '10', borderColor: MouzoColors.primary + '30' }]}>
+            <Feather name="globe" size={16} color={MouzoColors.primary} />
+            <ThemedText type="small" style={{ color: MouzoColors.primary, flex: 1, marginLeft: Spacing.sm }}>
               En la versión web se usará la ubicación del centro de Autlán por defecto.
             </ThemedText>
           </View>

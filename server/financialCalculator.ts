@@ -20,7 +20,7 @@ export class FinancialCalculator {
     total: number,
     deliveryFee: number = 0,
     productosBase?: number,
-    nemyCommission?: number
+    mouzoCommission?: number
   ): Promise<{
     platform: number;
     business: number;
@@ -30,7 +30,7 @@ export class FinancialCalculator {
       total,
       deliveryFee,
       productosBase,
-      nemyCommission
+      mouzoCommission
     );
     return {
       platform: result.platform,

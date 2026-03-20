@@ -19,7 +19,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { getApiUrl } from "@/lib/query-client";
 
 interface Message {
@@ -33,7 +33,7 @@ const WELCOME_MESSAGE: Message = {
   id: "welcome",
   role: "assistant",
   content:
-    "¡Hola! Soy el asistente virtual de NEMY. Estoy aquí para ayudarte con:\n\n• Información sobre tus pedidos\n• Consultas sobre productos\n• Tiempos de entrega\n• Negocios disponibles\n• Cualquier otra duda\n\n¿En qué puedo ayudarte hoy?",
+    "¡Hola! Soy el asistente virtual de MOUZO. Estoy aquí para ayudarte con:\n\n• Información sobre tus pedidos\n• Consultas sobre productos\n• Tiempos de entrega\n• Negocios disponibles\n• Cualquier otra duda\n\n¿En qué puedo ayudarte hoy?",
   timestamp: new Date(),
 };
 
@@ -52,7 +52,7 @@ function MessageBubble({ message }: { message: Message }) {
         styles.messageBubble,
         isUser ? styles.userMessage : styles.assistantMessage,
         {
-          backgroundColor: isUser ? NemyColors.primary : theme.card,
+          backgroundColor: isUser ? MouzoColors.primary : theme.card,
           ...Shadows.sm,
         },
       ]}
@@ -62,20 +62,20 @@ function MessageBubble({ message }: { message: Message }) {
           <View
             style={[
               styles.botIcon,
-              { backgroundColor: NemyColors.primary + "20" },
+              { backgroundColor: MouzoColors.primary + "20" },
             ]}
           >
             <Feather
               name="message-circle"
               size={12}
-              color={NemyColors.primary}
+              color={MouzoColors.primary}
             />
           </View>
           <ThemedText
             type="caption"
-            style={{ color: NemyColors.primary, fontWeight: "600" }}
+            style={{ color: MouzoColors.primary, fontWeight: "600" }}
           >
-            NEMY Soporte
+            MOUZO Soporte
           </ThemedText>
         </View>
       ) : null}
@@ -106,16 +106,16 @@ function EmptyState() {
       <View
         style={[
           styles.emptyIcon,
-          { backgroundColor: NemyColors.primary + "20" },
+          { backgroundColor: MouzoColors.primary + "20" },
         ]}
       >
-        <Feather name="message-circle" size={48} color={NemyColors.primary} />
+        <Feather name="message-circle" size={48} color={MouzoColors.primary} />
       </View>
       <ThemedText
         type="h3"
         style={{ marginTop: Spacing.lg, textAlign: "center" }}
       >
-        Soporte NEMY
+        Soporte MOUZO
       </ThemedText>
       <ThemedText
         type="body"
@@ -150,7 +150,7 @@ function TypingIndicator() {
         type="caption"
         style={{ color: theme.textSecondary, marginLeft: Spacing.sm }}
       >
-        NEMY está escribiendo...
+        MOUZO está escribiendo...
       </ThemedText>
     </View>
   );
@@ -308,7 +308,7 @@ export default function SupportChatScreen() {
                 {
                   backgroundColor:
                     inputText.trim() && !isLoading
-                      ? NemyColors.primary
+                      ? MouzoColors.primary
                       : theme.backgroundSecondary,
                   opacity: isLoading ? 0.6 : 1,
                 },

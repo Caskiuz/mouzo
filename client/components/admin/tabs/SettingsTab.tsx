@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { NemyColors, Spacing, BorderRadius } from "../../../constants/theme";
+import { MouzoColors, Spacing, BorderRadius } from "../../../constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface SettingsTabProps {
@@ -67,7 +67,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({ theme, showToast }) =>
   if (loading) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
       </View>
     );
   }
@@ -79,7 +79,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({ theme, showToast }) =>
         {settings.length === 0 && (
           <Pressable
             onPress={handleInitialize}
-            style={[styles.initBtn, { backgroundColor: NemyColors.primary }]}
+            style={[styles.initBtn, { backgroundColor: MouzoColors.primary }]}
           >
             <Feather name="settings" size={16} color="#FFF" />
             <Text style={styles.initBtnText}>Inicializar</Text>
@@ -100,7 +100,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({ theme, showToast }) =>
             />
             <Pressable
               onPress={() => handleSave(setting.key)}
-              style={[styles.saveBtn, { backgroundColor: NemyColors.primary }]}
+              style={[styles.saveBtn, { backgroundColor: MouzoColors.primary }]}
             >
               <Feather name="check" size={18} color="#FFF" />
             </Pressable>

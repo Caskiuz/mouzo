@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { apiRequest } from '@/lib/query-client';
 import { useTheme } from '@/hooks/useTheme';
-import { NemyColors } from '@/constants/theme';
+import { MouzoColors } from '@/constants/theme';
 
 export default function DeliveryConfigScreen() {
   const { theme } = useTheme();
@@ -64,14 +64,14 @@ export default function DeliveryConfigScreen() {
   if (loading) {
     return (
       <View style={[styles.loading, { backgroundColor: theme.background }]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
       </View>
     );
   }
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.header, { backgroundColor: NemyColors.primary }]}>
+      <View style={[styles.header, { backgroundColor: MouzoColors.primary }]}>
         <Text style={styles.title}>Configuración de Tarifas de Delivery</Text>
         <Text style={styles.subtitle}>Autlán, Jalisco</Text>
       </View>
@@ -130,7 +130,7 @@ export default function DeliveryConfigScreen() {
         </View>
 
         <View style={[styles.preview, { backgroundColor: theme.card, borderColor: theme.border }]}>
-          <Text style={[styles.previewTitle, { color: NemyColors.primary }]}>Vista Previa de Tarifas:</Text>
+          <Text style={[styles.previewTitle, { color: MouzoColors.primary }]}>Vista Previa de Tarifas:</Text>
           <Text style={[styles.previewItem, { color: theme.text }]}>• 1 km = ${(parseFloat(config.baseFee) + parseFloat(config.perKm) * 1).toFixed(2)} MXN</Text>
           <Text style={[styles.previewItem, { color: theme.text }]}>• 2 km = ${(parseFloat(config.baseFee) + parseFloat(config.perKm) * 2).toFixed(2)} MXN</Text>
           <Text style={[styles.previewItem, { color: theme.text }]}>• 3 km = ${Math.min(parseFloat(config.baseFee) + parseFloat(config.perKm) * 3, parseFloat(config.maxFee)).toFixed(2)} MXN</Text>
@@ -138,7 +138,7 @@ export default function DeliveryConfigScreen() {
         </View>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: NemyColors.primary }, saving && styles.buttonDisabled]}
+          style={[styles.button, { backgroundColor: MouzoColors.primary }, saving && styles.buttonDisabled]}
           onPress={handleSave}
           disabled={saving}
         >

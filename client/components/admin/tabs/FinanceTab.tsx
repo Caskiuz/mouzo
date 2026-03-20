@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { NemyColors, Spacing } from "../../../constants/theme";
+import { MouzoColors, Spacing } from "../../../constants/theme";
 import { useTheme } from "@/hooks/useTheme";
 import { apiRequest } from "@/lib/query-client";
 
@@ -133,7 +133,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
   if (loading) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: theme.background }]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
         <Text style={[styles.loadingText, { color: theme.textSecondary }]}>Cargando datos financieros...</Text>
       </View>
     );
@@ -144,7 +144,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {/* Stripe Connect Status */}
       <View style={[styles.card, { backgroundColor: theme.card }]}>
         <View style={styles.cardHeader}>
-          <Feather name="credit-card" size={24} color={NemyColors.primary} />
+          <Feather name="credit-card" size={24} color={MouzoColors.primary} />
           <Text style={[styles.cardTitle, { color: theme.text }]}>Cuenta Stripe Connect</Text>
         </View>
         
@@ -153,8 +153,8 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
             <View style={styles.statusRow}>
               <Text style={[styles.label, { color: theme.textSecondary }]}>Estado:</Text>
               <View style={styles.statusBadge}>
-                <View style={[styles.statusDot, { backgroundColor: stripeStatus.isConnected ? NemyColors.success : NemyColors.error }]} />
-                <Text style={[styles.statusText, { color: stripeStatus.isConnected ? NemyColors.success : NemyColors.error }]}>
+                <View style={[styles.statusDot, { backgroundColor: stripeStatus.isConnected ? MouzoColors.success : MouzoColors.error }]} />
+                <Text style={[styles.statusText, { color: stripeStatus.isConnected ? MouzoColors.success : MouzoColors.error }]}>
                   {stripeStatus.isConnected ? "Conectada" : "Desconectada"}
                 </Text>
               </View>
@@ -182,9 +182,9 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
             )}
 
             {stripeStatus.error && (
-              <View style={[styles.alert, { backgroundColor: NemyColors.error + "20" }]}>
-                <Feather name="alert-circle" size={16} color={NemyColors.error} />
-                <Text style={[styles.alertText, { color: NemyColors.error }]}>{stripeStatus.error}</Text>
+              <View style={[styles.alert, { backgroundColor: MouzoColors.error + "20" }]}>
+                <Feather name="alert-circle" size={16} color={MouzoColors.error} />
+                <Text style={[styles.alertText, { color: MouzoColors.error }]}>{stripeStatus.error}</Text>
               </View>
             )}
 
@@ -193,11 +193,11 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
                 style={[styles.button, styles.buttonSecondary, { borderColor: theme.border }]}
                 onPress={handleReconnectStripe}
               >
-                <Feather name="refresh-cw" size={16} color={NemyColors.primary} />
-                <Text style={[styles.buttonText, { color: NemyColors.primary }]}>Reconectar</Text>
+                <Feather name="refresh-cw" size={16} color={MouzoColors.primary} />
+                <Text style={[styles.buttonText, { color: MouzoColors.primary }]}>Reconectar</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.buttonPrimary, { backgroundColor: NemyColors.primary }]}
+                style={[styles.button, styles.buttonPrimary, { backgroundColor: MouzoColors.primary }]}
                 onPress={() => showToast("Abriendo Stripe...", "info")}
               >
                 <Feather name="external-link" size={16} color="#FFF" />
@@ -212,32 +212,32 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {earnings && (
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardHeader}>
-            <Feather name="dollar-sign" size={24} color={NemyColors.success} />
+            <Feather name="dollar-sign" size={24} color={MouzoColors.success} />
             <Text style={[styles.cardTitle, { color: theme.text }]}>Ganancias Netas de la Plataforma</Text>
           </View>
 
           <View style={styles.earningsGrid}>
             <View style={styles.earningItem}>
               <Text style={[styles.earningLabel, { color: theme.textSecondary }]}>Hoy</Text>
-              <Text style={[styles.earningValue, { color: NemyColors.success }]}>
+              <Text style={[styles.earningValue, { color: MouzoColors.success }]}>
                 ${(earnings.today / 100).toFixed(2)}
               </Text>
             </View>
             <View style={styles.earningItem}>
               <Text style={[styles.earningLabel, { color: theme.textSecondary }]}>Esta semana</Text>
-              <Text style={[styles.earningValue, { color: NemyColors.success }]}>
+              <Text style={[styles.earningValue, { color: MouzoColors.success }]}>
                 ${(earnings.week / 100).toFixed(2)}
               </Text>
             </View>
             <View style={styles.earningItem}>
               <Text style={[styles.earningLabel, { color: theme.textSecondary }]}>Este mes</Text>
-              <Text style={[styles.earningValue, { color: NemyColors.success }]}>
+              <Text style={[styles.earningValue, { color: MouzoColors.success }]}>
                 ${(earnings.month / 100).toFixed(2)}
               </Text>
             </View>
             <View style={styles.earningItem}>
               <Text style={[styles.earningLabel, { color: theme.textSecondary }]}>Total</Text>
-              <Text style={[styles.earningValue, { color: NemyColors.primary }]}>
+              <Text style={[styles.earningValue, { color: MouzoColors.primary }]}>
                 ${(earnings.total / 100).toFixed(2)}
               </Text>
             </View>
@@ -249,14 +249,14 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {breakdown && (
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardHeader}>
-            <Feather name="pie-chart" size={24} color={NemyColors.primary} />
+            <Feather name="pie-chart" size={24} color={MouzoColors.primary} />
             <Text style={[styles.cardTitle, { color: theme.text }]}>Desglose por Tipo</Text>
           </View>
 
           <View style={styles.breakdownList}>
             <View style={styles.breakdownItem}>
               <Text style={[styles.breakdownLabel, { color: theme.text }]}>• Markup productos (15%)</Text>
-              <Text style={[styles.breakdownValue, { color: NemyColors.success }]}>
+              <Text style={[styles.breakdownValue, { color: MouzoColors.success }]}>
                 ${(breakdown.productMarkup / 100).toFixed(2)}
               </Text>
             </View>
@@ -274,19 +274,19 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
             </View>
             <View style={styles.breakdownItem}>
               <Text style={[styles.breakdownLabel, { color: theme.text }]}>• Penalizaciones</Text>
-              <Text style={[styles.breakdownValue, { color: NemyColors.warning }]}>
+              <Text style={[styles.breakdownValue, { color: MouzoColors.warning }]}>
                 ${(breakdown.penalties / 100).toFixed(2)}
               </Text>
             </View>
             <View style={styles.breakdownItem}>
               <Text style={[styles.breakdownLabel, { color: theme.text }]}>• Cupones aplicados</Text>
-              <Text style={[styles.breakdownValue, { color: NemyColors.error }]}>
+              <Text style={[styles.breakdownValue, { color: MouzoColors.error }]}>
                 -${(Math.abs(breakdown.couponsApplied) / 100).toFixed(2)}
               </Text>
             </View>
             <View style={[styles.breakdownItem, styles.breakdownTotal, { borderTopColor: theme.border }]}>
               <Text style={[styles.breakdownLabel, { color: theme.text, fontWeight: "700" }]}>TOTAL NETO</Text>
-              <Text style={[styles.breakdownValue, { color: NemyColors.primary, fontWeight: "700", fontSize: 18 }]}>
+              <Text style={[styles.breakdownValue, { color: MouzoColors.primary, fontWeight: "700", fontSize: 18 }]}>
                 ${(breakdown.netTotal / 100).toFixed(2)}
               </Text>
             </View>
@@ -298,7 +298,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {stats && (
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardHeader}>
-            <Feather name="bar-chart-2" size={24} color={NemyColors.primary} />
+            <Feather name="bar-chart-2" size={24} color={MouzoColors.primary} />
             <Text style={[styles.cardTitle, { color: theme.text }]}>Estadísticas</Text>
           </View>
 
@@ -323,14 +323,14 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {topBusinesses.length > 0 && (
         <View style={[styles.card, { backgroundColor: theme.card }]}>
           <View style={styles.cardHeader}>
-            <Feather name="trending-up" size={24} color={NemyColors.primary} />
+            <Feather name="trending-up" size={24} color={MouzoColors.primary} />
             <Text style={[styles.cardTitle, { color: theme.text }]}>Top Negocios Generadores</Text>
           </View>
 
           {topBusinesses.slice(0, 5).map((business, index) => (
             <View key={business.businessId} style={[styles.topBusinessItem, { borderBottomColor: theme.border }]}>
               <View style={styles.topBusinessRank}>
-                <Text style={[styles.rankNumber, { color: index < 3 ? NemyColors.primary : theme.textSecondary }]}>
+                <Text style={[styles.rankNumber, { color: index < 3 ? MouzoColors.primary : theme.textSecondary }]}>
                   #{index + 1}
                 </Text>
               </View>
@@ -340,7 +340,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
                   {business.totalOrders} pedidos
                 </Text>
               </View>
-              <Text style={[styles.topBusinessEarnings, { color: NemyColors.success }]}>
+              <Text style={[styles.topBusinessEarnings, { color: MouzoColors.success }]}>
                 ${(business.totalCommissions / 100).toFixed(2)}
               </Text>
             </View>
@@ -351,12 +351,12 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
       {/* Historial de Transacciones */}
       <View style={[styles.card, { backgroundColor: theme.card }]}>
         <View style={styles.cardHeader}>
-          <Feather name="list" size={24} color={NemyColors.primary} />
+          <Feather name="list" size={24} color={MouzoColors.primary} />
           <Text style={[styles.cardTitle, { color: theme.text }]}>Historial de Comisiones</Text>
         </View>
 
         <TouchableOpacity
-          style={[styles.exportButton, { backgroundColor: NemyColors.primary }]}
+          style={[styles.exportButton, { backgroundColor: MouzoColors.primary }]}
           onPress={handleExportCSV}
         >
           <Feather name="download" size={16} color="#FFF" />
@@ -374,7 +374,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({ theme, showToast }) => {
                 Pedido #{tx.orderId.slice(0, 8)}
               </Text>
             </View>
-            <Text style={[styles.transactionAmount, { color: NemyColors.success }]}>
+            <Text style={[styles.transactionAmount, { color: MouzoColors.success }]}>
               +${(tx.amount / 100).toFixed(2)}
             </Text>
           </View>

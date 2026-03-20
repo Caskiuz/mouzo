@@ -418,7 +418,7 @@ export default function LoyaltyProgramScreen() {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.subscriptionTitle}>NEMY Premium</Text>
+            <Text style={styles.subscriptionTitle}>MOUZO Premium</Text>
             <Text style={styles.subscriptionPrice}>
               {formatCurrency(loyaltyData?.subscription.monthlyFee || 0)}/mes
             </Text>
@@ -522,7 +522,7 @@ export default function LoyaltyProgramScreen() {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Text style={styles.premiumTitle}>NEMY Premium</Text>
+              <Text style={styles.premiumTitle}>MOUZO Premium</Text>
               <Text style={styles.premiumPrice}>
                 {formatCurrency(loyaltyData?.subscription.monthlyFee || 0)}/mes
               </Text>

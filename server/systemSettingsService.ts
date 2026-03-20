@@ -164,7 +164,7 @@ const DEFAULT_SETTINGS = [
   },
   {
     key: "support_email",
-    value: "soporte@nemy.mx",
+    value: "soporte@mouzo.mx",
     type: "string",
     category: "app",
     description: "Email de soporte",

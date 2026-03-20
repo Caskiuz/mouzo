@@ -19,7 +19,7 @@ import { Badge } from "@/components/Badge";
 import { EmptyState } from "@/components/EmptyState";
 import { OrderProgressBar } from "@/components/OrderProgressBar";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { Order, OrderStatus } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
@@ -184,17 +184,17 @@ export default function OrdersScreen() {
             {item.items.length}{" "}
             {item.items.length === 1 ? "producto" : "productos"}
           </ThemedText>
-          <ThemedText type="h4" style={{ color: NemyColors.primary }}>
+          <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
             ${((item.total || 0) / 100).toFixed(2)}
           </ThemedText>
         </View>
 
         {isActive ? (
           <View style={[styles.trackButton, { borderTopColor: theme.border }]}>
-            <Feather name="map-pin" size={16} color={NemyColors.primary} />
+            <Feather name="map-pin" size={16} color={MouzoColors.primary} />
             <ThemedText
               type="small"
-              style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+              style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
             >
               Ver seguimiento
             </ThemedText>
@@ -207,10 +207,10 @@ export default function OrdersScreen() {
               { backgroundColor: theme.backgroundSecondary },
             ]}
           >
-            <Feather name="refresh-cw" size={16} color={NemyColors.primary} />
+            <Feather name="refresh-cw" size={16} color={MouzoColors.primary} />
             <ThemedText
               type="small"
-              style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+              style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
             >
               Reordenar
             </ThemedText>
@@ -281,7 +281,7 @@ export default function OrdersScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
         showsVerticalScrollIndicator={false}

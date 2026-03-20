@@ -20,7 +20,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import {
   DashboardTab,
@@ -57,7 +57,7 @@ const menuItems: MenuItem[] = [
     subtitle: "Métricas y pedidos activos",
     icon: "bar-chart-2",
     tab: "dashboard",
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
   },
   {
     title: "Pedidos",
@@ -363,7 +363,7 @@ export default function AdminMenuScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={NemyColors.primary}
+              tintColor={MouzoColors.primary}
             />
           }
         >
@@ -439,8 +439,8 @@ export default function AdminMenuScreen() {
               {selectedUser ? (
                 <>
                   <View style={[styles.userDetailCard, { backgroundColor: theme.backgroundSecondary }]}>
-                    <View style={[styles.avatar, { backgroundColor: NemyColors.primaryLight, width: 60, height: 60 }]}>
-                      <ThemedText type="h2" style={{ color: NemyColors.primaryDark }}>
+                    <View style={[styles.avatar, { backgroundColor: MouzoColors.primaryLight, width: 60, height: 60 }]}>
+                      <ThemedText type="h2" style={{ color: MouzoColors.primaryDark }}>
                         {selectedUser.name.charAt(0).toUpperCase()}
                       </ThemedText>
                     </View>
@@ -465,14 +465,14 @@ export default function AdminMenuScreen() {
                           style={[
                             styles.tab,
                             {
-                              backgroundColor: userRoleEdit === role ? NemyColors.primary : "transparent",
-                              borderColor: NemyColors.primary,
+                              backgroundColor: userRoleEdit === role ? MouzoColors.primary : "transparent",
+                              borderColor: MouzoColors.primary,
                             },
                           ]}
                         >
                           <ThemedText
                             type="small"
-                            style={{ color: userRoleEdit === role ? "#FFFFFF" : NemyColors.primary }}
+                            style={{ color: userRoleEdit === role ? "#FFFFFF" : MouzoColors.primary }}
                           >
                             {role === "customer" ? "Cliente" : role === "business" ? "Negocio" : role === "driver" ? "Repartidor" : "Admin"}
                           </ThemedText>
@@ -489,7 +489,7 @@ export default function AdminMenuScreen() {
             </ScrollView>
             <Pressable
               onPress={handleUpdateUserRole}
-              style={[styles.saveButton, { backgroundColor: NemyColors.primary }]}
+              style={[styles.saveButton, { backgroundColor: MouzoColors.primary }]}
             >
               <ThemedText type="body" style={{ color: "#FFFFFF", fontWeight: "600" }}>
                 Guardar Cambios

@@ -1,4 +1,4 @@
-// API Configuration for NEMY Frontend
+// API Configuration for MOUZO Frontend
 import { Platform } from "react-native";
 import Constants from "expo-constants";
 
@@ -34,8 +34,8 @@ export const getApiBaseUrl = (): string => {
   }
 
   // Production fallback
-  console.log('✅ Using production URL: https://nemy-backend.onrender.com');
-  return "https://nemy-backend.onrender.com";
+  console.log('✅ Using production URL: https://mouzo-backend.onrender.com');
+  return "https://mouzo-backend.onrender.com";
 };
 
 export const API_CONFIG = {

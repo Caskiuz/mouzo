@@ -1,4 +1,4 @@
-// Twilio Verify Service for NEMY - Phone Verification
+// Twilio Verify Service for MOUZO - Phone Verification
 // Uses Twilio Verify API for secure SMS verification
 import twilio from "twilio";
 

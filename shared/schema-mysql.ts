@@ -65,8 +65,8 @@ export const orders = mysqlTable("orders", {
   items: text("items").notNull(),
   status: text("status").notNull().default("pending"), // pending, accepted, preparing, on_the_way, delivered, cancelled
   subtotal: int("subtotal").notNull(),
-  productosBase: int("productos_base").default(0), // Precio base sin markup NEMY
-  nemyCommission: int("nemy_commission").default(0), // 15% markup NEMY
+  productosBase: int("productos_base").default(0), // Precio base sin markup MOUZO
+  mouzoCommission: int("mouzo_commission").default(0), // 15% markup MOUZO
   deliveryFee: int("delivery_fee").notNull(),
   total: int("total").notNull(),
   paymentMethod: text("payment_method").notNull(),
@@ -84,7 +84,7 @@ export const orders = mysqlTable("orders", {
   penaltyAmount: int("penalty_amount"), // penalización por cancelación
   refundStatus: text("refund_status"), // pending, processed, failed
   businessResponseAt: timestamp("business_response_at"), // cuando el negocio respondió
-  platformFee: int("platform_fee"), // comisión NEMY
+  platformFee: int("platform_fee"), // comisión MOUZO
   businessEarnings: int("business_earnings"), // ganancia negocio
   deliveryEarnings: int("delivery_earnings"), // ganancia repartidor
   distanceKm: int("distance_km"), // distancia en metros x100

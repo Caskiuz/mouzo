@@ -18,7 +18,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const SETTINGS_KEY = "@nemy_settings";
+const SETTINGS_KEY = "@mouzo_settings";
 
 const defaultSettings: AppSettings = {
   carnivalEnabled: true,

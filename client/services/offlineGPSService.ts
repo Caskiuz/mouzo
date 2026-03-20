@@ -21,9 +21,9 @@ interface CachedMapData {
   cachedAt: number;
 }
 
-const LOCATION_QUEUE_KEY = '@nemy_location_queue';
-const CACHED_MAPS_KEY = '@nemy_cached_maps';
-const LAST_LOCATION_KEY = '@nemy_last_location';
+const LOCATION_QUEUE_KEY = '@mouzo_location_queue';
+const CACHED_MAPS_KEY = '@mouzo_cached_maps';
+const LAST_LOCATION_KEY = '@mouzo_last_location';
 
 class OfflineGPSService {
   private isOnline: boolean = true;

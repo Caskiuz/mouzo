@@ -12,7 +12,7 @@ import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ProfileStackParamList } from "@/navigation/ProfileStackNavigator";
@@ -149,7 +149,7 @@ export default function SavedAddressesScreen() {
                           : "map-pin"
                     }
                     size={20}
-                    color={NemyColors.primary}
+                    color={MouzoColors.primary}
                   />
                   <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
                     {address.label}
@@ -159,12 +159,12 @@ export default function SavedAddressesScreen() {
                   <View
                     style={[
                       styles.defaultBadge,
-                      { backgroundColor: NemyColors.success + "20" },
+                      { backgroundColor: MouzoColors.success + "20" },
                     ]}
                   >
                     <ThemedText
                       type="caption"
-                      style={{ color: NemyColors.success }}
+                      style={{ color: MouzoColors.success }}
                     >
                       Predeterminada
                     </ThemedText>
@@ -187,10 +187,10 @@ export default function SavedAddressesScreen() {
                   style={[styles.actionButton, { backgroundColor: theme.backgroundSecondary }]}
                   onPress={() => navigation.navigate("AddAddress", { address })}
                 >
-                  <Feather name="edit-2" size={16} color={NemyColors.primary} />
+                  <Feather name="edit-2" size={16} color={MouzoColors.primary} />
                   <ThemedText
                     type="small"
-                    style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                    style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
                   >
                     Editar
                   </ThemedText>
@@ -203,10 +203,10 @@ export default function SavedAddressesScreen() {
                     ]}
                     onPress={() => handleSetDefault(address.id)}
                   >
-                    <Feather name="check" size={16} color={NemyColors.primary} />
+                    <Feather name="check" size={16} color={MouzoColors.primary} />
                     <ThemedText
                       type="small"
-                      style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                      style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
                     >
                       Predeterminada
                     </ThemedText>
@@ -216,10 +216,10 @@ export default function SavedAddressesScreen() {
                   style={[styles.actionButton, { backgroundColor: "#FFEBEE" }]}
                   onPress={() => handleDelete(address.id)}
                 >
-                  <Feather name="trash-2" size={16} color={NemyColors.error} />
+                  <Feather name="trash-2" size={16} color={MouzoColors.error} />
                   <ThemedText
                     type="small"
-                    style={{ color: NemyColors.error, marginLeft: Spacing.xs }}
+                    style={{ color: MouzoColors.error, marginLeft: Spacing.xs }}
                   >
                     Eliminar
                   </ThemedText>

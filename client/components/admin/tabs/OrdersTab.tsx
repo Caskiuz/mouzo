@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import * as Haptics from "expo-haptics";
-import { NemyColors } from "../../../constants/theme";
+import { MouzoColors } from "../../../constants/theme";
 import { AdminOrder } from "../types/admin.types";
 
 interface OrdersTabProps {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   orderTotal: {
     fontSize: 14,
     fontWeight: "600",
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     marginBottom: 4,
   },
   orderDate: {

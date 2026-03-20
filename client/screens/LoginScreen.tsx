@@ -26,7 +26,7 @@ import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { LinearGradient } from "expo-linear-gradient";
 import { useToast } from "@/contexts/ToastContext";
@@ -94,7 +94,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     if (biometricAvailable) {
       const storedPhone = await import(
         "@react-native-async-storage/async-storage"
-      ).then((m) => m.default.getItem("@nemy_biometric_phone"));
+      ).then((m) => m.default.getItem("@mouzo_biometric_phone"));
       setShowBiometricOption(!!storedPhone);
     }
   };
@@ -209,8 +209,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       await Share.share({
         message:
-          "Descubre NEMY - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://nemy.replit.app",
-        title: "NEMY - Delivery Local",
+          "Descubre MOUZO - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.replit.app",
+        title: "MOUZO - Delivery Local",
       });
     } catch (error) {
       console.log("Error sharing:", error);
@@ -257,7 +257,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               resizeMode="contain"
             />
             <ThemedText type="hero" style={styles.appName}>
-              NEMY
+              MOUZO
             </ThemedText>
             <ThemedText type="body" style={styles.slogan}>
               vivir es conectar
@@ -270,7 +270,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             style={[styles.formCard, Shadows.lg]}
           >
             <ThemedText type="h3" style={styles.formTitle}>
-              Bienvenido a NEMY
+              Bienvenido a MOUZO
             </ThemedText>
             <ThemedText type="body" style={styles.formSubtitle}>
               {loginMode === "password" 
@@ -303,7 +303,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       autoComplete="email"
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                       testID="input-identifier"
                     />
                   </View>
@@ -335,7 +335,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       secureTextEntry={!showPassword}
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                       testID="input-password"
                     />
                     <Pressable onPress={() => setShowPassword(!showPassword)}>
@@ -379,7 +379,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                       autoComplete="tel"
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                       maxLength={12}
                       testID="input-phone"
                     />
@@ -415,7 +415,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               <Feather
                 name={loginMode === "password" ? "message-circle" : "key"}
                 size={16}
-                color={NemyColors.primary}
+                color={MouzoColors.primary}
               />
               <ThemedText type="small" style={styles.switchModeText}>
                 {loginMode === "password" 
@@ -442,7 +442,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                 >
                   {isBiometricLoading ? (
                     <ActivityIndicator
-                      color={NemyColors.primary}
+                      color={MouzoColors.primary}
                       size="small"
                     />
                   ) : (
@@ -451,7 +451,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                         <Feather
                           name={getBiometricIcon()}
                           size={22}
-                          color={NemyColors.primary}
+                          color={MouzoColors.primary}
                         />
                       </View>
                       <ThemedText type="body" style={styles.biometricText}>
@@ -509,7 +509,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                         <Feather
                           name="star"
                           size={12}
-                          color={NemyColors.primary}
+                          color={MouzoColors.primary}
                         />
                         <ThemedText
                           type="caption"
@@ -536,7 +536,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <Pressable onPress={handleShare} style={styles.shareButton}>
             <Feather name="share-2" size={18} color="#FFFFFF" />
             <ThemedText type="small" style={styles.shareText}>
-              Compartir NEMY
+              Compartir MOUZO
             </ThemedText>
           </Pressable>
 
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xs,
   },
   slogan: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontStyle: "italic",
     fontWeight: "500",
   },
@@ -678,11 +678,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   inputError: {
-    color: NemyColors.error,
+    color: MouzoColors.error,
     marginTop: Spacing.xs,
   },
   inputBoxError: {
-    borderColor: NemyColors.error,
+    borderColor: MouzoColors.error,
   },
   loginButton: {
     marginTop: Spacing.sm,
@@ -696,7 +696,7 @@ const styles = StyleSheet.create({
     padding: Spacing.sm,
   },
   switchModeText: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontWeight: "500",
   },
   divider: {
@@ -721,20 +721,20 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     backgroundColor: "#FFFFFF",
     borderWidth: 2,
-    borderColor: NemyColors.primary,
+    borderColor: MouzoColors.primary,
     gap: Spacing.sm,
   },
   biometricIcon: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: NemyColors.primaryLight,
+    backgroundColor: MouzoColors.primaryLight,
     justifyContent: "center",
     alignItems: "center",
   },
   biometricText: {
     fontWeight: "600",
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
   },
   shareButton: {
     flexDirection: "row",
@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.8)",
   },
   signupLink: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontWeight: "600",
   },
   contactInfo: {

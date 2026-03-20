@@ -716,7 +716,7 @@ export default function SuperAppScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>NEMY Super App</Text>
+      <Text style={styles.title}>MOUZO Super App</Text>
       
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>

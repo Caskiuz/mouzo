@@ -20,7 +20,7 @@ import { Badge } from "@/components/Badge";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { mockProducts } from "@/data/mockData";
 import { Product } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
@@ -194,7 +194,7 @@ export default function ProductDetailScreen() {
           </ThemedText>
 
           <View style={styles.priceRow}>
-            <ThemedText type="h2" style={{ color: NemyColors.primary }}>
+            <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
               ${product.price}
               {product.isWeightBased ? `/${product.unit}` : ""}
             </ThemedText>
@@ -275,7 +275,7 @@ export default function ProductDetailScreen() {
                   color: theme.text,
                   borderColor:
                     product.requiresNote && !note.trim()
-                      ? NemyColors.warning
+                      ? MouzoColors.warning
                       : "transparent",
                 },
               ]}
@@ -358,9 +358,9 @@ export default function ProductDetailScreen() {
         message="Ya tienes productos de otro negocio en tu carrito. ¿Deseas vaciar el carrito y agregar este producto?"
         confirmText="Cambiar"
         cancelText="Cancelar"
-        confirmColor={NemyColors.error}
+        confirmColor={MouzoColors.error}
         icon="alert-circle"
-        iconColor={NemyColors.warning}
+        iconColor={MouzoColors.warning}
         onConfirm={handleConfirmBusinessChange}
         onCancel={() => setShowBusinessChangeModal(false)}
       />

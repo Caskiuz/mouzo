@@ -40,7 +40,7 @@ import { BusinessCardSkeleton } from "@/components/SkeletonLoader";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApp } from "@/contexts/AppContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { Business } from "@/types";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
@@ -235,7 +235,7 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -252,7 +252,7 @@ export default function HomeScreen() {
           />
           <View style={styles.logoTextContainer}>
             <ThemedText type="h2" style={styles.logoTitle}>
-              NEMY
+              MOUZO
             </ThemedText>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
               Autlan de Navarro
@@ -413,7 +413,7 @@ export default function HomeScreen() {
               style={({ pressed }) => [
                 styles.filterChip,
                 activeFilter === filter.id
-                  ? { backgroundColor: NemyColors.primary }
+                  ? { backgroundColor: MouzoColors.primary }
                   : { backgroundColor: theme.backgroundSecondary },
                 {
                   opacity: pressed ? 0.8 : 1,
@@ -425,7 +425,7 @@ export default function HomeScreen() {
                 name={filter.icon as any}
                 size={14}
                 color={
-                  activeFilter === filter.id ? "#FFFFFF" : NemyColors.primary
+                  activeFilter === filter.id ? "#FFFFFF" : MouzoColors.primary
                 }
               />
               <ThemedText
@@ -455,7 +455,7 @@ export default function HomeScreen() {
               ]}
             >
               <LinearGradient
-                colors={[NemyColors.carnival.pink, "#7B1FA2", "#6A1B9A"]}
+                colors={[MouzoColors.carnival.pink, "#7B1FA2", "#6A1B9A"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.carnivalGradient}
@@ -472,7 +472,7 @@ export default function HomeScreen() {
                       <Feather
                         name="star"
                         size={10}
-                        color={NemyColors.carnival.gold}
+                        color={MouzoColors.carnival.gold}
                       />
                       <ThemedText
                         type="caption"
@@ -546,7 +546,7 @@ export default function HomeScreen() {
               }}
               style={[
                 styles.emptyStateClearButton,
-                { backgroundColor: NemyColors.primary },
+                { backgroundColor: MouzoColors.primary },
               ]}
             >
               <Feather name="x" size={16} color="#FFFFFF" />
@@ -639,14 +639,14 @@ export default function HomeScreen() {
                     styles.marketsBanner,
                     styles.bannerHalf,
                     {
-                      backgroundColor: NemyColors.primary,
+                      backgroundColor: MouzoColors.primary,
                       transform: [{ scale: pressed ? 0.97 : 1 }],
                     },
                     Shadows.md,
                   ]}
                 >
                   <LinearGradient
-                    colors={[NemyColors.primary, "#E65100", "#D84315"]}
+                    colors={[MouzoColors.primary, "#E65100", "#D84315"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.marketsGradient}
@@ -804,7 +804,7 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.md,
   },
   logoTitle: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontWeight: "700",
   },
   questionContainer: {
@@ -928,7 +928,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xs,
   },
   carnivalBadgeText: {
-    color: NemyColors.carnival.gold,
+    color: MouzoColors.carnival.gold,
     fontWeight: "600",
     marginLeft: 4,
     fontSize: 10,
@@ -962,7 +962,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Spacing.md,
     right: Spacing.md,
-    backgroundColor: NemyColors.primary,
+    backgroundColor: MouzoColors.primary,
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.xs,
     borderRadius: BorderRadius.sm,
@@ -1009,7 +1009,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Spacing.xs,
     right: Spacing.xs,
-    backgroundColor: NemyColors.primary,
+    backgroundColor: MouzoColors.primary,
     width: 20,
     height: 20,
     borderRadius: 10,

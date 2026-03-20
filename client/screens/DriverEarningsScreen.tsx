@@ -16,7 +16,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 
 interface EarningsData {
   stats: {
@@ -46,7 +46,7 @@ function StatCard({
   icon,
   label,
   value,
-  color = NemyColors.primary,
+  color = MouzoColors.primary,
   delay = 0,
 }: {
   icon: string;
@@ -171,7 +171,7 @@ export default function DriverEarningsScreen() {
           <RefreshControl
             refreshing={isRefetching}
             onRefresh={handleRefresh}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
       >
@@ -180,7 +180,7 @@ export default function DriverEarningsScreen() {
           entering={FadeInDown.delay(100).springify()}
           style={[
             styles.earningsCard,
-            { backgroundColor: NemyColors.primary },
+            { backgroundColor: MouzoColors.primary },
             Shadows.lg,
           ]}
         >
@@ -233,7 +233,7 @@ export default function DriverEarningsScreen() {
                   style={{
                     color:
                       selectedPeriod === period
-                        ? NemyColors.primary
+                        ? MouzoColors.primary
                         : "#FFFFFF",
                     fontWeight: "600",
                   }}
@@ -252,7 +252,7 @@ export default function DriverEarningsScreen() {
             { backgroundColor: theme.backgroundSecondary },
           ]}
         >
-          <Feather name="info" size={20} color={NemyColors.primary} />
+          <Feather name="info" size={20} color={MouzoColors.primary} />
           <View style={{ flex: 1, marginLeft: Spacing.md }}>
             <ThemedText type="body" style={{ fontWeight: "600" }}>
               Pagos automáticos
@@ -275,17 +275,17 @@ export default function DriverEarningsScreen() {
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
                 Total ganado histórico
               </ThemedText>
-              <ThemedText type="h2" style={{ color: NemyColors.primary }}>
+              <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
                 ${earnings.total.toFixed(2)}
               </ThemedText>
             </View>
             <View
               style={[
                 styles.iconCircle,
-                { backgroundColor: NemyColors.primary + "20" },
+                { backgroundColor: MouzoColors.primary + "20" },
               ]}
             >
-              <Feather name="award" size={24} color={NemyColors.primary} />
+              <Feather name="award" size={24} color={MouzoColors.primary} />
             </View>
           </View>
         </View>
@@ -347,10 +347,10 @@ export default function DriverEarningsScreen() {
               <View
                 style={[
                   styles.deliveryIcon,
-                  { backgroundColor: NemyColors.success + "20" },
+                  { backgroundColor: MouzoColors.success + "20" },
                 ]}
               >
-                <Feather name="check-circle" size={20} color={NemyColors.success} />
+                <Feather name="check-circle" size={20} color={MouzoColors.success} />
               </View>
               <View style={styles.deliveryInfo}>
                 <ThemedText type="body">{tx.description}</ThemedText>
@@ -361,7 +361,7 @@ export default function DriverEarningsScreen() {
               <ThemedText
                 type="body"
                 style={{
-                  color: NemyColors.success,
+                  color: MouzoColors.success,
                   fontWeight: "600",
                 }}
               >

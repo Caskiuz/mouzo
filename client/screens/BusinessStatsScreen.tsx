@@ -17,7 +17,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 
 interface StatsData {
   revenue: {
@@ -46,7 +46,7 @@ function StatCard({
   label,
   value,
   subtext,
-  color = NemyColors.primary,
+  color = MouzoColors.primary,
   delay = 0,
 }: {
   icon: string;
@@ -96,10 +96,10 @@ function TopProductRow({
       <View
         style={[
           styles.rankBadge,
-          { backgroundColor: NemyColors.primary + "20" },
+          { backgroundColor: MouzoColors.primary + "20" },
         ]}
       >
-        <ThemedText type="h4" style={{ color: NemyColors.primary }}>
+        <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
           {index + 1}
         </ThemedText>
       </View>
@@ -185,7 +185,7 @@ export default function BusinessStatsScreen() {
           <RefreshControl
             refreshing={isRefetching}
             onRefresh={refetch}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
       >
@@ -277,7 +277,7 @@ export default function BusinessStatsScreen() {
             icon="dollar-sign"
             label="Ticket promedio"
             value={`$${(orders.avgValue / 100).toFixed(0)}`}
-            color={NemyColors.primary}
+            color={MouzoColors.primary}
             delay={250}
           />
         </View>

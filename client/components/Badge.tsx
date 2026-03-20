@@ -4,7 +4,7 @@ import { View, StyleSheet, ViewStyle } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { theme } from "@/constants/theme";
-import { NemyColors } from "@/constants/theme";
+import { MouzoColors } from "@/constants/theme";
 
 type BadgeVariant = "primary" | "secondary" | "success" | "warning" | "error";
 
@@ -21,8 +21,8 @@ export function Badge({ text, variant = "primary", style }: BadgeProps) {
     switch (variant) {
       case "primary":
         return {
-          bg: NemyColors.primaryLight,
-          text: NemyColors.primaryDark,
+          bg: MouzoColors.primaryLight,
+          text: MouzoColors.primaryDark,
         };
       case "secondary":
         return {
@@ -32,7 +32,7 @@ export function Badge({ text, variant = "primary", style }: BadgeProps) {
       case "success":
         return {
           bg: "#E8F5E9",
-          text: NemyColors.success,
+          text: MouzoColors.success,
         };
       case "warning":
         return {
@@ -42,12 +42,12 @@ export function Badge({ text, variant = "primary", style }: BadgeProps) {
       case "error":
         return {
           bg: "#FFEBEE",
-          text: NemyColors.error,
+          text: MouzoColors.error,
         };
       default:
         return {
-          bg: NemyColors.primaryLight,
-          text: NemyColors.primaryDark,
+          bg: MouzoColors.primaryLight,
+          text: MouzoColors.primaryDark,
         };
     }
   };

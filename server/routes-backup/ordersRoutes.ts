@@ -26,12 +26,12 @@ router.post("/", authenticateToken, validateOrderFinancials, async (req, res) =>
     const { db } = await import("../db");
 
     const productosBase = req.body.productosBase ?? req.body.subtotal;
-    const nemyCommission =
-      typeof req.body.nemyCommission === "number" && req.body.nemyCommission > 0
-        ? req.body.nemyCommission
+    const mouzoCommission =
+      typeof req.body.mouzoCommission === "number" && req.body.mouzoCommission > 0
+        ? req.body.mouzoCommission
         : Math.round(productosBase * 0.15);
     const couponDiscount = req.body.couponDiscount || 0;
-    const calculatedTotal = productosBase + nemyCommission + req.body.deliveryFee - couponDiscount;
+    const calculatedTotal = productosBase + mouzoCommission + req.body.deliveryFee - couponDiscount;
 
     const orderData = {
       userId: req.user!.id,
@@ -42,7 +42,7 @@ router.post("/", authenticateToken, validateOrderFinancials, async (req, res) =>
       status: "pending",
       subtotal: productosBase,
       productosBase,
-      nemyCommission,
+      mouzoCommission,
       deliveryFee: req.body.deliveryFee,
       total: calculatedTotal,
       paymentMethod: req.body.paymentMethod,

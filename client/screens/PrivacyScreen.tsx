@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useTheme } from '@/hooks/useTheme';
-import { Spacing, BorderRadius, NemyColors } from '@/constants/theme';
+import { Spacing, BorderRadius, MouzoColors } from '@/constants/theme';
 
 export default function PrivacyScreen() {
   const insets = useSafeAreaInsets();
@@ -28,7 +28,7 @@ export default function PrivacyScreen() {
 
   const BulletPoint = ({ children }: { children: string }) => (
     <View style={styles.bulletContainer}>
-      <View style={[styles.bullet, { backgroundColor: NemyColors.primary }]} />
+      <View style={[styles.bullet, { backgroundColor: MouzoColors.primary }]} />
       <ThemedText type="body" style={[styles.bulletText, { color: theme.textSecondary }]}>
         {children}
       </ThemedText>
@@ -36,10 +36,10 @@ export default function PrivacyScreen() {
   );
 
   const InfoBox = ({ icon, title, children }: { icon: string; title: string; children: React.ReactNode }) => (
-    <View style={[styles.infoBox, { backgroundColor: NemyColors.primary + '10' }]}>
+    <View style={[styles.infoBox, { backgroundColor: MouzoColors.primary + '10' }]}>
       <View style={styles.infoHeader}>
-        <Feather name={icon as any} size={20} color={NemyColors.primary} />
-        <ThemedText type="body" style={[styles.infoTitle, { color: NemyColors.primary }]}>
+        <Feather name={icon as any} size={20} color={MouzoColors.primary} />
+        <ThemedText type="body" style={[styles.infoTitle, { color: MouzoColors.primary }]}>
           {title}
         </ThemedText>
       </View>
@@ -58,16 +58,16 @@ export default function PrivacyScreen() {
       </View>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-        <View style={[styles.badge, { backgroundColor: NemyColors.success + '20' }]}>
-          <Feather name="shield" size={16} color={NemyColors.success} />
-          <ThemedText type="small" style={{ color: NemyColors.success, fontWeight: '600', marginLeft: Spacing.xs }}>
+        <View style={[styles.badge, { backgroundColor: MouzoColors.success + '20' }]}>
+          <Feather name="shield" size={16} color={MouzoColors.success} />
+          <ThemedText type="small" style={{ color: MouzoColors.success, fontWeight: '600', marginLeft: Spacing.xs }}>
             Última actualización: Febrero 2025
           </ThemedText>
         </View>
 
         <Section title="Nuestro Compromiso">
           <Paragraph>
-            En NEMY nos comprometemos a proteger su privacidad y datos personales. Esta política explica 
+            En MOUZO nos comprometemos a proteger su privacidad y datos personales. Esta política explica 
             cómo recopilamos, usamos y protegemos su información.
           </Paragraph>
         </Section>
@@ -142,13 +142,13 @@ export default function PrivacyScreen() {
           <BulletPoint>Oposición: Oponerse a ciertos usos</BulletPoint>
 
           <View style={[styles.contactBox, { backgroundColor: theme.card }]}>
-            <Feather name="mail" size={20} color={NemyColors.primary} />
+            <Feather name="mail" size={20} color={MouzoColors.primary} />
             <View style={{ marginLeft: Spacing.md, flex: 1 }}>
               <ThemedText type="body" style={{ fontWeight: '600' }}>
                 Ejercer sus derechos:
               </ThemedText>
               <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: Spacing.xs }}>
-                privacy@nemy.app
+                privacy@mouzo.app
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary, marginTop: Spacing.xs }}>
                 Respuesta en 20 días hábiles
@@ -191,30 +191,30 @@ export default function PrivacyScreen() {
         <Section title="Contacto">
           <View style={[styles.contactGrid, { backgroundColor: theme.card }]}>
             <View style={styles.contactItem}>
-              <Feather name="shield" size={24} color={NemyColors.primary} />
+              <Feather name="shield" size={24} color={MouzoColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs, fontWeight: '600' }}>
                 Privacidad
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                privacy@nemy.app
+                privacy@mouzo.app
               </ThemedText>
             </View>
             <View style={styles.contactItem}>
-              <Feather name="lock" size={24} color={NemyColors.primary} />
+              <Feather name="lock" size={24} color={MouzoColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs, fontWeight: '600' }}>
                 Seguridad
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                security@nemy.app
+                security@mouzo.app
               </ThemedText>
             </View>
             <View style={styles.contactItem}>
-              <Feather name="help-circle" size={24} color={NemyColors.primary} />
+              <Feather name="help-circle" size={24} color={MouzoColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs, fontWeight: '600' }}>
                 Soporte
               </ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                support@nemy.app
+                support@mouzo.app
               </ThemedText>
             </View>
           </View>
@@ -225,7 +225,7 @@ export default function PrivacyScreen() {
             Del náhuatl "vivir" - Conectando negocios locales con la comunidad
           </ThemedText>
           <ThemedText type="caption" style={{ color: theme.textSecondary, textAlign: 'center', marginTop: Spacing.xs }}>
-            © 2025 NEMY. Todos los derechos reservados.
+            © 2025 MOUZO. Todos los derechos reservados.
           </ThemedText>
         </View>
       </ScrollView>

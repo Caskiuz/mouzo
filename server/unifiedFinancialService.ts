@@ -74,12 +74,12 @@ export class UnifiedFinancialService {
     }
   }
 
-  // Calculate commissions - Modelo: 100% producto al negocio, 15% del producto a NEMY, 100% delivery fee al driver
+  // Calculate commissions - Modelo: 100% producto al negocio, 15% del producto a MOUZO, 100% delivery fee al driver
   async calculateCommissions(
     totalAmount: number,
     deliveryFee: number = 0,
     productosBase?: number,
-    nemyCommission?: number
+    mouzoCommission?: number
   ): Promise<{
     platform: number;
     business: number;
@@ -89,19 +89,19 @@ export class UnifiedFinancialService {
     const safeTotal = Math.max(0, totalAmount || 0);
     const safeDeliveryFee = Math.max(0, deliveryFee || 0);
 
-    // Si nos dan productosBase o nemyCommission, respetarlos para backwards compatibility
+    // Si nos dan productosBase o mouzoCommission, respetarlos para backwards compatibility
     let productBase = productosBase && productosBase > 0
       ? productosBase
       : safeTotal - safeDeliveryFee;
 
-    // Si el total ya incluye comisión NEMY, removerla para aislar el producto
+    // Si el total ya incluye comisión MOUZO, removerla para aislar el producto
     if (!productosBase || productosBase <= 0) {
       const baseWithoutDelivery = safeTotal - safeDeliveryFee;
       productBase = baseWithoutDelivery > 0 ? Math.round(baseWithoutDelivery / 1.15) : 0;
     }
 
-    const platformAmount = nemyCommission && nemyCommission > 0
-      ? nemyCommission
+    const platformAmount = mouzoCommission && mouzoCommission > 0
+      ? mouzoCommission
       : Math.round(productBase * 0.15);
 
     const businessAmount = productBase;
@@ -377,7 +377,7 @@ export class UnifiedFinancialService {
     const wallet = await this.getWallet(userId);
     methods.push({
       id: 'wallet',
-      name: 'Billetera NEMY',
+      name: 'Billetera MOUZO',
       icon: 'wallet-outline',
       available: wallet.balance > 0,
       balance: wallet.balance,

@@ -5,7 +5,7 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const FROM_EMAIL = "NEMY <noreply@nemy.app>";
+const FROM_EMAIL = "MOUZO <noreply@mouzo.app>";
 
 // Helper to check if email service is available
 function isEmailServiceAvailable(): boolean {
@@ -28,7 +28,7 @@ export async function sendVerificationEmail(
     const { data, error } = await resend!.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: "Verifica tu cuenta de NEMY",
+      subject: "Verifica tu cuenta de MOUZO",
       html: `
         <!DOCTYPE html>
         <html>
@@ -39,14 +39,14 @@ export async function sendVerificationEmail(
         <body style="font-family: 'Nunito', Arial, sans-serif; background-color: #FAFAFA; margin: 0; padding: 20px;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
             <div style="text-align: center; margin-bottom: 32px;">
-              <h1 style="color: #00C853; font-size: 32px; margin: 0;">NEMY</h1>
+              <h1 style="color: #00C853; font-size: 32px; margin: 0;">MOUZO</h1>
               <p style="color: #757575; margin-top: 8px;">Tu delivery local de confianza</p>
             </div>
             
             <h2 style="color: #212121; font-size: 24px; margin-bottom: 16px;">Hola ${name},</h2>
             
             <p style="color: #424242; font-size: 16px; line-height: 1.6;">
-              Gracias por registrarte en NEMY. Para completar tu registro y empezar a pedir, 
+              Gracias por registrarte en MOUZO. Para completar tu registro y empezar a pedir, 
               ingresa el siguiente código de verificación:
             </p>
             
@@ -62,7 +62,7 @@ export async function sendVerificationEmail(
             <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 32px 0;">
             
             <p style="color: #9E9E9E; font-size: 12px; text-align: center;">
-              NEMY - Delivery local en Autlán, Jalisco<br>
+              MOUZO - Delivery local en Autlán, Jalisco<br>
               Este es un correo automático, por favor no responder.
             </p>
           </div>
@@ -97,7 +97,7 @@ export async function sendOrderConfirmationEmail(
     const { data, error } = await resend!.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Pedido confirmado #${orderId.slice(-6)} - NEMY`,
+      subject: `Pedido confirmado #${orderId.slice(-6)} - MOUZO`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -108,7 +108,7 @@ export async function sendOrderConfirmationEmail(
         <body style="font-family: 'Nunito', Arial, sans-serif; background-color: #FAFAFA; margin: 0; padding: 20px;">
           <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
             <div style="text-align: center; margin-bottom: 32px;">
-              <h1 style="color: #00C853; font-size: 32px; margin: 0;">NEMY</h1>
+              <h1 style="color: #00C853; font-size: 32px; margin: 0;">MOUZO</h1>
             </div>
             
             <div style="background-color: #E8F5E9; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
@@ -135,13 +135,13 @@ export async function sendOrderConfirmationEmail(
             </div>
             
             <p style="color: #757575; font-size: 14px;">
-              Puedes seguir el estado de tu pedido en la app de NEMY.
+              Puedes seguir el estado de tu pedido en la app de MOUZO.
             </p>
             
             <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 32px 0;">
             
             <p style="color: #9E9E9E; font-size: 12px; text-align: center;">
-              NEMY - Delivery local en Autlán, Jalisco
+              MOUZO - Delivery local en Autlán, Jalisco
             </p>
           </div>
         </body>

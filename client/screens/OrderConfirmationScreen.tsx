@@ -17,7 +17,7 @@ import Animated, {
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
@@ -165,10 +165,10 @@ export default function OrderConfirmationScreen() {
           <View
             style={[
               styles.iconCircle,
-              { backgroundColor: NemyColors.primary + "20" },
+              { backgroundColor: MouzoColors.primary + "20" },
             ]}
           >
-            <Feather name="check" size={48} color={NemyColors.primary} />
+            <Feather name="check" size={48} color={MouzoColors.primary} />
           </View>
         </Animated.View>
 
@@ -193,7 +193,7 @@ export default function OrderConfirmationScreen() {
               ]}
             >
               <View style={styles.timerHeader}>
-                <Feather name="clock" size={20} color={NemyColors.primary} />
+                <Feather name="clock" size={20} color={MouzoColors.primary} />
                 <ThemedText
                   type="body"
                   style={{ marginLeft: Spacing.sm, fontWeight: "600" }}
@@ -205,7 +205,7 @@ export default function OrderConfirmationScreen() {
               <View style={styles.timerDisplay}>
                 <ThemedText
                   type="h1"
-                  style={{ color: NemyColors.primary, fontSize: 64 }}
+                  style={{ color: MouzoColors.primary, fontSize: 64 }}
                 >
                   {secondsRemaining}
                 </ThemedText>
@@ -239,14 +239,14 @@ export default function OrderConfirmationScreen() {
                 style={styles.cancelButton}
               >
                 {isCancelling ? (
-                  <ActivityIndicator color={NemyColors.error} size="small" />
+                  <ActivityIndicator color={MouzoColors.error} size="small" />
                 ) : (
                   <>
-                    <Feather name="x" size={20} color={NemyColors.error} />
+                    <Feather name="x" size={20} color={MouzoColors.error} />
                     <ThemedText
                       type="body"
                       style={{
-                        color: NemyColors.error,
+                        color: MouzoColors.error,
                         marginLeft: Spacing.sm,
                         fontWeight: "600",
                       }}
@@ -261,20 +261,20 @@ export default function OrderConfirmationScreen() {
                 onPress={handleSkipAndConfirm}
                 style={styles.skipButton}
               >
-                <ThemedText type="small" style={{ color: NemyColors.primary }}>
+                <ThemedText type="small" style={{ color: MouzoColors.primary }}>
                   Saltar y confirmar pedido
                 </ThemedText>
                 <Feather
                   name="arrow-right"
                   size={16}
-                  color={NemyColors.primary}
+                  color={MouzoColors.primary}
                 />
               </Pressable>
             </View>
           </>
         ) : (
           <View style={styles.confirmedContent}>
-            <ActivityIndicator color={NemyColors.primary} size="large" />
+            <ActivityIndicator color={MouzoColors.primary} size="large" />
             <ThemedText
               type="body"
               style={{ color: theme.textSecondary, marginTop: Spacing.lg }}
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: "100%",
-    backgroundColor: NemyColors.primary,
+    backgroundColor: MouzoColors.primary,
     borderRadius: 4,
   },
   actions: {
@@ -353,9 +353,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderColor: NemyColors.error,
+    borderColor: MouzoColors.error,
     borderWidth: 2,
-    backgroundColor: NemyColors.error + "10",
+    backgroundColor: MouzoColors.error + "10",
   },
   skipButton: {
     flexDirection: "row",

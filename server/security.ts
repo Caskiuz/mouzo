@@ -1,4 +1,4 @@
-// Comprehensive Security Middleware for NEMY - Production Ready
+// Comprehensive Security Middleware for MOUZO - Production Ready
 import { Request, Response, NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";

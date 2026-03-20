@@ -14,7 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 import {
@@ -141,7 +141,7 @@ export default function AdminSectionScreen({ section, title }: AdminSectionScree
   if (isLoading) {
     return (
       <ThemedView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
       </ThemedView>
     );
   }
@@ -154,8 +154,8 @@ export default function AdminSectionScreen({ section, title }: AdminSectionScree
             <Feather name="arrow-left" size={24} color={theme.text} />
           </Pressable>
           <View style={styles.titleContainer}>
-            <View style={[styles.titleIcon, { backgroundColor: NemyColors.primaryLight }]}>
-              <Feather name={config.icon as any} size={20} color={NemyColors.primary} />
+            <View style={[styles.titleIcon, { backgroundColor: MouzoColors.primaryLight }]}>
+              <Feather name={config.icon as any} size={20} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h2">{title}</ThemedText>
           </View>
@@ -170,7 +170,7 @@ export default function AdminSectionScreen({ section, title }: AdminSectionScree
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
       >

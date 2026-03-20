@@ -1,4 +1,4 @@
-// Development utility for NEMY app
+// Development utility for MOUZO app
 // This helps create test data and handle missing orders gracefully
 
 export const DEV_UTILS = {

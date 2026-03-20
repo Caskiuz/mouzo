@@ -24,7 +24,7 @@ function MapStackNavigator() {
 }
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { NemyColors, Spacing } from "@/constants/theme";
+import { MouzoColors, Spacing } from "@/constants/theme";
 
 export type MainTabParamList = {
   HomeTab: undefined;
@@ -57,7 +57,7 @@ const tabBarHeight = Platform.select({
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={{
-        tabBarActiveTintColor: NemyColors.primary,
+        tabBarActiveTintColor: MouzoColors.primary,
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: {
           backgroundColor: theme.background,

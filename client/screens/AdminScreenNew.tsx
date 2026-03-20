@@ -20,7 +20,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import {
   DashboardTab,
@@ -57,7 +57,7 @@ const menuItems: MenuItem[] = [
     subtitle: "Métricas y pedidos activos",
     icon: "bar-chart-2",
     tab: "dashboard",
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
   },
   {
     title: "Pedidos",
@@ -866,7 +866,7 @@ export default function AdminMenuScreen() {
 
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.modalHero}>
-                      <View style={[styles.modalAvatar, { backgroundColor: NemyColors.warning }]}>
+                      <View style={[styles.modalAvatar, { backgroundColor: MouzoColors.warning }]}>
                         <ThemedText style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
                           #
                         </ThemedText>
@@ -967,7 +967,7 @@ export default function AdminMenuScreen() {
                   <Pressable
                     style={{
                       padding: 16,
-                      backgroundColor: NemyColors.primary,
+                      backgroundColor: MouzoColors.primary,
                       borderRadius: 10,
                       alignItems: "center",
                       marginTop: 10,
@@ -1313,12 +1313,12 @@ export default function AdminMenuScreen() {
                         paddingVertical: 8,
                         paddingHorizontal: 16,
                         borderRadius: 20,
-                        backgroundColor: selectedBusinessId === b.id ? NemyColors.primary : 'transparent',
+                        backgroundColor: selectedBusinessId === b.id ? MouzoColors.primary : 'transparent',
                         borderWidth: 1,
-                        borderColor: NemyColors.primary,
+                        borderColor: MouzoColors.primary,
                       }}
                     >
-                      <ThemedText style={{ color: selectedBusinessId === b.id ? '#fff' : NemyColors.primary, fontSize: 14 }}>
+                      <ThemedText style={{ color: selectedBusinessId === b.id ? '#fff' : MouzoColors.primary, fontSize: 14 }}>
                         {b.name}
                       </ThemedText>
                     </Pressable>
@@ -1347,8 +1347,8 @@ export default function AdminMenuScreen() {
                             />
                           </View>
                         ) : (
-                          <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: p.isAvailable ? NemyColors.success + '20' : theme.backgroundSecondary, justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
-                            <Feather name="box" size={20} color={p.isAvailable ? NemyColors.success : theme.textSecondary} />
+                          <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: p.isAvailable ? MouzoColors.success + '20' : theme.backgroundSecondary, justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
+                            <Feather name="box" size={20} color={p.isAvailable ? MouzoColors.success : theme.textSecondary} />
                           </View>
                         )}
                         <View style={{ flex: 1 }}>
@@ -1360,18 +1360,18 @@ export default function AdminMenuScreen() {
                             </ThemedText>
                           )}
                         </View>
-                        <ThemedText style={{ color: NemyColors.primary, fontWeight: 'bold' }}>
+                        <ThemedText style={{ color: MouzoColors.primary, fontWeight: 'bold' }}>
                           ${(p.price / 100).toFixed(2)}
                         </ThemedText>
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12, gap: 8 }}>
                         {p.isWeightBased && (
-                          <View style={{ backgroundColor: NemyColors.warning + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
-                            <ThemedText style={{ color: NemyColors.warning, fontSize: 12 }}>Por peso</ThemedText>
+                          <View style={{ backgroundColor: MouzoColors.warning + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
+                            <ThemedText style={{ color: MouzoColors.warning, fontSize: 12 }}>Por peso</ThemedText>
                           </View>
                         )}
-                        <View style={{ backgroundColor: p.isAvailable ? NemyColors.success + '20' : NemyColors.error + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
-                          <ThemedText style={{ color: p.isAvailable ? NemyColors.success : NemyColors.error, fontSize: 12 }}>
+                        <View style={{ backgroundColor: p.isAvailable ? MouzoColors.success + '20' : MouzoColors.error + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
+                          <ThemedText style={{ color: p.isAvailable ? MouzoColors.success : MouzoColors.error, fontSize: 12 }}>
                             {p.isAvailable ? 'Disponible' : 'Agotado'}
                           </ThemedText>
                         </View>
@@ -1434,16 +1434,16 @@ export default function AdminMenuScreen() {
   const getLogActionColor = (action: string) => {
     switch (action) {
       case "LOGIN_SUCCESS":
-        return NemyColors.success;
+        return MouzoColors.success;
       case "LOGIN_FAILED":
       case "RATE_LIMIT_BLOCKED":
-        return NemyColors.error;
+        return MouzoColors.error;
       case "CREATE":
         return "#2196F3";
       case "UPDATE":
-        return NemyColors.warning;
+        return MouzoColors.warning;
       case "DELETE":
-        return NemyColors.error;
+        return MouzoColors.error;
       default:
         return theme.textSecondary;
     }
@@ -1519,7 +1519,7 @@ export default function AdminMenuScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={NemyColors.primary}
+              tintColor={MouzoColors.primary}
             />
           }
         >

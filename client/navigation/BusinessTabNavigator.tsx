@@ -8,7 +8,7 @@ import BusinessProductsScreen from "@/screens/BusinessProductsScreen";
 import BusinessFinancesScreen from "@/screens/BusinessFinancesScreen";
 import ProfileScreen from "@/screens/ProfileScreen";
 import { useTheme } from "@/hooks/useTheme";
-import { NemyColors } from "@/constants/theme";
+import { MouzoColors } from "@/constants/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ export default function BusinessTabNavigator() {
           backgroundColor: theme.background,
         },
         headerTintColor: theme.text,
-        tabBarActiveTintColor: NemyColors.primary,
+        tabBarActiveTintColor: MouzoColors.primary,
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: {
           backgroundColor: theme.background,

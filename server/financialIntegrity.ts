@@ -43,17 +43,17 @@ export class FinancialIntegrity {
     businessEarnings?: number;
     deliveryEarnings?: number;
     productosBase?: number | null;
-    nemyCommission?: number | null;
+    mouzoCommission?: number | null;
   }): Promise<ValidationResult> {
     // 1. Validar total del pedido
     const subtotalTotal = order.subtotal + order.deliveryFee;
     const hasMarkup =
       order.productosBase !== undefined &&
       order.productosBase !== null &&
-      order.nemyCommission !== undefined &&
-      order.nemyCommission !== null;
+      order.mouzoCommission !== undefined &&
+      order.mouzoCommission !== null;
     const markupTotal = hasMarkup
-      ? (order.productosBase || 0) + (order.nemyCommission || 0) + order.deliveryFee
+      ? (order.productosBase || 0) + (order.mouzoCommission || 0) + order.deliveryFee
       : subtotalTotal;
 
     if (order.total !== subtotalTotal && order.total !== markupTotal) {
@@ -65,7 +65,7 @@ export class FinancialIntegrity {
           received: order.total,
           subtotal: order.subtotal,
           productosBase: order.productosBase,
-          nemyCommission: order.nemyCommission,
+          mouzoCommission: order.mouzoCommission,
           deliveryFee: order.deliveryFee,
         },
       };
@@ -98,7 +98,7 @@ export class FinancialIntegrity {
         order.total,
         order.deliveryFee || 0,
         order.productosBase || undefined,
-        order.nemyCommission || undefined
+        order.mouzoCommission || undefined
       );
       
       if (order.platformFee !== expectedCommissions.platform ||

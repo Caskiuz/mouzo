@@ -23,7 +23,7 @@ import { Badge } from "@/components/Badge";
 import { SmartOrderButton } from "@/components/SmartOrderButton";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
@@ -394,7 +394,7 @@ export default function DriverMyDeliveriesScreen() {
         </View>
 
         <View style={styles.orderFooter}>
-          <ThemedText type="h4" style={{ color: NemyColors.success }}>
+          <ThemedText type="h4" style={{ color: MouzoColors.success }}>
             +${((item.deliveryEarnings || item.deliveryFee || 0) / 100).toFixed(2)}
           </ThemedText>
           <View style={styles.mapButtons}>
@@ -405,10 +405,10 @@ export default function DriverMyDeliveriesScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="map" size={16} color={NemyColors.primary} />
+              <Feather name="map" size={16} color={MouzoColors.primary} />
               <ThemedText
                 type="small"
-                style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
               >
                 Ver
               </ThemedText>
@@ -417,7 +417,7 @@ export default function DriverMyDeliveriesScreen() {
               onPress={() => showNavigationOptions(item)}
               style={[
                 styles.trackButton,
-                { backgroundColor: NemyColors.primary, marginLeft: Spacing.sm },
+                { backgroundColor: MouzoColors.primary, marginLeft: Spacing.sm },
               ]}
             >
               <Feather name="navigation" size={16} color="#FFF" />
@@ -505,7 +505,7 @@ export default function DriverMyDeliveriesScreen() {
         </View>
 
         <View style={styles.orderFooter}>
-          <ThemedText type="h4" style={{ color: NemyColors.success }}>
+          <ThemedText type="h4" style={{ color: MouzoColors.success }}>
             +${((item.deliveryEarnings || item.deliveryFee || 0) / 100).toFixed(2)}
           </ThemedText>
           <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -529,7 +529,7 @@ export default function DriverMyDeliveriesScreen() {
           {isTracking ? (
             <View style={styles.trackingIndicator}>
               <View style={styles.trackingDot} />
-              <ThemedText type="small" style={{ color: NemyColors.success, marginLeft: Spacing.xs }}>
+              <ThemedText type="small" style={{ color: MouzoColors.success, marginLeft: Spacing.xs }}>
                 GPS Activo
               </ThemedText>
             </View>
@@ -543,7 +543,7 @@ export default function DriverMyDeliveriesScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            tintColor={NemyColors.primary}
+            tintColor={MouzoColors.primary}
           />
         }
       >
@@ -624,7 +624,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: NemyColors.success,
+    backgroundColor: MouzoColors.success,
   },
   listContent: {
     padding: Spacing.lg,

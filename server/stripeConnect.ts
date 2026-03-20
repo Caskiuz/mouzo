@@ -1,4 +1,4 @@
-// Complete Stripe Connect Integration for NEMY - Production Ready
+// Complete Stripe Connect Integration for MOUZO - Production Ready
 import { stripe } from "./stripeClient";
 import { db } from "./db";
 import { orders, businesses, users, transactions } from "@shared/schema-mysql";
@@ -49,7 +49,7 @@ export async function createBusinessConnectAccount(setup: ConnectAccountSetup) {
       metadata: {
         businessId: setup.businessId,
         businessType: setup.businessType,
-        platform: "NEMY",
+        platform: "MOUZO",
       },
     });
 
@@ -160,7 +160,7 @@ export async function processOrderPaymentWithCommissions(orderId: string) {
       order.total,
       order.deliveryFee || 0,
       order.productosBase || undefined,
-      order.nemyCommission || undefined
+      order.mouzoCommission || undefined
     );
 
     const distribution: PaymentDistribution = {
@@ -185,8 +185,8 @@ export async function processOrderPaymentWithCommissions(orderId: string) {
         businessAmount: distribution.businessAmount.toString(),
         deliveryAmount: distribution.deliveryAmount.toString(),
       },
-      description: `NEMY Order ${orderId} - ${business.name}`,
-      statement_descriptor: "NEMY DELIVERY",
+      description: `MOUZO Order ${orderId} - ${business.name}`,
+      statement_descriptor: "MOUZO DELIVERY",
     });
 
     // Update order with payment intent

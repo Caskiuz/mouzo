@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || "nemy_local_secret_key";
+const JWT_SECRET = process.env.JWT_SECRET || "mouzo_local_secret_key";
 
 // Phone login
 router.post("/phone-login", async (req, res) => {
@@ -256,7 +256,7 @@ router.post("/send-code", async (req, res) => {
         const twilio = await import("twilio");
         const client = twilio.default(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
         await client.messages.create({
-          body: `Tu código NEMY: ${code}`,
+          body: `Tu código MOUZO: ${code}`,
           from: process.env.TWILIO_PHONE_NUMBER,
           to: normalizedPhone
         });

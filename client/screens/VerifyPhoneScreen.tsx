@@ -19,13 +19,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 
-const PENDING_BUSINESS_DRAFT_KEY = "@nemy_pending_business_draft";
-const PENDING_BUSINESS_ONBOARDING_KEY = "@nemy_pending_business_onboarding";
-const PENDING_DRIVER_ONBOARDING_KEY = "@nemy_pending_driver_onboarding";
+const PENDING_BUSINESS_DRAFT_KEY = "@mouzo_pending_business_draft";
+const PENDING_BUSINESS_ONBOARDING_KEY = "@mouzo_pending_business_onboarding";
+const PENDING_DRIVER_ONBOARDING_KEY = "@mouzo_pending_driver_onboarding";
 
 type VerifyPhoneScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "VerifyPhone">;
@@ -188,10 +188,10 @@ export default function VerifyPhoneScreen({
           <View
             style={[
               styles.iconCircle,
-              { backgroundColor: NemyColors.primaryLight },
+              { backgroundColor: MouzoColors.primaryLight },
             ]}
           >
-            <Feather name="smartphone" size={48} color={NemyColors.primary} />
+            <Feather name="smartphone" size={48} color={MouzoColors.primary} />
           </View>
         </View>
 
@@ -220,9 +220,9 @@ export default function VerifyPhoneScreen({
                 {
                   backgroundColor: theme.card,
                   borderColor: error
-                    ? NemyColors.error
+                    ? MouzoColors.error
                     : digit
-                      ? NemyColors.primary
+                      ? MouzoColors.primary
                       : theme.border,
                   color: theme.text,
                 },
@@ -243,7 +243,7 @@ export default function VerifyPhoneScreen({
         {error ? (
           <ThemedText
             type="small"
-            style={[styles.error, { color: NemyColors.error }]}
+            style={[styles.error, { color: MouzoColors.error }]}
           >
             {error}
           </ThemedText>
@@ -268,11 +268,11 @@ export default function VerifyPhoneScreen({
           {canResend ? (
             <Pressable onPress={handleResend} disabled={isResending}>
               {isResending ? (
-                <ActivityIndicator size="small" color={NemyColors.primary} />
+                <ActivityIndicator size="small" color={MouzoColors.primary} />
               ) : (
                 <ThemedText
                   type="body"
-                  style={{ color: NemyColors.primary, fontWeight: "600" }}
+                  style={{ color: MouzoColors.primary, fontWeight: "600" }}
                 >
                   Reenviar
                 </ThemedText>

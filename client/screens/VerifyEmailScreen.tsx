@@ -16,7 +16,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
 type VerifyEmailScreenProps = {
@@ -136,10 +136,10 @@ export default function VerifyEmailScreen({
           <View
             style={[
               styles.iconCircle,
-              { backgroundColor: NemyColors.primaryLight },
+              { backgroundColor: MouzoColors.primaryLight },
             ]}
           >
-            <Feather name="mail" size={40} color={NemyColors.primary} />
+            <Feather name="mail" size={40} color={MouzoColors.primary} />
           </View>
           <ThemedText type="hero" style={styles.title}>
             Verifica tu email
@@ -167,7 +167,7 @@ export default function VerifyEmailScreen({
                   borderColor: error
                     ? "#F44336"
                     : digit
-                      ? NemyColors.primary
+                      ? MouzoColors.primary
                       : theme.border,
                   color: theme.text,
                 },
@@ -217,11 +217,11 @@ export default function VerifyEmailScreen({
           ) : (
             <Pressable onPress={handleResend} disabled={isResending}>
               {isResending ? (
-                <ActivityIndicator size="small" color={NemyColors.primary} />
+                <ActivityIndicator size="small" color={MouzoColors.primary} />
               ) : (
                 <ThemedText
                   type="body"
-                  style={{ color: NemyColors.primary, fontWeight: "600" }}
+                  style={{ color: MouzoColors.primary, fontWeight: "600" }}
                 >
                   Reenviar
                 </ThemedText>

@@ -38,9 +38,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const STORAGE_KEY = "@nemy_user";
-const PENDING_PHONE_KEY = "@nemy_pending_phone";
-const BIOMETRIC_PHONE_KEY = "@nemy_biometric_phone";
+const STORAGE_KEY = "@mouzo_user";
+const PENDING_PHONE_KEY = "@mouzo_pending_phone";
+const BIOMETRIC_PHONE_KEY = "@mouzo_biometric_phone";
 
 const normalizePhone = (phone: string) => {
   const digits = phone.replace(/\D/g, "");

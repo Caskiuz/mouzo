@@ -22,7 +22,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { OrderProgressBar } from "@/components/OrderProgressBar";
 import { CollapsibleMap } from "@/components/CollapsibleMap";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { Order } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { mockOrders } from "@/data/mockData";
@@ -34,7 +34,7 @@ type OrderTrackingNavigationProp = NativeStackNavigationProp<
   "OrderTracking"
 >;
 
-const ORDERS_KEY = "@nemy_orders";
+const ORDERS_KEY = "@mouzo_orders";
 const { width } = Dimensions.get("window");
 
 const parseDeliveryAddress = (address: string | null): string => {
@@ -173,7 +173,7 @@ export default function OrderTrackingScreen() {
             status: apiOrder.status,
             subtotal: apiOrder.subtotal / 100,
             productosBase: apiOrder.productosBase ? apiOrder.productosBase / 100 : undefined,
-            nemyCommission: apiOrder.nemyCommission ? apiOrder.nemyCommission / 100 : undefined,
+            mouzoCommission: apiOrder.mouzoCommission ? apiOrder.mouzoCommission / 100 : undefined,
             deliveryFee: apiOrder.deliveryFee / 100,
             total: apiOrder.total / 100,
             paymentMethod: apiOrder.paymentMethod,
@@ -316,8 +316,8 @@ export default function OrderTrackingScreen() {
       })
     : null;
 
-  const nemyCommission = order.nemyCommission
-    ? order.nemyCommission / 100
+  const mouzoCommission = order.mouzoCommission
+    ? order.mouzoCommission / 100
     : order.subtotal * 0.15;
 
   return (
@@ -342,8 +342,8 @@ export default function OrderTrackingScreen() {
         {dynamicEta && (
           <View style={[styles.statusCard, { backgroundColor: theme.card }, Shadows.md]}>
             <View style={styles.businessRow}>
-              <View style={[styles.iconContainer, { backgroundColor: NemyColors.primary + '20' }]}>
-                <Feather name="clock" size={24} color={NemyColors.primary} />
+              <View style={[styles.iconContainer, { backgroundColor: MouzoColors.primary + '20' }]}>
+                <Feather name="clock" size={24} color={MouzoColors.primary} />
               </View>
               <View style={styles.businessInfo}>
                 <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -352,7 +352,7 @@ export default function OrderTrackingScreen() {
                    order.status === 'preparing' ? 'Preparando tu pedido' :
                    order.status === 'on_the_way' ? 'En camino' : 'Procesando'}
                 </ThemedText>
-                <ThemedText type="h3" style={{ color: NemyColors.primary }}>
+                <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
                   {dynamicEta}
                 </ThemedText>
               </View>
@@ -394,7 +394,7 @@ export default function OrderTrackingScreen() {
                 >
                   ETA
                 </ThemedText>
-                <ThemedText type="h3" style={{ color: NemyColors.primary }}>
+                <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
                   {dynamicEta}
                 </ThemedText>
               </View>
@@ -452,10 +452,10 @@ export default function OrderTrackingScreen() {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="phone" size={20} color={NemyColors.primary} />
+                <Feather name="phone" size={20} color={MouzoColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: NemyColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
                 >
                   Llamar
                 </ThemedText>
@@ -470,7 +470,7 @@ export default function OrderTrackingScreen() {
                 }
                 style={[
                   styles.contactBtn,
-                  { backgroundColor: NemyColors.primary },
+                  { backgroundColor: MouzoColors.primary },
                 ]}
               >
                 <Feather name="message-square" size={20} color="#FFFFFF" />
@@ -493,7 +493,7 @@ export default function OrderTrackingScreen() {
           ]}
         >
           <View style={styles.addressHeader}>
-            <Feather name="map-pin" size={20} color={NemyColors.primary} />
+            <Feather name="map-pin" size={20} color={MouzoColors.primary} />
             <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
               Dirección de entrega
             </ThemedText>
@@ -545,9 +545,9 @@ export default function OrderTrackingScreen() {
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="small" style={{ color: theme.textSecondary }}>
-                Comision NEMY (15%)
+                Comision MOUZO (15%)
               </ThemedText>
-              <ThemedText type="small">${nemyCommission.toFixed(2)}</ThemedText>
+              <ThemedText type="small">${mouzoCommission.toFixed(2)}</ThemedText>
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="small" style={{ color: theme.textSecondary }}>
@@ -559,7 +559,7 @@ export default function OrderTrackingScreen() {
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="h4">Total</ThemedText>
-              <ThemedText type="h4" style={{ color: NemyColors.primary }}>
+              <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
                 ${order.total.toFixed(2)}
               </ThemedText>
             </View>
@@ -581,7 +581,7 @@ export default function OrderTrackingScreen() {
             ]}
           >
             <View style={styles.tipHeader}>
-              <Feather name="heart" size={20} color={NemyColors.primary} />
+              <Feather name="heart" size={20} color={MouzoColors.primary} />
               <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
                 Agregar propina
               </ThemedText>
@@ -605,10 +605,10 @@ export default function OrderTrackingScreen() {
                     {
                       backgroundColor:
                         selectedTip === tip
-                          ? NemyColors.primary
+                          ? MouzoColors.primary
                           : theme.backgroundSecondary,
                       borderColor:
-                        selectedTip === tip ? NemyColors.primary : theme.border,
+                        selectedTip === tip ? MouzoColors.primary : theme.border,
                     },
                   ]}
                 >
@@ -631,7 +631,7 @@ export default function OrderTrackingScreen() {
                 styles.tipButton,
                 {
                   backgroundColor: selectedTip
-                    ? NemyColors.primary
+                    ? MouzoColors.primary
                     : theme.backgroundSecondary,
                   opacity: selectedTip && !sendingTip ? 1 : 0.5,
                 },
@@ -675,7 +675,7 @@ export default function OrderTrackingScreen() {
             }}
             style={[
               styles.confirmButton,
-              { backgroundColor: NemyColors.success },
+              { backgroundColor: MouzoColors.success },
               Shadows.md,
             ]}
           >
@@ -723,7 +723,7 @@ export default function OrderTrackingScreen() {
             }}
             style={[styles.reportButton, { borderColor: theme.border }]}
           >
-            <Feather name="alert-circle" size={18} color={NemyColors.warning} />
+            <Feather name="alert-circle" size={18} color={MouzoColors.warning} />
             <ThemedText
               type="body"
               style={{ marginLeft: Spacing.sm, color: theme.textSecondary }}

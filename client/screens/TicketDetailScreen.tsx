@@ -18,7 +18,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -129,16 +129,16 @@ export default function TicketDetailScreen() {
                     isFromUser ? styles.userMessage : styles.adminMessage,
                     {
                       backgroundColor: isFromUser
-                        ? NemyColors.primary
+                        ? MouzoColors.primary
                         : theme.card,
                     },
                   ]}
                 >
                   {!isFromUser && (
                     <View style={styles.adminBadge}>
-                      <Feather name="shield" size={12} color={NemyColors.primary} />
-                      <ThemedText type="small" style={{ color: NemyColors.primary, fontWeight: "600", marginLeft: 4 }}>
-                        Soporte NEMY
+                      <Feather name="shield" size={12} color={MouzoColors.primary} />
+                      <ThemedText type="small" style={{ color: MouzoColors.primary, fontWeight: "600", marginLeft: 4 }}>
+                        Soporte MOUZO
                       </ThemedText>
                     </View>
                   )}
@@ -186,7 +186,7 @@ export default function TicketDetailScreen() {
             style={[
               styles.sendButton,
               {
-                backgroundColor: NemyColors.primary,
+                backgroundColor: MouzoColors.primary,
                 opacity: sendReplyMutation.isPending || !replyText.trim() ? 0.5 : 1,
               },
             ]}

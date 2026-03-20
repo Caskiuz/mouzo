@@ -13,7 +13,7 @@ import * as Haptics from "expo-haptics";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { API_CONFIG } from "@/constants/api";
 
 interface ConnectStatus {
@@ -141,7 +141,7 @@ export function StripeConnectSetup() {
   if (statusLoading) {
     return (
       <View style={[styles.container, { backgroundColor: theme.card }, Shadows.sm]}>
-        <ActivityIndicator color={NemyColors.primary} />
+        <ActivityIndicator color={MouzoColors.primary} />
       </View>
     );
   }
@@ -152,10 +152,10 @@ export function StripeConnectSetup() {
         <View
           style={[
             styles.iconContainer,
-            { backgroundColor: NemyColors.primary + "20" },
+            { backgroundColor: MouzoColors.primary + "20" },
           ]}
         >
-          <Feather name="credit-card" size={24} color={NemyColors.primary} />
+          <Feather name="credit-card" size={24} color={MouzoColors.primary} />
         </View>
         <View style={{ flex: 1 }}>
           <ThemedText type="h4">Pagos Automáticos</ThemedText>
@@ -171,16 +171,16 @@ export function StripeConnectSetup() {
             <View
               style={[
                 styles.statusDot,
-                { backgroundColor: NemyColors.success },
+                { backgroundColor: MouzoColors.success },
               ]}
             />
-            <ThemedText type="body" style={{ color: NemyColors.success }}>
+            <ThemedText type="body" style={{ color: MouzoColors.success }}>
               Cuenta verificada y activa
             </ThemedText>
           </View>
 
           <View style={styles.infoBox}>
-            <Feather name="check-circle" size={16} color={NemyColors.success} />
+            <Feather name="check-circle" size={16} color={MouzoColors.success} />
             <ThemedText
               type="caption"
               style={{ color: theme.textSecondary, marginLeft: 8, flex: 1 }}
@@ -220,16 +220,16 @@ export function StripeConnectSetup() {
             <View
               style={[
                 styles.statusDot,
-                { backgroundColor: NemyColors.warning },
+                { backgroundColor: MouzoColors.warning },
               ]}
             />
-            <ThemedText type="body" style={{ color: NemyColors.warning }}>
+            <ThemedText type="body" style={{ color: MouzoColors.warning }}>
               Configuración incompleta
             </ThemedText>
           </View>
 
           <View style={styles.infoBox}>
-            <Feather name="alert-circle" size={16} color={NemyColors.warning} />
+            <Feather name="alert-circle" size={16} color={MouzoColors.warning} />
             <ThemedText
               type="caption"
               style={{ color: theme.textSecondary, marginLeft: 8, flex: 1 }}
@@ -244,7 +244,7 @@ export function StripeConnectSetup() {
             style={[
               styles.button,
               styles.primaryButton,
-              { backgroundColor: NemyColors.warning },
+              { backgroundColor: MouzoColors.warning },
             ]}
           >
             {loading ? (
@@ -269,7 +269,7 @@ export function StripeConnectSetup() {
       ) : (
         <>
           <View style={styles.infoBox}>
-            <Feather name="info" size={16} color={NemyColors.primary} />
+            <Feather name="info" size={16} color={MouzoColors.primary} />
             <ThemedText
               type="caption"
               style={{ color: theme.textSecondary, marginLeft: 8, flex: 1 }}
@@ -286,7 +286,7 @@ export function StripeConnectSetup() {
             style={[
               styles.button,
               styles.primaryButton,
-              { backgroundColor: NemyColors.primary },
+              { backgroundColor: MouzoColors.primary },
             ]}
           >
             {loading ? (

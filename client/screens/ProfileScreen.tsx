@@ -29,7 +29,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApp, ThemeMode } from "@/contexts/AppContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest, getApiUrl } from "@/lib/query-client";
 
@@ -72,13 +72,13 @@ function SettingsItem({
         <Feather
           name={icon}
           size={20}
-          color={danger ? NemyColors.error : NemyColors.primary}
+          color={danger ? MouzoColors.error : MouzoColors.primary}
         />
       </View>
       <View style={styles.settingsContent}>
         <ThemedText
           type="body"
-          style={{ color: danger ? NemyColors.error : theme.text }}
+          style={{ color: danger ? MouzoColors.error : theme.text }}
         >
           {label}
         </ThemedText>
@@ -311,8 +311,8 @@ export default function ProfileScreen() {
     try {
       await Share.share({
         message:
-          "Descubre NEMY - Tu delivery local de confianza en Autlan. Pide comida y productos del mercado con un toque. https://nemy.replit.app",
-        title: "NEMY - Delivery Local",
+          "Descubre MOUZO - Tu delivery local de confianza en Autlan. Pide comida y productos del mercado con un toque. https://mouzo.replit.app",
+        title: "MOUZO - Delivery Local",
       });
     } catch (error) {
       console.error("Error sharing:", error);
@@ -322,9 +322,9 @@ export default function ProfileScreen() {
   const shareToSocialMedia = (platform: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const message = encodeURIComponent(
-      "Descubre NEMY - Tu delivery local de confianza en Autlan. Pide comida y productos del mercado con un toque.",
+      "Descubre MOUZO - Tu delivery local de confianza en Autlan. Pide comida y productos del mercado con un toque.",
     );
-    const url = encodeURIComponent("https://nemy.replit.app");
+    const url = encodeURIComponent("https://mouzo.replit.app");
 
     let shareUrl = "";
     switch (platform) {
@@ -462,14 +462,14 @@ export default function ProfileScreen() {
               contentFit="cover"
             />
             {isUploadingImage ? (
-              <View style={[styles.editBadge, { backgroundColor: NemyColors.primary }]}>
+              <View style={[styles.editBadge, { backgroundColor: MouzoColors.primary }]}>
                 <ActivityIndicator size="small" color="#FFFFFF" />
               </View>
             ) : (
               <View
                 style={[
                   styles.editBadge,
-                  { backgroundColor: NemyColors.primary },
+                  { backgroundColor: MouzoColors.primary },
                 ]}
               >
                 <Feather name="camera" size={14} color="#FFFFFF" />
@@ -604,7 +604,7 @@ export default function ProfileScreen() {
                   <Feather 
                     name="alert-triangle" 
                     size={24} 
-                    color={driverStrikes > 0 ? NemyColors.warning : NemyColors.success} 
+                    color={driverStrikes > 0 ? MouzoColors.warning : MouzoColors.success} 
                   />
                 </View>
                 <View style={styles.strikesInfo}>
@@ -627,15 +627,15 @@ export default function ProfileScreen() {
                     style={[
                       styles.strikeIndicator,
                       {
-                        backgroundColor: index < driverStrikes ? NemyColors.error : theme.backgroundSecondary,
-                        borderColor: index < driverStrikes ? NemyColors.error : theme.border,
+                        backgroundColor: index < driverStrikes ? MouzoColors.error : theme.backgroundSecondary,
+                        borderColor: index < driverStrikes ? MouzoColors.error : theme.border,
                       },
                     ]}
                   >
                     {index < driverStrikes ? (
                       <Feather name="x" size={16} color="#FFF" />
                     ) : (
-                      <Feather name="check" size={16} color={NemyColors.success} />
+                      <Feather name="check" size={16} color={MouzoColors.success} />
                     )}
                   </View>
                 ))}
@@ -693,7 +693,7 @@ export default function ProfileScreen() {
           </ThemedText>
           <SettingsItem
             icon="share-2"
-            label="Compartir NEMY"
+            label="Compartir MOUZO"
             onPress={handleShare}
           />
           <View style={styles.socialButtons}>
@@ -763,7 +763,7 @@ export default function ProfileScreen() {
           type="caption"
           style={[styles.version, { color: theme.textSecondary }]}
         >
-          NEMY v1.0.0
+          MOUZO v1.0.0
         </ThemedText>
       </ScrollView>
 
@@ -779,7 +779,7 @@ export default function ProfileScreen() {
         >
           <View style={[styles.modalContent, { backgroundColor: theme.card }]}>
             <View style={[styles.modalIcon, { backgroundColor: "#FFEBEE" }]}>
-              <Feather name="log-out" size={28} color={NemyColors.error} />
+              <Feather name="log-out" size={28} color={MouzoColors.error} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Cerrar sesión
@@ -836,7 +836,7 @@ export default function ProfileScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="moon" size={28} color={NemyColors.primary} />
+              <Feather name="moon" size={28} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Seleccionar tema
@@ -850,11 +850,11 @@ export default function ProfileScreen() {
                     {
                       backgroundColor:
                         themeMode === option.value
-                          ? NemyColors.primaryLight
+                          ? MouzoColors.primaryLight
                           : theme.backgroundSecondary,
                       borderColor:
                         themeMode === option.value
-                          ? NemyColors.primary
+                          ? MouzoColors.primary
                           : "transparent",
                     },
                   ]}
@@ -871,7 +871,7 @@ export default function ProfileScreen() {
                     size={20}
                     color={
                       themeMode === option.value
-                        ? NemyColors.primary
+                        ? MouzoColors.primary
                         : theme.textSecondary
                     }
                   />
@@ -880,7 +880,7 @@ export default function ProfileScreen() {
                     style={{
                       color:
                         themeMode === option.value
-                          ? NemyColors.primary
+                          ? MouzoColors.primary
                           : theme.text,
                       marginLeft: Spacing.sm,
                       fontWeight: themeMode === option.value ? "600" : "400",
@@ -892,7 +892,7 @@ export default function ProfileScreen() {
                     <Feather
                       name="check"
                       size={20}
-                      color={NemyColors.primary}
+                      color={MouzoColors.primary}
                       style={{ marginLeft: "auto" }}
                     />
                   ) : null}
@@ -931,7 +931,7 @@ export default function ProfileScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="bell" size={28} color={NemyColors.primary} />
+              <Feather name="bell" size={28} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Notificaciones
@@ -957,10 +957,10 @@ export default function ProfileScreen() {
                 onValueChange={handleNotificationsToggle}
                 trackColor={{
                   false: theme.border,
-                  true: NemyColors.primaryLight,
+                  true: MouzoColors.primaryLight,
                 }}
                 thumbColor={
-                  settings.notificationsEnabled ? NemyColors.primary : "#f4f3f4"
+                  settings.notificationsEnabled ? MouzoColors.primary : "#f4f3f4"
                 }
               />
             </View>
@@ -977,7 +977,7 @@ export default function ProfileScreen() {
             <Pressable
               style={[
                 styles.modalButtonFull,
-                { backgroundColor: NemyColors.primary },
+                { backgroundColor: MouzoColors.primary },
               ]}
               onPress={() => setShowNotificationsModal(false)}
             >
@@ -1009,7 +1009,7 @@ export default function ProfileScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="globe" size={28} color={NemyColors.primary} />
+              <Feather name="globe" size={28} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Idioma
@@ -1019,21 +1019,21 @@ export default function ProfileScreen() {
                 style={[
                   styles.themeOption,
                   {
-                    backgroundColor: NemyColors.primaryLight,
-                    borderColor: NemyColors.primary,
+                    backgroundColor: MouzoColors.primaryLight,
+                    borderColor: MouzoColors.primary,
                   },
                 ]}
               >
                 <ThemedText
                   type="body"
-                  style={{ color: NemyColors.primary, fontWeight: "600" }}
+                  style={{ color: MouzoColors.primary, fontWeight: "600" }}
                 >
                   Español
                 </ThemedText>
                 <Feather
                   name="check"
                   size={20}
-                  color={NemyColors.primary}
+                  color={MouzoColors.primary}
                   style={{ marginLeft: "auto" }}
                 />
               </View>
@@ -1099,28 +1099,28 @@ export default function ProfileScreen() {
             </ThemedText>
             
             <ThemedText type="body" style={styles.legalText}>
-              Bienvenido a NEMY. Al utilizar nuestra aplicacion, aceptas estos terminos y condiciones. Por favor, leelos cuidadosamente.
+              Bienvenido a MOUZO. Al utilizar nuestra aplicacion, aceptas estos terminos y condiciones. Por favor, leelos cuidadosamente.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               1. Aceptacion de Terminos
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Al descargar, instalar o usar la aplicacion NEMY, confirmas que has leido, entendido y aceptas estar sujeto a estos Terminos y Condiciones. Si no estas de acuerdo, no uses la aplicacion.
+              Al descargar, instalar o usar la aplicacion MOUZO, confirmas que has leido, entendido y aceptas estar sujeto a estos Terminos y Condiciones. Si no estas de acuerdo, no uses la aplicacion.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               2. Descripcion del Servicio
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              NEMY es una plataforma de delivery local que conecta a clientes con negocios locales y repartidores en Autlan de Navarro, Jalisco, Mexico. Facilitamos la compra y entrega de alimentos, productos de mercado y otros articulos de negocios participantes.
+              MOUZO es una plataforma de delivery local que conecta a clientes con negocios locales y repartidores en Autlan de Navarro, Jalisco, Mexico. Facilitamos la compra y entrega de alimentos, productos de mercado y otros articulos de negocios participantes.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               3. Registro y Cuenta
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Para usar NEMY debes registrarte con un numero de telefono valido. Eres responsable de mantener la confidencialidad de tu cuenta y de todas las actividades que ocurran bajo ella. Debes proporcionar informacion veraz y actualizada.
+              Para usar MOUZO debes registrarte con un numero de telefono valido. Eres responsable de mantener la confidencialidad de tu cuenta y de todas las actividades que ocurran bajo ella. Debes proporcionar informacion veraz y actualizada.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
@@ -1134,7 +1134,7 @@ export default function ProfileScreen() {
               5. Entregas
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Los tiempos de entrega son estimados y pueden variar segun la demanda, condiciones climaticas y trafico. NEMY no se hace responsable por retrasos fuera de nuestro control. Debes estar disponible para recibir tu pedido en la direccion indicada.
+              Los tiempos de entrega son estimados y pueden variar segun la demanda, condiciones climaticas y trafico. MOUZO no se hace responsable por retrasos fuera de nuestro control. Debes estar disponible para recibir tu pedido en la direccion indicada.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
@@ -1148,28 +1148,28 @@ export default function ProfileScreen() {
               7. Conducta del Usuario
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Te comprometes a usar NEMY de manera responsable y respetuosa. Esta prohibido el uso fraudulento, el acoso a repartidores o negocios, y cualquier actividad ilegal. NEMY se reserva el derecho de suspender cuentas que violen estas normas.
+              Te comprometes a usar MOUZO de manera responsable y respetuosa. Esta prohibido el uso fraudulento, el acoso a repartidores o negocios, y cualquier actividad ilegal. MOUZO se reserva el derecho de suspender cuentas que violen estas normas.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               8. Limitacion de Responsabilidad
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              NEMY actua como intermediario entre clientes, negocios y repartidores. No somos responsables por la calidad de los productos, alergenos no declarados, o problemas de salud derivados del consumo. Los negocios son responsables de la preparacion y calidad de sus productos.
+              MOUZO actua como intermediario entre clientes, negocios y repartidores. No somos responsables por la calidad de los productos, alergenos no declarados, o problemas de salud derivados del consumo. Los negocios son responsables de la preparacion y calidad de sus productos.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               9. Modificaciones
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              NEMY puede modificar estos terminos en cualquier momento. Te notificaremos de cambios significativos. El uso continuado de la aplicacion constituye aceptacion de los nuevos terminos.
+              MOUZO puede modificar estos terminos en cualquier momento. Te notificaremos de cambios significativos. El uso continuado de la aplicacion constituye aceptacion de los nuevos terminos.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
               10. Contacto
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Para dudas o comentarios sobre estos terminos, contactanos a traves de la seccion de Ayuda y Soporte en la aplicacion o al correo soporte@nemy.mx
+              Para dudas o comentarios sobre estos terminos, contactanos a traves de la seccion de Ayuda y Soporte en la aplicacion o al correo soporte@mouzo.mx
             </ThemedText>
           </ScrollView>
         </View>
@@ -1215,7 +1215,7 @@ export default function ProfileScreen() {
             </ThemedText>
 
             <ThemedText type="body" style={styles.legalText}>
-              En NEMY, tu privacidad es nuestra prioridad. Esta politica describe como recopilamos, usamos y protegemos tu informacion personal.
+              En MOUZO, tu privacidad es nuestra prioridad. Esta politica describe como recopilamos, usamos y protegemos tu informacion personal.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
@@ -1271,7 +1271,7 @@ export default function ProfileScreen() {
               8. Menores de Edad
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              NEMY no esta dirigido a menores de 18 anios. No recopilamos intencionalmente informacion de menores. Si eres padre y crees que tu hijo ha proporcionado informacion, contactanos.
+              MOUZO no esta dirigido a menores de 18 anios. No recopilamos intencionalmente informacion de menores. Si eres padre y crees que tu hijo ha proporcionado informacion, contactanos.
             </ThemedText>
 
             <ThemedText type="h4" style={styles.legalTitle}>
@@ -1285,7 +1285,7 @@ export default function ProfileScreen() {
               10. Contacto
             </ThemedText>
             <ThemedText type="body" style={styles.legalText}>
-              Para ejercer tus derechos o resolver dudas sobre privacidad, contactanos a traves de Ayuda y Soporte o al correo privacidad@nemy.mx
+              Para ejercer tus derechos o resolver dudas sobre privacidad, contactanos a traves de Ayuda y Soporte o al correo privacidad@mouzo.mx
             </ThemedText>
           </ScrollView>
         </View>
@@ -1308,7 +1308,7 @@ export default function ProfileScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="user" size={28} color={NemyColors.primary} />
+              <Feather name="user" size={28} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Editar perfil
@@ -1323,7 +1323,7 @@ export default function ProfileScreen() {
             <Pressable
               style={[
                 styles.modalButtonFull,
-                { backgroundColor: NemyColors.primary },
+                { backgroundColor: MouzoColors.primary },
               ]}
               onPress={() => setShowEditProfileModal(false)}
             >
@@ -1355,7 +1355,7 @@ export default function ProfileScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="map-pin" size={28} color={NemyColors.primary} />
+              <Feather name="map-pin" size={28} color={MouzoColors.primary} />
             </View>
             <ThemedText type="h3" style={styles.modalTitle}>
               Direcciones guardadas
@@ -1370,7 +1370,7 @@ export default function ProfileScreen() {
             <Pressable
               style={[
                 styles.modalButtonFull,
-                { backgroundColor: NemyColors.primary },
+                { backgroundColor: MouzoColors.primary },
               ]}
               onPress={() => setShowAddressesModal(false)}
             >
@@ -1527,7 +1527,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   logoutButton: {
-    backgroundColor: NemyColors.error,
+    backgroundColor: MouzoColors.error,
   },
   themeOptions: {
     width: "100%",

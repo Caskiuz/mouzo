@@ -60,7 +60,7 @@ if (isProduction) {
   });
 } else {
   app.get('/', (req, res) => {
-    res.json({ message: 'NEMY API Server', frontend: process.env.FRONTEND_URL || 'http://localhost:8081' });
+    res.json({ message: 'MOUZO API Server', frontend: process.env.FRONTEND_URL || 'http://localhost:8081' });
   });
 }
 

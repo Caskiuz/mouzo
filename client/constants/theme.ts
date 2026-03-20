@@ -1,4 +1,4 @@
-// Unified Design System for NEMY App
+// Unified Design System for MOUZO App
 export const theme = {
   colors: {
     primary: '#FF8C00',
@@ -83,7 +83,7 @@ export const theme = {
 export type Theme = typeof theme;
 
 // Export individual objects for easier imports
-export const NemyColors = theme.colors;
+export const MouzoColors = theme.colors;
 export const Spacing = theme.spacing;
 export const BorderRadius = theme.borderRadius;
 export const Typography = theme.typography;

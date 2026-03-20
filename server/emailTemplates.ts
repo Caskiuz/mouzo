@@ -61,10 +61,10 @@ export async function sendOrderConfirmationEmail(
             </div>
             
             <p>Te notificaremos cuando tu pedido esté en camino.</p>
-            <p>¡Gracias por usar NEMY! 🚀</p>
+            <p>¡Gracias por usar MOUZO! 🚀</p>
           </div>
           <div class="footer">
-            <p>NEMY - Conectando Autlán</p>
+            <p>MOUZO - Conectando Autlán</p>
             <p>Del náhuatl "vivir"</p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export async function sendOrderConfirmationEmail(
 
   try {
     await resend.emails.send({
-      from: 'NEMY <pedidos@nemy.app>',
+      from: 'MOUZO <pedidos@mouzo.app>',
       to,
       subject: `Pedido Confirmado #${data.orderNumber}`,
       html,
@@ -123,7 +123,7 @@ export async function sendOrderOnTheWayEmail(
             <p>¡Prepárate para recibir tu pedido! 🎉</p>
           </div>
           <div class="footer">
-            <p>NEMY - Conectando Autlán</p>
+            <p>MOUZO - Conectando Autlán</p>
           </div>
         </div>
       </body>
@@ -132,7 +132,7 @@ export async function sendOrderOnTheWayEmail(
 
   try {
     await resend.emails.send({
-      from: 'NEMY <pedidos@nemy.app>',
+      from: 'MOUZO <pedidos@mouzo.app>',
       to,
       subject: `Tu pedido #${data.orderNumber} va en camino 🚴`,
       html,
@@ -172,16 +172,16 @@ export async function sendOrderDeliveredEmail(
             <p>Esperamos que disfrutes tu pedido de <strong>${data.businessName}</strong>.</p>
             
             <div style="text-align: center;">
-              <a href="https://nemy.app/orders/${data.orderNumber}/review" class="cta">
+              <a href="https://mouzo.app/orders/${data.orderNumber}/review" class="cta">
                 ⭐ Califica tu experiencia
               </a>
             </div>
             
             <p>Tu opinión nos ayuda a mejorar el servicio.</p>
-            <p>¡Gracias por usar NEMY! 🎉</p>
+            <p>¡Gracias por usar MOUZO! 🎉</p>
           </div>
           <div class="footer">
-            <p>NEMY - Conectando Autlán</p>
+            <p>MOUZO - Conectando Autlán</p>
           </div>
         </div>
       </body>
@@ -190,7 +190,7 @@ export async function sendOrderDeliveredEmail(
 
   try {
     await resend.emails.send({
-      from: 'NEMY <pedidos@nemy.app>',
+      from: 'MOUZO <pedidos@mouzo.app>',
       to,
       subject: `Pedido Entregado #${data.orderNumber} ✅`,
       html,
@@ -252,7 +252,7 @@ export async function sendPaymentReceiptEmail(
             <p>Gracias por tu compra. 🙏</p>
           </div>
           <div class="footer">
-            <p>NEMY - Conectando Autlán</p>
+            <p>MOUZO - Conectando Autlán</p>
             <p>Este es un recibo electrónico</p>
           </div>
         </div>
@@ -262,7 +262,7 @@ export async function sendPaymentReceiptEmail(
 
   try {
     await resend.emails.send({
-      from: 'NEMY <pagos@nemy.app>',
+      from: 'MOUZO <pagos@mouzo.app>',
       to,
       subject: `Recibo de Pago - Pedido #${data.orderNumber}`,
       html,

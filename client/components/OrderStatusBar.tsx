@@ -12,7 +12,7 @@ import { Feather } from "@expo/vector-icons";
 
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, NemyColors } from "@/constants/theme";
+import { Spacing, MouzoColors } from "@/constants/theme";
 import { OrderStatus } from "@/types";
 
 interface OrderStatusBarProps {
@@ -70,9 +70,9 @@ function StatusDot({
   }));
 
   const backgroundColor = isCompleted
-    ? NemyColors.primary
+    ? MouzoColors.primary
     : isActive
-      ? NemyColors.primary
+      ? MouzoColors.primary
       : theme.border;
 
   return (
@@ -89,10 +89,10 @@ export function OrderStatusBar({ status }: OrderStatusBarProps) {
   if (status === "cancelled") {
     return (
       <View style={styles.cancelledContainer}>
-        <Feather name="x-circle" size={24} color={NemyColors.error} />
+        <Feather name="x-circle" size={24} color={MouzoColors.error} />
         <ThemedText
           type="h4"
-          style={{ color: NemyColors.error, marginLeft: Spacing.sm }}
+          style={{ color: MouzoColors.error, marginLeft: Spacing.sm }}
         >
           Pedido cancelado
         </ThemedText>
@@ -137,7 +137,7 @@ export function OrderStatusBar({ status }: OrderStatusBarProps) {
                     styles.line,
                     {
                       backgroundColor: isCompleted
-                        ? NemyColors.primary
+                        ? MouzoColors.primary
                         : theme.border,
                     },
                   ]}

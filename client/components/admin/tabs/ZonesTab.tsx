@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator, TextInput, Modal } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { NemyColors, Spacing, BorderRadius } from "../../../constants/theme";
+import { MouzoColors, Spacing, BorderRadius } from "../../../constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface ZonesTabProps {
@@ -50,7 +50,7 @@ export const ZonesTab: React.FC<ZonesTabProps> = ({ theme, showToast, onSelectZo
   if (loading) {
     return (
       <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
       </View>
     );
   }
@@ -64,8 +64,8 @@ export const ZonesTab: React.FC<ZonesTabProps> = ({ theme, showToast, onSelectZo
           <Pressable key={zone.id} style={[styles.zoneCard, { backgroundColor: theme.card }]} onPress={() => onSelectZone(zone)}>
             <View style={styles.zoneHeader}>
               <Text style={[styles.zoneName, { color: theme.text }]}>{zone.name}</Text>
-              <View style={[styles.badge, { backgroundColor: zone.isActive ? NemyColors.success + "20" : "#ccc" }]}>
-                <Text style={{ color: zone.isActive ? NemyColors.success : "#666", fontSize: 12 }}>
+              <View style={[styles.badge, { backgroundColor: zone.isActive ? MouzoColors.success + "20" : "#ccc" }]}>
+                <Text style={{ color: zone.isActive ? MouzoColors.success : "#666", fontSize: 12 }}>
                   {zone.isActive ? "Activa" : "Inactiva"}
                 </Text>
               </View>

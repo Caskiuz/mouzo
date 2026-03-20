@@ -32,12 +32,12 @@ Por favor, describe tu consulta con más detalle.`;
           messages: [
             {
               role: 'system',
-              content: `Eres un asistente de soporte para NEMY, una plataforma de delivery en Autlán, Jalisco, México.
+              content: `Eres un asistente de soporte para MOUZO, una plataforma de delivery en Autlán, Jalisco, México.
 
 INFORMACIÓN CLAVE:
-- NEMY significa "vivir" en náhuatl
+- MOUZO significa "vivir" en náhuatl
 - Conectamos negocios locales, clientes y repartidores
-- Comisiones: 15% del producto para NEMY, 100% del producto para el negocio, 100% del delivery para el repartidor
+- Comisiones: 15% del producto para MOUZO, 100% del producto para el negocio, 100% del delivery para el repartidor
 - Pagos con tarjeta (Stripe) o efectivo
 - Autenticación solo por teléfono con SMS
 - Zona de cobertura: Autlán y alrededores
@@ -71,7 +71,7 @@ Responde de manera amigable, profesional y concisa en español.`
 
       const contents = [{
         role: "user",
-        parts: [{ text: `Eres un asistente de soporte para NEMY. Responde en español de forma amigable y concisa.\n\nUsuario: ${message}` }]
+        parts: [{ text: `Eres un asistente de soporte para MOUZO. Responde en español de forma amigable y concisa.\n\nUsuario: ${message}` }]
       }];
 
       const response = await fetch(

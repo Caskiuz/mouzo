@@ -22,7 +22,7 @@ import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface Address {
@@ -179,7 +179,7 @@ export default function AddressesScreen() {
         styles.addressCard,
         { backgroundColor: theme.card },
         address.isDefault && {
-          borderColor: NemyColors.primary,
+          borderColor: MouzoColors.primary,
           borderWidth: 2,
         },
         Shadows.sm,
@@ -189,14 +189,14 @@ export default function AddressesScreen() {
         <View
           style={[
             styles.labelBadge,
-            { backgroundColor: NemyColors.primary + "20" },
+            { backgroundColor: MouzoColors.primary + "20" },
           ]}
         >
-          <Feather name="map-pin" size={14} color={NemyColors.primary} />
+          <Feather name="map-pin" size={14} color={MouzoColors.primary} />
           <ThemedText
             type="caption"
             style={{
-              color: NemyColors.primary,
+              color: MouzoColors.primary,
               marginLeft: 4,
               fontWeight: "600",
             }}
@@ -208,10 +208,10 @@ export default function AddressesScreen() {
           <View
             style={[
               styles.defaultBadge,
-              { backgroundColor: NemyColors.success + "20" },
+              { backgroundColor: MouzoColors.success + "20" },
             ]}
           >
-            <ThemedText type="caption" style={{ color: NemyColors.success }}>
+            <ThemedText type="caption" style={{ color: MouzoColors.success }}>
               Predeterminada
             </ThemedText>
           </View>
@@ -232,10 +232,10 @@ export default function AddressesScreen() {
             onPress={() => setDefaultMutation.mutate(address.id)}
             style={[styles.actionButton, { borderColor: theme.border }]}
           >
-            <Feather name="check-circle" size={16} color={NemyColors.primary} />
+            <Feather name="check-circle" size={16} color={MouzoColors.primary} />
             <ThemedText
               type="caption"
-              style={{ color: NemyColors.primary, marginLeft: 4 }}
+              style={{ color: MouzoColors.primary, marginLeft: 4 }}
             >
               Predeterminada
             </ThemedText>
@@ -245,13 +245,13 @@ export default function AddressesScreen() {
           onPress={() => handleDeletePress(address)}
           style={[
             styles.actionButton,
-            { borderColor: NemyColors.error + "40" },
+            { borderColor: MouzoColors.error + "40" },
           ]}
         >
-          <Feather name="trash-2" size={16} color={NemyColors.error} />
+          <Feather name="trash-2" size={16} color={MouzoColors.error} />
           <ThemedText
             type="caption"
-            style={{ color: NemyColors.error, marginLeft: 4 }}
+            style={{ color: MouzoColors.error, marginLeft: 4 }}
           >
             Eliminar
           </ThemedText>
@@ -263,7 +263,7 @@ export default function AddressesScreen() {
   if (isLoading) {
     return (
       <ThemedView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
       </ThemedView>
     );
   }

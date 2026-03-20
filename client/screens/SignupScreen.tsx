@@ -22,13 +22,13 @@ import { Button } from "@/components/Button";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { UserRole } from "@/types";
 import { useToast } from "@/contexts/ToastContext";
 
 const foodBgImage = require("../../assets/images/food-ingredients-bg.png");
-const PENDING_BUSINESS_DRAFT_KEY = "@nemy_pending_business_draft";
+const PENDING_BUSINESS_DRAFT_KEY = "@mouzo_pending_business_draft";
 
 type SignupScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Signup">;
@@ -208,8 +208,8 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
     try {
       await Share.share({
         message:
-          "Descubre NEMY - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://nemy.replit.app",
-        title: "NEMY - Delivery Local",
+          "Descubre MOUZO - Tu delivery local de confianza en Autlán. Pide comida y productos del mercado con un toque. Descarga ahora: https://mouzo.replit.app",
+        title: "MOUZO - Delivery Local",
       });
     } catch (error) {
       console.log("Error sharing:", error);
@@ -305,7 +305,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                   secureTextEntry={!showPassword}
                   placeholderTextColor="#999999"
                   style={styles.textInput}
-                  selectionColor={NemyColors.primary}
+                  selectionColor={MouzoColors.primary}
                   testID="input-password"
                 />
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
@@ -349,7 +349,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                   secureTextEntry={!showPassword}
                   placeholderTextColor="#999999"
                   style={styles.textInput}
-                  selectionColor={NemyColors.primary}
+                  selectionColor={MouzoColors.primary}
                   testID="input-confirm-password"
                 />
               </View>
@@ -390,7 +390,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                     autoComplete="tel"
                     placeholderTextColor="#999999"
                     style={styles.textInput}
-                    selectionColor={NemyColors.primary}
+                    selectionColor={MouzoColors.primary}
                     maxLength={12}
                     testID="input-phone"
                   />
@@ -442,7 +442,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                       }}
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                     />
                   </View>
                   {errors.businessName ? (
@@ -519,7 +519,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                       }}
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                     />
                   </View>
                   {errors.businessAddress ? (
@@ -547,7 +547,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                       keyboardType="phone-pad"
                       placeholderTextColor="#999999"
                       style={styles.textInput}
-                      selectionColor={NemyColors.primary}
+                      selectionColor={MouzoColors.primary}
                       maxLength={12}
                     />
                   </View>
@@ -556,7 +556,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
             ) : null}
 
             <ThemedText type="small" style={styles.roleLabel}>
-              ¿Cómo quieres usar NEMY?
+              ¿Cómo quieres usar MOUZO?
             </ThemedText>
             <View style={styles.rolesContainer}>
               {ROLES.map((r) => (
@@ -570,9 +570,9 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                     styles.roleCard,
                     {
                       backgroundColor:
-                        role === r.value ? NemyColors.primaryLight : "#F5F5F5",
+                        role === r.value ? MouzoColors.primaryLight : "#F5F5F5",
                       borderColor:
-                        role === r.value ? NemyColors.primary : "#E0E0E0",
+                        role === r.value ? MouzoColors.primary : "#E0E0E0",
                       borderWidth: role === r.value ? 2 : 1,
                     },
                   ]}
@@ -583,7 +583,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
                       styles.roleIcon,
                       {
                         backgroundColor:
-                          role === r.value ? NemyColors.primary : "#E0E0E0",
+                          role === r.value ? MouzoColors.primary : "#E0E0E0",
                       },
                     ]}
                   >
@@ -657,7 +657,7 @@ export default function SignupScreen({ navigation, route }: SignupScreenProps) {
           <Pressable onPress={handleShare} style={styles.shareButton}>
             <Feather name="share-2" size={18} color="#FFFFFF" />
             <ThemedText type="small" style={styles.shareText}>
-              Compartir NEMY
+              Compartir MOUZO
             </ThemedText>
           </Pressable>
 
@@ -754,7 +754,7 @@ const styles = StyleSheet.create({
     height: 52,
   },
   inputBoxError: {
-    borderColor: NemyColors.error,
+    borderColor: MouzoColors.error,
   },
   inputBoxIcon: {
     marginRight: Spacing.sm,
@@ -767,7 +767,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   inputError: {
-    color: NemyColors.error,
+    color: MouzoColors.error,
     marginTop: Spacing.xs,
   },
   phoneHint: {
@@ -825,15 +825,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   businessTypeChipActive: {
-    borderColor: NemyColors.primary,
-    backgroundColor: NemyColors.primaryLight,
+    borderColor: MouzoColors.primary,
+    backgroundColor: MouzoColors.primaryLight,
   },
   businessTypeChipText: {
     color: "#5D5A78",
     fontWeight: "600",
   },
   businessTypeChipTextActive: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontWeight: "700",
   },
   signupButton: {
@@ -864,7 +864,7 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.8)",
   },
   loginLinkText: {
-    color: NemyColors.primary,
+    color: MouzoColors.primary,
     fontWeight: "600",
   },
 });

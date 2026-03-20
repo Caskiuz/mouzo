@@ -19,7 +19,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -131,21 +131,21 @@ export default function SupportScreen() {
               }}
               style={[
                 styles.chatPromoCard,
-                { backgroundColor: NemyColors.primary + "10", borderColor: NemyColors.primary }
+                { backgroundColor: MouzoColors.primary + "10", borderColor: MouzoColors.primary }
               ]}
             >
               <View style={styles.chatPromoIcon}>
-                <Feather name="zap" size={24} color={NemyColors.primary} />
+                <Feather name="zap" size={24} color={MouzoColors.primary} />
               </View>
               <View style={{ flex: 1 }}>
-                <ThemedText type="h4" style={{ color: NemyColors.primary }}>
+                <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
                   ¿Necesitas ayuda rápida?
                 </ThemedText>
                 <ThemedText type="small" style={{ color: theme.textSecondary }}>
                   Prueba nuestro chat con IA para respuestas instantáneas.
                 </ThemedText>
               </View>
-              <Feather name="chevron-right" size={20} color={NemyColors.primary} />
+              <Feather name="chevron-right" size={20} color={MouzoColors.primary} />
             </Pressable>
 
             <ThemedText type="body" style={styles.label}>
@@ -197,7 +197,7 @@ export default function SupportScreen() {
                 style={[
                   styles.submitButton,
                   {
-                    backgroundColor: NemyColors.primary,
+                    backgroundColor: MouzoColors.primary,
                     opacity: createTicketMutation.isPending ? 0.6 : 1,
                   },
                 ]}
@@ -221,7 +221,7 @@ export default function SupportScreen() {
             }}
             style={[
               styles.newTicketButton,
-              { backgroundColor: NemyColors.primary },
+              { backgroundColor: MouzoColors.primary },
             ]}
           >
             <Feather name="plus" size={20} color="#FFFFFF" />

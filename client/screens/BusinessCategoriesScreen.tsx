@@ -13,7 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface Category {
@@ -95,7 +95,7 @@ export default function BusinessCategoriesScreen() {
       <Switch
         value={item.isActive}
         onValueChange={() => toggleActive(item.id, item.isActive)}
-        trackColor={{ false: "#767577", true: NemyColors.primary }}
+        trackColor={{ false: "#767577", true: MouzoColors.primary }}
         thumbColor="#fff"
       />
     </View>
@@ -112,7 +112,7 @@ export default function BusinessCategoriesScreen() {
         <ThemedText type="h2">Categorías</ThemedText>
         <Pressable
           onPress={openAddModal}
-          style={[styles.addButton, { backgroundColor: NemyColors.primary }]}
+          style={[styles.addButton, { backgroundColor: MouzoColors.primary }]}
         >
           <Feather name="plus" size={24} color="#FFF" />
         </Pressable>
@@ -190,7 +190,7 @@ export default function BusinessCategoriesScreen() {
               </Pressable>
               <Pressable
                 onPress={handleSave}
-                style={[styles.modalButton, { backgroundColor: NemyColors.primary }]}
+                style={[styles.modalButton, { backgroundColor: MouzoColors.primary }]}
               >
                 <ThemedText type="body" style={{ color: "#FFF" }}>
                   Guardar

@@ -1,4 +1,4 @@
-// Enhanced Stripe Client for NEMY - Production Ready
+// Enhanced Stripe Client for MOUZO - Production Ready
 import Stripe from "stripe";
 import { db } from "./db";
 import { businesses } from "@shared/schema-mysql";

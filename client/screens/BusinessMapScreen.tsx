@@ -19,7 +19,7 @@ import * as Location from "expo-location";
 
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
-import { NemyColors, Spacing, BorderRadius, Shadows } from "@/constants/theme";
+import { MouzoColors, Spacing, BorderRadius, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
@@ -166,7 +166,7 @@ export default function BusinessMapScreen() {
   if (isLoading || !MapView) {
     return (
       <View style={[styles.container, styles.centered, { backgroundColor: theme.backgroundRoot }]}>
-        <ActivityIndicator size="large" color={NemyColors.primary} />
+        <ActivityIndicator size="large" color={MouzoColors.primary} />
         <ThemedText type="body" style={{ marginTop: Spacing.md, color: theme.textSecondary }}>
           Cargando mapa...
         </ThemedText>
@@ -192,15 +192,15 @@ export default function BusinessMapScreen() {
             onPress={() => handlePinPress(b)}
           >
             {/* Pin personalizado */}
-            <View style={[styles.pin, { borderColor: b.isOpen ? NemyColors.primary : "#9E9E9E" }]}>
-              <View style={[styles.pinInner, { backgroundColor: b.isOpen ? NemyColors.primary : "#9E9E9E" }]}>
+            <View style={[styles.pin, { borderColor: b.isOpen ? MouzoColors.primary : "#9E9E9E" }]}>
+              <View style={[styles.pinInner, { backgroundColor: b.isOpen ? MouzoColors.primary : "#9E9E9E" }]}>
                 <Feather
                   name={b.type === "market" ? "shopping-bag" : "coffee"}
                   size={16}
                   color="#FFFFFF"
                 />
               </View>
-              <View style={[styles.pinTail, { borderTopColor: b.isOpen ? NemyColors.primary : "#9E9E9E" }]} />
+              <View style={[styles.pinTail, { borderTopColor: b.isOpen ? MouzoColors.primary : "#9E9E9E" }]} />
             </View>
           </Marker>
         ))}
@@ -215,7 +215,7 @@ export default function BusinessMapScreen() {
           <Feather name="arrow-left" size={22} color={theme.text} />
         </Pressable>
         <View style={[styles.headerTitle, { backgroundColor: theme.card }]}>
-          <Feather name="map-pin" size={16} color={NemyColors.primary} />
+          <Feather name="map-pin" size={16} color={MouzoColors.primary} />
           <ThemedText type="body" style={{ fontWeight: "700", marginLeft: Spacing.xs }}>
             {businesses.length} negocios
           </ThemedText>
@@ -224,14 +224,14 @@ export default function BusinessMapScreen() {
           onPress={handleCenterUser}
           style={[styles.floatBtn, { backgroundColor: theme.card }]}
         >
-          <Feather name="navigation" size={22} color={NemyColors.primary} />
+          <Feather name="navigation" size={22} color={MouzoColors.primary} />
         </Pressable>
       </View>
 
       {/* Leyenda */}
       <View style={[styles.legend, { backgroundColor: theme.card, bottom: selected ? 280 : insets.bottom + Spacing.lg }]}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: NemyColors.primary }]} />
+          <View style={[styles.legendDot, { backgroundColor: MouzoColors.primary }]} />
           <ThemedText type="caption" style={{ color: theme.textSecondary }}>Abierto</ThemedText>
         </View>
         <View style={styles.legendItem}>
@@ -263,8 +263,8 @@ export default function BusinessMapScreen() {
                 <ThemedText type="h4" numberOfLines={1} style={{ flex: 1 }}>
                   {selected.name}
                 </ThemedText>
-                <View style={[styles.statusBadge, { backgroundColor: selected.isOpen ? NemyColors.primary + "20" : "#9E9E9E20" }]}>
-                  <ThemedText type="caption" style={{ color: selected.isOpen ? NemyColors.primary : "#9E9E9E", fontWeight: "700" }}>
+                <View style={[styles.statusBadge, { backgroundColor: selected.isOpen ? MouzoColors.primary + "20" : "#9E9E9E20" }]}>
+                  <ThemedText type="caption" style={{ color: selected.isOpen ? MouzoColors.primary : "#9E9E9E", fontWeight: "700" }}>
                     {selected.isOpen ? "Abierto" : "Cerrado"}
                   </ThemedText>
                 </View>
@@ -295,10 +295,10 @@ export default function BusinessMapScreen() {
           <View style={styles.cardButtons}>
             <Pressable
               onPress={() => handleDirections(selected)}
-              style={[styles.btnDirections, { borderColor: NemyColors.primary }]}
+              style={[styles.btnDirections, { borderColor: MouzoColors.primary }]}
             >
-              <Feather name="navigation" size={16} color={NemyColors.primary} />
-              <ThemedText type="small" style={{ color: NemyColors.primary, fontWeight: "700", marginLeft: Spacing.xs }}>
+              <Feather name="navigation" size={16} color={MouzoColors.primary} />
+              <ThemedText type="small" style={{ color: MouzoColors.primary, fontWeight: "700", marginLeft: Spacing.xs }}>
                 Cómo llegar
               </ThemedText>
             </Pressable>
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     backgroundColor: "transparent",
-    borderColor: NemyColors.primary,
+    borderColor: MouzoColors.primary,
   },
   pinInner: {
     width: 36,
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 8,
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderTopColor: NemyColors.primary,
+    borderTopColor: MouzoColors.primary,
     marginTop: -1,
   },
 
@@ -463,6 +463,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: Spacing.md,
     borderRadius: BorderRadius.md,
-    backgroundColor: NemyColors.primary,
+    backgroundColor: MouzoColors.primary,
   },
 });

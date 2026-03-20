@@ -9,7 +9,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Badge } from "@/components/Badge";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, NemyColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -75,7 +75,7 @@ export default function AdminSettlementsScreen() {
           <ThemedText type="caption" style={{ color: theme.textSecondary }}>
             Monto a liquidar:
           </ThemedText>
-          <ThemedText type="h3" style={{ color: NemyColors.primary }}>
+          <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
             ${(item.amount_owed / 100).toFixed(2)}
           </ThemedText>
         </View>
@@ -85,8 +85,8 @@ export default function AdminSettlementsScreen() {
             onPress={() => Alert.alert("Comprobante", item.payment_proof_url)}
             style={styles.proofButton}
           >
-            <Feather name="image" size={16} color={NemyColors.primary} />
-            <ThemedText type="small" style={{ color: NemyColors.primary, marginLeft: 8 }}>
+            <Feather name="image" size={16} color={MouzoColors.primary} />
+            <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: 8 }}>
               Ver comprobante
             </ThemedText>
           </Pressable>
@@ -106,7 +106,7 @@ export default function AdminSettlementsScreen() {
                   ]
                 );
               }}
-              style={[styles.actionButton, { backgroundColor: NemyColors.success }]}
+              style={[styles.actionButton, { backgroundColor: MouzoColors.success }]}
             >
               <Feather name="check" size={18} color="#FFF" />
               <ThemedText type="small" style={{ color: "#FFF", marginLeft: 8 }}>
@@ -119,7 +119,7 @@ export default function AdminSettlementsScreen() {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 setRejectModal({ visible: true, id: item.id, notes: "" });
               }}
-              style={[styles.actionButton, { backgroundColor: NemyColors.error }]}
+              style={[styles.actionButton, { backgroundColor: MouzoColors.error }]}
             >
               <Feather name="x" size={18} color="#FFF" />
               <ThemedText type="small" style={{ color: "#FFF", marginLeft: 8 }}>
@@ -148,7 +148,7 @@ export default function AdminSettlementsScreen() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Feather name="check-circle" size={64} color={NemyColors.success} />
+            <Feather name="check-circle" size={64} color={MouzoColors.success} />
             <ThemedText type="h4" style={{ marginTop: Spacing.lg }}>
               Sin liquidaciones pendientes
             </ThemedText>
@@ -194,7 +194,7 @@ export default function AdminSettlementsScreen() {
                 }
                 rejectMutation.mutate({ id: rejectModal.id, notes: rejectModal.notes });
               }}
-              style={[styles.submitButton, { backgroundColor: NemyColors.error }]}
+              style={[styles.submitButton, { backgroundColor: MouzoColors.error }]}
             >
               <ThemedText type="body" style={{ color: "#FFF", fontWeight: "600" }}>
                 Rechazar liquidación
