@@ -172,8 +172,24 @@ client/replit_integrations/
 server/replit_integrations/
 
 # ============================================
-# Tests
+# Tests & QA
 # ============================================
 tests/
 test-results/
 coverage/
+e2e.spec.ts
+playwright.config.ts
+jest.config.ts
+
+# ============================================
+# Archivos raíz no esenciales
+# ============================================
+manifest.json
+rmdir
+setup-db-local.sql
+SCRIPTS-README.md
+test-wallet-endpoint.txt
+verify-replit-backend.js
+create-available-orders.js
+.env.example
+.env.production.example
