@@ -5,7 +5,6 @@ import {
   ScrollView,
   Pressable,
   ActivityIndicator,
-  Platform,
   TextInput,
   Modal,
 } from "react-native";
@@ -23,13 +22,13 @@ import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
-import { apiRequest, apiRequestRaw } from "@/lib/query-client";
+import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from "@/utils/distance";
 
 type SubstitutionOption = "refund" | "call" | "substitute";
 
-const isExpoGo = Constants.appOwnership === "expo";
+type PaymentMethod = "pago_movil" | "efectivo";
 
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -51,10 +50,9 @@ export default function CheckoutScreen({ route }: any) {
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [business, setBusiness] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPaymentReady, setIsPaymentReady] = useState(false);
-  const [stripeModule, setStripeModule] = useState<any>(null);
   const [dynamicDeliveryFee, setDynamicDeliveryFee] = useState<number | null>(null);
   const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pago_movil");
 
   // Preferencias de sustitución
   const [globalSubstitution, setGlobalSubstitution] =
@@ -159,103 +157,6 @@ export default function CheckoutScreen({ route }: any) {
     setEstimatedTime(time);
   };
 
-  useEffect(() => {
-    if (Platform.OS !== "web" && !isExpoGo) {
-      loadStripeModule();
-    }
-  }, []);
-
-  const loadStripeModule = async () => {
-    try {
-      const stripe = await import("@stripe/stripe-react-native");
-      setStripeModule(stripe);
-    } catch (error) {
-      console.log("Stripe native not available in this environment");
-    }
-  };
-
-  useEffect(() => {
-    if (
-      cart &&
-      user &&
-      stripeModule &&
-      Platform.OS !== "web"
-    ) {
-      initializePaymentSheet();
-    }
-  }, [cart, user, stripeModule]);
-
-  const initializePaymentSheet = async () => {
-    if (!cart || !user || !stripeModule) return;
-
-    try {
-      const payload = {
-        amount: Math.round(total * 100),
-        userId: user.id,
-      };
-      const response = await apiRequestRaw(
-        "POST",
-        "/api/stripe/create-payment-intent",
-        payload,
-      );
-
-      const responseText = await response.text();
-      let parsedBody: any = {};
-      if (responseText) {
-        try {
-          parsedBody = JSON.parse(responseText);
-        } catch {
-          parsedBody = { error: responseText };
-        }
-      }
-
-      if (!response.ok) {
-        const message =
-          (parsedBody && (parsedBody.message || parsedBody.error)) ||
-          "No se pudo preparar el pago";
-        console.error("Create payment intent failed", {
-          status: response.status,
-          body: parsedBody,
-          payload,
-        });
-        setIsPaymentReady(false);
-        showToast(message, "error");
-        return;
-      }
-
-      const clientSecret = parsedBody?.clientSecret;
-      if (!clientSecret) {
-        console.error("Missing clientSecret", { body: parsedBody, payload });
-        setIsPaymentReady(false);
-        showToast("No se pudo preparar el pago", "error");
-        return;
-      }
-
-      const { error } = await stripeModule.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: "MOUZO",
-        style: "automatic",
-        appearance: {
-          colors: {
-            primary: MouzoColors.primary,
-          },
-        },
-      });
-
-      if (!error) {
-        setIsPaymentReady(true);
-      } else {
-        console.error("Error initializing payment sheet:", error);
-        setIsPaymentReady(false);
-        showToast(error.message || "No se pudo preparar el pago", "error");
-      }
-    } catch (error) {
-      console.error("Error creating payment intent:", error);
-      setIsPaymentReady(false);
-      showToast("No se pudo preparar el pago. Reintenta.", "error");
-    }
-  };
-
   const handlePlaceOrder = async () => {
     if (!cart || !user) {
       showToast("Error: Usuario no autenticado", "error");
@@ -267,50 +168,13 @@ export default function CheckoutScreen({ route }: any) {
       return;
     }
 
-    if (Platform.OS === "web") {
-      showToast("Los pagos solo están disponibles en la app móvil", "error");
-      return;
-    }
-
     setIsLoading(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     try {
-      if (Platform.OS !== "web" && stripeModule) {
-        // Si la hoja no está lista, intenta re-prepararla antes de presentar
-        if (!isPaymentReady) {
-          await initializePaymentSheet();
-        }
-
-        if (!isPaymentReady) {
-          showToast("No se pudo preparar el pago. Intenta de nuevo.", "error");
-          setIsLoading(false);
-          return;
-        }
-
-        const { error } = await stripeModule.presentPaymentSheet();
-
-        if (error) {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-          if (error.code !== "Canceled") {
-            showToast(error.message || "Error en el pago", "error");
-          }
-          setIsLoading(false);
-          return;
-        }
-      }
-
-      // Preparar preferencias de sustitución
-      const finalItemSubstitutions = showItemSubstitutions
-        ? itemSubstitutions
-        : {};
-
-      // Calcular el período de arrepentimiento (60 segundos desde ahora)
-      const regretPeriodEndsAt = new Date(Date.now() + 60 * 1000).toISOString();
-
-      // Calcular valores para backend (subtotal es precio base)
+      const finalItemSubstitutions = showItemSubstitutions ? itemSubstitutions : {};
       const productosBase = Math.round(subtotal * 100);
-      const nemyCommission = Math.round(subtotal * 0.15 * 100);
+      const nemyCommissionCents = Math.round(subtotal * 0.15 * 100);
       const totalAmount = Math.round(total * 100);
       
       const orderResponse = await apiRequest("POST", "/api/orders", {
@@ -320,42 +184,64 @@ export default function CheckoutScreen({ route }: any) {
         items: JSON.stringify(cart.items),
         status: "pending",
         productosBase: productosBase,
-        nemyCommission: nemyCommission,
+        nemyCommission: nemyCommissionCents,
         subtotal: productosBase,
         deliveryFee: Math.round(deliveryFee * 100),
         total: totalAmount,
-        paymentMethod: "card",
+        paymentMethod: paymentMethod,
         deliveryAddressId: selectedAddress.id,
         deliveryAddress: `${selectedAddress.street}, ${selectedAddress.city}`,
         deliveryLatitude: selectedAddress.latitude,
         deliveryLongitude: selectedAddress.longitude,
         substitutionPreference: globalSubstitution,
-        itemSubstitutionPreferences:
-          Object.keys(finalItemSubstitutions).length > 0
-            ? JSON.stringify(finalItemSubstitutions)
-            : null,
+        itemSubstitutionPreferences: Object.keys(finalItemSubstitutions).length > 0 ? JSON.stringify(finalItemSubstitutions) : null,
         couponCode: appliedCoupon ? couponCode.toUpperCase() : null,
         couponDiscount: appliedCoupon ? Math.round(couponDiscount * 100) : null,
       });
 
       const order = await orderResponse.json();
-      console.log('📦 Order response:', order);
 
-      await clearCart();
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setIsLoading(false);
+      if (paymentMethod === "pago_movil") {
+        const pmResponse = await apiRequest("POST", `/api/pago-movil/init/${order.orderId || order.id}`, {
+          amount: totalAmount,
+        });
+        const pmData = await pmResponse.json();
+        
+        await clearCart();
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        setIsLoading(false);
 
-      // Navegar a la pantalla de confirmación con cronómetro de arrepentimiento
-      navigation.reset({
-        index: 0,
-        routes: [
-          { name: "Main" },
-          {
-            name: "OrderConfirmation",
-            params: { orderId: order.orderId || order.id, regretPeriodEndsAt },
-          },
-        ],
-      });
+        navigation.reset({
+          index: 0,
+          routes: [
+            { name: "Main" },
+            {
+              name: "PagoMovilPayment",
+              params: {
+                orderId: order.orderId || order.id,
+                reference: pmData.reference,
+                amount: total,
+                mouzo: pmData.mouzo,
+              },
+            },
+          ],
+        });
+      } else {
+        await clearCart();
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        setIsLoading(false);
+
+        navigation.reset({
+          index: 0,
+          routes: [
+            { name: "Main" },
+            {
+              name: "OrderConfirmation",
+              params: { orderId: order.orderId || order.id },
+            },
+          ],
+        });
+      }
     } catch (error: any) {
       console.error("Error placing order:", error);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -373,9 +259,6 @@ export default function CheckoutScreen({ route }: any) {
       </View>
     );
   }
-
-  const isWeb = Platform.OS === "web";
-  const canPlaceOrder = isWeb ? false : !!stripeModule;
 
   // Helper para obtener el icono y texto de sustitución
   const getSubstitutionInfo = (option: SubstitutionOption) => {
@@ -426,7 +309,7 @@ export default function CheckoutScreen({ route }: any) {
 
         setAppliedCoupon(data.coupon);
         setCouponDiscount(finalDiscount);
-        showToast(`¡Cupón aplicado! Ahorras $${finalDiscount.toFixed(2)}`, "success");
+        showToast(`¡Cupón aplicado! Ahorras Bs. ${finalDiscount.toFixed(2)}`, "success");
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } else {
         showToast(data.error || "Cupón inválido", "error");
@@ -694,28 +577,64 @@ export default function CheckoutScreen({ route }: any) {
               Método de pago
             </ThemedText>
           </View>
-          <View
+          
+          <Pressable
+            onPress={() => {
+              setPaymentMethod("pago_movil");
+              Haptics.selectionAsync();
+            }}
             style={[
               styles.paymentOption,
               {
-                backgroundColor: theme.backgroundSecondary,
-                borderColor: MouzoColors.primary,
+                backgroundColor: paymentMethod === "pago_movil" ? MouzoColors.primaryLight : theme.backgroundSecondary,
+                borderColor: paymentMethod === "pago_movil" ? MouzoColors.primary : "transparent",
               },
             ]}
           >
             <View style={styles.paymentContent}>
-              <Feather name="credit-card" size={24} color={theme.text} />
+              <Feather name="smartphone" size={24} color={theme.text} />
               <View style={styles.paymentText}>
                 <ThemedText type="body" style={{ fontWeight: "600" }}>
-                  Tarjeta
+                  Pago Móvil
                 </ThemedText>
                 <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                  {isWeb ? "Pago simulado en web" : "Visa, Mastercard, etc."}
+                  Transferencia bancaria instantánea
                 </ThemedText>
               </View>
             </View>
-            <Feather name="check-circle" size={20} color={MouzoColors.primary} />
-          </View>
+            {paymentMethod === "pago_movil" && (
+              <Feather name="check-circle" size={20} color={MouzoColors.primary} />
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={() => {
+              setPaymentMethod("efectivo");
+              Haptics.selectionAsync();
+            }}
+            style={[
+              styles.paymentOption,
+              {
+                backgroundColor: paymentMethod === "efectivo" ? MouzoColors.primaryLight : theme.backgroundSecondary,
+                borderColor: paymentMethod === "efectivo" ? MouzoColors.primary : "transparent",
+              },
+            ]}
+          >
+            <View style={styles.paymentContent}>
+              <Feather name="dollar-sign" size={24} color={theme.text} />
+              <View style={styles.paymentText}>
+                <ThemedText type="body" style={{ fontWeight: "600" }}>
+                  Efectivo
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+                  Paga al recibir tu pedido
+                </ThemedText>
+              </View>
+            </View>
+            {paymentMethod === "efectivo" && (
+              <Feather name="check-circle" size={20} color={MouzoColors.primary} />
+            )}
+          </Pressable>
         </View>
 
         {/* Sección de cupón */}
@@ -736,7 +655,7 @@ export default function CheckoutScreen({ route }: any) {
                   {couponCode.toUpperCase()}
                 </ThemedText>
                 <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
-                  Ahorras ${couponDiscount.toFixed(2)}
+                  Ahorras Bs. {couponDiscount.toFixed(2)}
                 </ThemedText>
               </View>
               <Pressable onPress={handleRemoveCoupon} style={styles.removeCouponButton}>
@@ -938,7 +857,7 @@ export default function CheckoutScreen({ route }: any) {
                 {item.quantity}x {item.product.name}
               </ThemedText>
               <ThemedText type="small">
-                ${(item.product.price * item.quantity).toFixed(2)}
+                Bs. {(item.product.price * item.quantity).toFixed(2)}
               </ThemedText>
             </View>
           ))}
@@ -959,19 +878,19 @@ export default function CheckoutScreen({ route }: any) {
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             Subtotal
           </ThemedText>
-          <ThemedText type="body">${subtotal.toFixed(2)}</ThemedText>
+          <ThemedText type="body">Bs. {subtotal.toFixed(2)}</ThemedText>
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             Comision MOUZO (15%)
           </ThemedText>
-          <ThemedText type="body">${nemyCommission.toFixed(2)}</ThemedText>
+          <ThemedText type="body">Bs. {nemyCommission.toFixed(2)}</ThemedText>
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             Envío {estimatedTime ? `(~${estimatedTime} min)` : ''}
           </ThemedText>
-          <ThemedText type="body">${deliveryFee.toFixed(2)}</ThemedText>
+          <ThemedText type="body">Bs. {deliveryFee.toFixed(2)}</ThemedText>
         </View>
         {couponDiscount > 0 && (
           <View style={styles.totalRow}>
@@ -979,26 +898,22 @@ export default function CheckoutScreen({ route }: any) {
               Cupón ({couponCode})
             </ThemedText>
             <ThemedText type="body" style={{ color: MouzoColors.success }}>
-              -${couponDiscount.toFixed(2)}
+              -Bs. {couponDiscount.toFixed(2)}
             </ThemedText>
           </View>
         )}
         <View style={[styles.totalRow, styles.grandTotal]}>
           <ThemedText type="h3">Total</ThemedText>
           <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
-            ${total.toFixed(2)}
+            Bs. {total.toFixed(2)}
           </ThemedText>
         </View>
         <Button
           onPress={handlePlaceOrder}
-          disabled={isLoading || !canPlaceOrder}
+          disabled={isLoading}
         >
           {isLoading ? (
             <ActivityIndicator color="#FFFFFF" size="small" />
-          ) : isWeb ? (
-            "Solo disponible en app móvil"
-          ) : !isPaymentReady ? (
-            "Preparando pago..."
           ) : (
             "Confirmar pedido"
           )}
