@@ -19,9 +19,9 @@ export const getApiBaseUrl = (): string => {
     return envBackendUrl.trim();
   }
 
-  // Development mode - use localhost
+  // Development mode - use Render backend
   if (__DEV__) {
-    return "http://localhost:5000";
+    return "https://rabbitfood-backend.onrender.com";
   }
 
   // For web in production, use current origin (same domain)
