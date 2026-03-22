@@ -20,7 +20,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import {
   DashboardTab,
@@ -57,7 +57,7 @@ const menuItems: MenuItem[] = [
     subtitle: "Métricas y pedidos activos",
     icon: "bar-chart-2",
     tab: "dashboard",
-    color: MouzoColors.primary,
+    color: RabbitFoodColors.primary,
   },
   {
     title: "Pedidos",
@@ -821,7 +821,7 @@ export default function AdminMenuScreen() {
                     <View style={{ backgroundColor: '#f8f9fa', padding: 15, borderRadius: 10, marginBottom: 20 }}>
                       <ThemedText style={{ fontSize: 12, color: '#666', marginBottom: 8 }}>Información actual:</ThemedText>
                       <ThemedText style={{ marginBottom: 5 }}>Rol actual: <ThemedText style={{ fontWeight: 'bold' }}>{selectedUser.role}</ThemedText></ThemedText>
-                      <ThemedText>Registrado: <ThemedText style={{ fontWeight: 'bold' }}>{new Date(selectedUser.createdAt).toLocaleDateString('es-MX')}</ThemedText></ThemedText>
+                      <ThemedText>Registrado: <ThemedText style={{ fontWeight: 'bold' }}>{new Date(selectedUser.createdAt).toLocaleDateString('es-VE')}</ThemedText></ThemedText>
                     </View>
                   </ScrollView>
                   
@@ -866,7 +866,7 @@ export default function AdminMenuScreen() {
 
                   <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.modalHero}>
-                      <View style={[styles.modalAvatar, { backgroundColor: MouzoColors.warning }]}>
+                      <View style={[styles.modalAvatar, { backgroundColor: RabbitFoodColors.warning }]}>
                         <ThemedText style={{ color: "white", fontSize: 24, fontWeight: "bold" }}>
                           #
                         </ThemedText>
@@ -951,7 +951,7 @@ export default function AdminMenuScreen() {
                       </ThemedText>
                       <ThemedText style={{ color: theme.text }}>
                         Creado: <ThemedText style={{ fontWeight: "bold", color: theme.text }}>
-                          {new Date(selectedOrder.createdAt).toLocaleString("es-MX")}
+                          {new Date(selectedOrder.createdAt).toLocaleString("es-VE")}
                         </ThemedText>
                       </ThemedText>
                       {selectedOrder.notes ? (
@@ -967,7 +967,7 @@ export default function AdminMenuScreen() {
                   <Pressable
                     style={{
                       padding: 16,
-                      backgroundColor: MouzoColors.primary,
+                      backgroundColor: RabbitFoodColors.primary,
                       borderRadius: 10,
                       alignItems: "center",
                       marginTop: 10,
@@ -1060,7 +1060,7 @@ export default function AdminMenuScreen() {
                       <ThemedText style={{ fontSize: 12, color: '#666', marginBottom: 8 }}>Información del cupón:</ThemedText>
                       <ThemedText style={{ marginBottom: 5 }}>Tipo: <ThemedText style={{ fontWeight: 'bold' }}>{selectedCoupon.discountType === 'percentage' ? 'Porcentaje' : 'Fijo'}</ThemedText></ThemedText>
                       <ThemedText style={{ marginBottom: 5 }}>Usos: <ThemedText style={{ fontWeight: 'bold' }}>{selectedCoupon.usedCount}/{selectedCoupon.maxUses || '∞'}</ThemedText></ThemedText>
-                      <ThemedText>Creado: <ThemedText style={{ fontWeight: 'bold' }}>{new Date(selectedCoupon.createdAt).toLocaleDateString('es-MX')}</ThemedText></ThemedText>
+                      <ThemedText>Creado: <ThemedText style={{ fontWeight: 'bold' }}>{new Date(selectedCoupon.createdAt).toLocaleDateString('es-VE')}</ThemedText></ThemedText>
                     </View>
                     
                     <ThemedText style={{ fontWeight: 'bold', marginBottom: 15, fontSize: 16 }}>Estado del Cupón:</ThemedText>
@@ -1214,7 +1214,7 @@ export default function AdminMenuScreen() {
                       <ThemedText style={{ fontSize: 12, color: '#666', marginBottom: 8 }}>Información de la zona:</ThemedText>
                       <ThemedText style={{ marginBottom: 5 }}>Radio: <ThemedText style={{ fontWeight: 'bold' }}>{selectedZone.radiusKm || 0} km</ThemedText></ThemedText>
                       <ThemedText style={{ marginBottom: 5 }}>Coordenadas: <ThemedText style={{ fontWeight: 'bold' }}>{selectedZone.centerLatitude || 'N/A'}, {selectedZone.centerLongitude || 'N/A'}</ThemedText></ThemedText>
-                      <ThemedText>Creada: <ThemedText style={{ fontWeight: 'bold' }}>{selectedZone.createdAt ? new Date(selectedZone.createdAt).toLocaleDateString('es-MX') : 'N/A'}</ThemedText></ThemedText>
+                      <ThemedText>Creada: <ThemedText style={{ fontWeight: 'bold' }}>{selectedZone.createdAt ? new Date(selectedZone.createdAt).toLocaleDateString('es-VE') : 'N/A'}</ThemedText></ThemedText>
                     </View>
                     
                     <ThemedText style={{ fontWeight: 'bold', marginBottom: 15, fontSize: 16 }}>Estado de la Zona:</ThemedText>
@@ -1313,12 +1313,12 @@ export default function AdminMenuScreen() {
                         paddingVertical: 8,
                         paddingHorizontal: 16,
                         borderRadius: 20,
-                        backgroundColor: selectedBusinessId === b.id ? MouzoColors.primary : 'transparent',
+                        backgroundColor: selectedBusinessId === b.id ? RabbitFoodColors.primary : 'transparent',
                         borderWidth: 1,
-                        borderColor: MouzoColors.primary,
+                        borderColor: RabbitFoodColors.primary,
                       }}
                     >
-                      <ThemedText style={{ color: selectedBusinessId === b.id ? '#fff' : MouzoColors.primary, fontSize: 14 }}>
+                      <ThemedText style={{ color: selectedBusinessId === b.id ? '#fff' : RabbitFoodColors.primary, fontSize: 14 }}>
                         {b.name}
                       </ThemedText>
                     </Pressable>
@@ -1347,8 +1347,8 @@ export default function AdminMenuScreen() {
                             />
                           </View>
                         ) : (
-                          <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: p.isAvailable ? MouzoColors.success + '20' : theme.backgroundSecondary, justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
-                            <Feather name="box" size={20} color={p.isAvailable ? MouzoColors.success : theme.textSecondary} />
+                          <View style={{ width: 60, height: 60, borderRadius: 8, backgroundColor: p.isAvailable ? RabbitFoodColors.success + '20' : theme.backgroundSecondary, justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
+                            <Feather name="box" size={20} color={p.isAvailable ? RabbitFoodColors.success : theme.textSecondary} />
                           </View>
                         )}
                         <View style={{ flex: 1 }}>
@@ -1360,18 +1360,18 @@ export default function AdminMenuScreen() {
                             </ThemedText>
                           )}
                         </View>
-                        <ThemedText style={{ color: MouzoColors.primary, fontWeight: 'bold' }}>
+                        <ThemedText style={{ color: RabbitFoodColors.primary, fontWeight: 'bold' }}>
                           ${(p.price / 100).toFixed(2)}
                         </ThemedText>
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12, gap: 8 }}>
                         {p.isWeightBased && (
-                          <View style={{ backgroundColor: MouzoColors.warning + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
-                            <ThemedText style={{ color: MouzoColors.warning, fontSize: 12 }}>Por peso</ThemedText>
+                          <View style={{ backgroundColor: RabbitFoodColors.warning + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
+                            <ThemedText style={{ color: RabbitFoodColors.warning, fontSize: 12 }}>Por peso</ThemedText>
                           </View>
                         )}
-                        <View style={{ backgroundColor: p.isAvailable ? MouzoColors.success + '20' : MouzoColors.error + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
-                          <ThemedText style={{ color: p.isAvailable ? MouzoColors.success : MouzoColors.error, fontSize: 12 }}>
+                        <View style={{ backgroundColor: p.isAvailable ? RabbitFoodColors.success + '20' : RabbitFoodColors.error + '20', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6 }}>
+                          <ThemedText style={{ color: p.isAvailable ? RabbitFoodColors.success : RabbitFoodColors.error, fontSize: 12 }}>
                             {p.isAvailable ? 'Disponible' : 'Agotado'}
                           </ThemedText>
                         </View>
@@ -1408,7 +1408,7 @@ export default function AdminMenuScreen() {
                         </ThemedText>
                       </View>
                       <ThemedText style={{ color: theme.textSecondary, fontSize: 12 }}>
-                        {new Date(log.createdAt).toLocaleString('es-MX')}
+                        {new Date(log.createdAt).toLocaleString('es-VE')}
                       </ThemedText>
                     </View>
                     <ThemedText style={{ marginBottom: 4 }}>
@@ -1434,16 +1434,16 @@ export default function AdminMenuScreen() {
   const getLogActionColor = (action: string) => {
     switch (action) {
       case "LOGIN_SUCCESS":
-        return MouzoColors.success;
+        return RabbitFoodColors.success;
       case "LOGIN_FAILED":
       case "RATE_LIMIT_BLOCKED":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       case "CREATE":
         return "#2196F3";
       case "UPDATE":
-        return MouzoColors.warning;
+        return RabbitFoodColors.warning;
       case "DELETE":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       default:
         return theme.textSecondary;
     }
@@ -1519,7 +1519,7 @@ export default function AdminMenuScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={MouzoColors.primary}
+              tintColor={RabbitFoodColors.primary}
             />
           }
         >

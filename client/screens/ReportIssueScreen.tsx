@@ -20,7 +20,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest, getApiUrl } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
@@ -37,9 +37,9 @@ const ISSUE_TYPES = [
 ];
 
 const PRIORITY_OPTIONS = [
-  { id: "low", label: "Bajo", color: MouzoColors.success },
-  { id: "medium", label: "Medio", color: MouzoColors.warning },
-  { id: "high", label: "Alto", color: MouzoColors.error },
+  { id: "low", label: "Bajo", color: RabbitFoodColors.success },
+  { id: "medium", label: "Medio", color: RabbitFoodColors.warning },
+  { id: "high", label: "Alto", color: RabbitFoodColors.error },
 ];
 
 export default function ReportIssueScreen() {
@@ -173,7 +173,7 @@ export default function ReportIssueScreen() {
                     backgroundColor: theme.card,
                     borderColor:
                       selectedType === type.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "transparent",
                     borderWidth: 2,
                   },
@@ -185,7 +185,7 @@ export default function ReportIssueScreen() {
                     {
                       backgroundColor:
                         selectedType === type.id
-                          ? MouzoColors.primary + "20"
+                          ? RabbitFoodColors.primary + "20"
                           : theme.border,
                     },
                   ]}
@@ -195,7 +195,7 @@ export default function ReportIssueScreen() {
                     size={24}
                     color={
                       selectedType === type.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.textSecondary
                     }
                   />
@@ -206,7 +206,7 @@ export default function ReportIssueScreen() {
                     textAlign: "center",
                     color:
                       selectedType === type.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.text,
                     fontWeight: selectedType === type.id ? "600" : "400",
                   }}
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: MouzoColors.error,
+    backgroundColor: RabbitFoodColors.error,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   submitButton: {
-    backgroundColor: MouzoColors.primary,
+    backgroundColor: RabbitFoodColors.primary,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
     alignItems: "center",

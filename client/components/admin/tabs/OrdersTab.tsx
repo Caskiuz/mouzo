@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import * as Haptics from "expo-haptics";
-import { MouzoColors } from "../../../constants/theme";
+import { RabbitFoodColors } from "../../../constants/theme";
 import { AdminOrder } from "../types/admin.types";
 
 interface OrdersTabProps {
@@ -72,7 +72,7 @@ export const OrdersTab: React.FC<OrdersTabProps> = ({ orders, onOrderPress }) =>
             Total: ${(order.total / 100).toFixed(2)}
           </Text>
           <Text style={styles.orderDate}>
-            {new Date(order.createdAt).toLocaleString("es-MX")}
+            {new Date(order.createdAt).toLocaleString("es-VE")}
           </Text>
         </TouchableOpacity>
       ))}
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   orderTotal: {
     fontSize: 14,
     fontWeight: "600",
-    color: MouzoColors.primary,
+    color: RabbitFoodColors.primary,
     marginBottom: 4,
   },
   orderDate: {

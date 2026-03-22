@@ -143,7 +143,7 @@ export default function AdvancedMarketplaceScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);

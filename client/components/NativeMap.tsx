@@ -1,7 +1,7 @@
 import React from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet } from "react-native";
-import { MouzoColors } from "@/constants/theme";
+import { RabbitFoodColors } from "@/constants/theme";
 
 interface Driver {
   id: string;
@@ -36,7 +36,7 @@ export function NativeMap({ activeOrders, onlineDrivers }: MapProps) {
       style={styles.map}
       provider={PROVIDER_GOOGLE}
       initialRegion={{
-        latitude: 19.7758,
+        latitude: 7.7758,
         longitude: -104.3618,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
@@ -66,7 +66,7 @@ export function NativeMap({ activeOrders, onlineDrivers }: MapProps) {
             }}
             title={`Pedido ${order.id.slice(0, 8)}`}
             description={`${order.customer.name} - ${order.status}`}
-            pinColor={MouzoColors.primary}
+            pinColor={RabbitFoodColors.primary}
           />
         ) : null,
       )}

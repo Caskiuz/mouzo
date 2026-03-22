@@ -724,7 +724,7 @@ router.post("/stripe/connect", authenticateToken, requireRole("business_owner"),
     // Crear nueva cuenta de Stripe Connect
     const account = await stripe.accounts.create({
       type: "express",
-      country: "MX",
+      country: "VE",
       email: req.user!.email || undefined,
       capabilities: {
         card_payments: { requested: true },

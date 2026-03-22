@@ -8,7 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -55,7 +55,7 @@ export default function AdminScreenMobile() {
   if (isLoading) {
     return (
       <ThemedView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
       </ThemedView>
     );
   }
@@ -77,14 +77,14 @@ export default function AdminScreenMobile() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
         {stats ? (
           <View style={styles.statsGrid}>
             <View style={[styles.statCard, { backgroundColor: theme.card }, Shadows.sm]}>
-              <Feather name="users" size={24} color={MouzoColors.primary} />
+              <Feather name="users" size={24} color={RabbitFoodColors.primary} />
               <ThemedText type="h2" style={{ marginTop: Spacing.sm }}>
                 {stats.totalUsers}
               </ThemedText>
@@ -94,7 +94,7 @@ export default function AdminScreenMobile() {
             </View>
 
             <View style={[styles.statCard, { backgroundColor: theme.card }, Shadows.sm]}>
-              <Feather name="shopping-bag" size={24} color={MouzoColors.primary} />
+              <Feather name="shopping-bag" size={24} color={RabbitFoodColors.primary} />
               <ThemedText type="h2" style={{ marginTop: Spacing.sm }}>
                 {stats.totalOrders}
               </ThemedText>
@@ -104,7 +104,7 @@ export default function AdminScreenMobile() {
             </View>
 
             <View style={[styles.statCard, { backgroundColor: theme.card }, Shadows.sm]}>
-              <Feather name="dollar-sign" size={24} color={MouzoColors.success} />
+              <Feather name="dollar-sign" size={24} color={RabbitFoodColors.success} />
               <ThemedText type="h2" style={{ marginTop: Spacing.sm }}>
                 ${stats.totalRevenue.toFixed(0)}
               </ThemedText>
@@ -114,7 +114,7 @@ export default function AdminScreenMobile() {
             </View>
 
             <View style={[styles.statCard, { backgroundColor: theme.card }, Shadows.sm]}>
-              <Feather name="clock" size={24} color={MouzoColors.warning} />
+              <Feather name="clock" size={24} color={RabbitFoodColors.warning} />
               <ThemedText type="h2" style={{ marginTop: Spacing.sm }}>
                 {stats.pendingOrders}
               </ThemedText>
@@ -133,7 +133,7 @@ export default function AdminScreenMobile() {
         )}
 
         <View style={[styles.infoCard, { backgroundColor: theme.card }, Shadows.sm]}>
-          <Feather name="info" size={20} color={MouzoColors.primary} />
+          <Feather name="info" size={20} color={RabbitFoodColors.primary} />
           <ThemedText type="body" style={{ marginLeft: Spacing.sm, flex: 1 }}>
             Para acceder al panel completo, usa la versión web en tu computadora
           </ThemedText>

@@ -62,7 +62,7 @@ export async function sendVerificationEmail(
             <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 32px 0;">
             
             <p style="color: #9E9E9E; font-size: 12px; text-align: center;">
-              MOUZO - Delivery local en Autlán, Jalisco<br>
+              MOUZO - Delivery local en San Cristóbal, Táchira<br>
               Este es un correo automático, por favor no responder.
             </p>
           </div>
@@ -141,7 +141,7 @@ export async function sendOrderConfirmationEmail(
             <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 32px 0;">
             
             <p style="color: #9E9E9E; font-size: 12px; text-align: center;">
-              MOUZO - Delivery local en Autlán, Jalisco
+              MOUZO - Delivery local en San Cristóbal, Táchira
             </p>
           </div>
         </body>

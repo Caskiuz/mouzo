@@ -13,7 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { DashboardTab } from "@/components/admin/tabs";
 import type {
@@ -86,7 +86,7 @@ export default function AdminDashboardScreen() {
   if (isLoading) {
     return (
       <ThemedView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
       </ThemedView>
     );
   }
@@ -110,7 +110,7 @@ export default function AdminDashboardScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >

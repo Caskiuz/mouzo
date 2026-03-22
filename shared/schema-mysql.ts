@@ -104,6 +104,8 @@ export const orders = mysqlTable("orders", {
   cashChangeAmount: int("cash_change_amount"), // Cambio a entregar (centavos)
   // Cronómetro de arrepentimiento
   regretPeriodEndsAt: timestamp("regret_period_ends_at"), // Cuando termina el periodo de 60s
+  regretPeriodConfirmed: boolean("regret_period_confirmed").default(false), // Cliente confirmó después de 60s (no va a cancelar)
+  regretPeriodConfirmedAt: timestamp("regret_period_confirmed_at"), // Cuándo confirmó el período
   confirmedToBusinessAt: timestamp("confirmed_to_business_at"), // Cuando se notificó al negocio
   // Llamada automática al negocio
   callAttempted: boolean("call_attempted").default(false), // Si ya se intentó llamar al negocio
@@ -113,9 +115,9 @@ export const orders = mysqlTable("orders", {
   refundedAt: timestamp("refunded_at"),
   driverPaidAt: timestamp("driver_paid_at"),
   driverPaymentStatus: text("driver_payment_status").default("pending"),
-  // Confirmación de recepción por cliente
-  confirmedByCustomer: boolean("confirmed_by_customer").default(false), // Si el cliente confirmó recepción
-  confirmedByCustomerAt: timestamp("confirmed_by_customer_at"), // Cuándo confirmó
+  // Confirmación de recepción por cliente (para liberar fondos)
+  confirmedByCustomer: boolean("confirmed_by_customer").default(false), // Si el cliente confirmó que RECIBIÓ el pedido
+  confirmedByCustomerAt: timestamp("confirmed_by_customer_at"), // Cuándo confirmó la recepción
   fundsReleased: boolean("funds_released").default(false), // Si ya se liberaron los fondos
   fundsReleasedAt: timestamp("funds_released_at"), // Cuándo se liberaron
   businessTransferId: text("business_transfer_id"), // ID de transfer a negocio

@@ -22,7 +22,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 import { apiRequest } from '@/lib/query-client';
-import { Spacing, BorderRadius, MouzoColors, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from '@/constants/theme';
 
 interface SavedCard {
   id: string;
@@ -135,7 +135,7 @@ export default function PaymentMethodsScreen() {
     return (
       <ThemedView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={MouzoColors.primary} />
+          <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
           <ThemedText type="body" style={{ marginTop: Spacing.md, color: theme.textSecondary }}>
             Cargando métodos de pago...
           </ThemedText>
@@ -156,7 +156,7 @@ export default function PaymentMethodsScreen() {
 
       <ScrollView
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.xl }]}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={MouzoColors.primary} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={RabbitFoodColors.primary} />}
         showsVerticalScrollIndicator={false}
       >
         {/* Driver: Stripe Connect Setup */}
@@ -169,13 +169,13 @@ export default function PaymentMethodsScreen() {
               <StripeConnectSetup />
             </View>
 
-            <View style={[styles.infoBanner, { backgroundColor: MouzoColors.primary + '10', borderColor: MouzoColors.primary + '30' }]}>
-              <Feather name="info" size={20} color={MouzoColors.primary} />
+            <View style={[styles.infoBanner, { backgroundColor: RabbitFoodColors.primary + '10', borderColor: RabbitFoodColors.primary + '30' }]}>
+              <Feather name="info" size={20} color={RabbitFoodColors.primary} />
               <View style={{ flex: 1, marginLeft: Spacing.md }}>
-                <ThemedText type="body" style={{ color: MouzoColors.primary, fontWeight: '600' }}>
+                <ThemedText type="body" style={{ color: RabbitFoodColors.primary, fontWeight: '600' }}>
                   ¿Cómo funcionan los pagos?
                 </ThemedText>
-                <ThemedText type="small" style={{ color: MouzoColors.primary, marginTop: 4 }}>
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginTop: 4 }}>
                   Cuando confirmes una entrega, tu pago se libera automáticamente y Stripe lo transfiere a tu cuenta bancaria en 1-2 días hábiles.
                 </ThemedText>
               </View>
@@ -185,14 +185,14 @@ export default function PaymentMethodsScreen() {
           <>
             {/* Customer: Cards and payment history */}
         {isWeb && (
-          <View style={[styles.card, { backgroundColor: MouzoColors.warning + '15', borderColor: MouzoColors.warning + '30', borderWidth: 1 }, Shadows.sm]}>
+          <View style={[styles.card, { backgroundColor: RabbitFoodColors.warning + '15', borderColor: RabbitFoodColors.warning + '30', borderWidth: 1 }, Shadows.sm]}>
             <View style={styles.cardHeader}>
-              <Feather name="info" size={20} color={MouzoColors.warning} />
-              <ThemedText type="h4" style={{ marginLeft: Spacing.sm, color: MouzoColors.warning }}>
+              <Feather name="info" size={20} color={RabbitFoodColors.warning} />
+              <ThemedText type="h4" style={{ marginLeft: Spacing.sm, color: RabbitFoodColors.warning }}>
                 Función no disponible en web
               </ThemedText>
             </View>
-            <ThemedText type="body" style={{ color: MouzoColors.warning }}>
+            <ThemedText type="body" style={{ color: RabbitFoodColors.warning }}>
               Para agregar tarjetas, usa la aplicación móvil. Aquí puedes ver tus tarjetas guardadas e historial.
             </ThemedText>
           </View>
@@ -208,7 +208,7 @@ export default function PaymentMethodsScreen() {
               <View key={card.id} style={[styles.card, { backgroundColor: theme.card }, Shadows.sm]}>
                 <View style={styles.cardRow}>
                   <View style={styles.cardInfo}>
-                    <Feather name={getBrandIcon(card.brand)} size={24} color={MouzoColors.primary} />
+                    <Feather name={getBrandIcon(card.brand)} size={24} color={RabbitFoodColors.primary} />
                     <View style={{ marginLeft: Spacing.md }}>
                       <ThemedText type="body" style={{ fontWeight: '600', textTransform: 'capitalize' }}>
                         {card.brand} •••• {card.last4}
@@ -219,8 +219,8 @@ export default function PaymentMethodsScreen() {
                     </View>
                   </View>
                   {card.isDefault && (
-                    <View style={[styles.badge, { backgroundColor: MouzoColors.success + '20' }]}>
-                      <ThemedText type="caption" style={{ color: MouzoColors.success, fontWeight: '600' }}>
+                    <View style={[styles.badge, { backgroundColor: RabbitFoodColors.success + '20' }]}>
+                      <ThemedText type="caption" style={{ color: RabbitFoodColors.success, fontWeight: '600' }}>
                         Predeterminada
                       </ThemedText>
                     </View>
@@ -233,21 +233,21 @@ export default function PaymentMethodsScreen() {
                         style={[styles.actionButton, { backgroundColor: theme.backgroundSecondary }]}
                         onPress={() => handleSetDefault(card.id)}
                       >
-                        <Feather name="check" size={16} color={MouzoColors.primary} />
-                        <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
+                        <Feather name="check" size={16} color={RabbitFoodColors.primary} />
+                        <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}>
                           Predeterminada
                         </ThemedText>
                       </Pressable>
                     )}
                     <Pressable
-                      style={[styles.actionButton, { backgroundColor: MouzoColors.error + '15' }]}
+                      style={[styles.actionButton, { backgroundColor: RabbitFoodColors.error + '15' }]}
                       onPress={() => {
                         setCardToDelete(card.id);
                         setShowDeleteModal(true);
                       }}
                     >
-                      <Feather name="trash-2" size={16} color={MouzoColors.error} />
-                      <ThemedText type="small" style={{ color: MouzoColors.error, marginLeft: Spacing.xs }}>
+                      <Feather name="trash-2" size={16} color={RabbitFoodColors.error} />
+                      <ThemedText type="small" style={{ color: RabbitFoodColors.error, marginLeft: Spacing.xs }}>
                         Eliminar
                       </ThemedText>
                     </Pressable>
@@ -293,7 +293,7 @@ export default function PaymentMethodsScreen() {
                         ${((item.payment.amount || 0) / 100).toFixed(2)}
                       </ThemedText>
                       <ThemedText type="small" style={{ color: theme.textSecondary }}>
-                        {new Date(item.payment.createdAt).toLocaleDateString('es-MX', {
+                        {new Date(item.payment.createdAt).toLocaleDateString('es-VE', {
                           day: 'numeric',
                           month: 'short',
                           year: 'numeric',
@@ -307,15 +307,15 @@ export default function PaymentMethodsScreen() {
                       {
                         backgroundColor:
                           item.payment.status === 'completed'
-                            ? MouzoColors.success + '20'
-                            : MouzoColors.warning + '20',
+                            ? RabbitFoodColors.success + '20'
+                            : RabbitFoodColors.warning + '20',
                       },
                     ]}
                   >
                     <ThemedText
                       type="caption"
                       style={{
-                        color: item.payment.status === 'completed' ? MouzoColors.success : MouzoColors.warning,
+                        color: item.payment.status === 'completed' ? RabbitFoodColors.success : RabbitFoodColors.warning,
                         fontWeight: '600',
                       }}
                     >
@@ -329,13 +329,13 @@ export default function PaymentMethodsScreen() {
         )}
 
         {/* Info banner */}
-        <View style={[styles.infoBanner, { backgroundColor: MouzoColors.primary + '10', borderColor: MouzoColors.primary + '30' }]}>
-          <Feather name="shield" size={20} color={MouzoColors.primary} />
+        <View style={[styles.infoBanner, { backgroundColor: RabbitFoodColors.primary + '10', borderColor: RabbitFoodColors.primary + '30' }]}>
+          <Feather name="shield" size={20} color={RabbitFoodColors.primary} />
           <View style={{ flex: 1, marginLeft: Spacing.md }}>
-            <ThemedText type="body" style={{ color: MouzoColors.primary, fontWeight: '600' }}>
+            <ThemedText type="body" style={{ color: RabbitFoodColors.primary, fontWeight: '600' }}>
               Pagos seguros con Stripe
             </ThemedText>
-            <ThemedText type="small" style={{ color: MouzoColors.primary, marginTop: 4 }}>
+            <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginTop: 4 }}>
               Tus datos están protegidos con encriptación de nivel bancario.
             </ThemedText>
           </View>

@@ -17,7 +17,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Badge } from "@/components/Badge";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 export default function BusinessOrdersScreen() {
@@ -154,13 +154,13 @@ export default function BusinessOrdersScreen() {
           <View style={{ flex: 1 }}>
             <ThemedText type="h4">Pedido #{item.id.slice(-6)}</ThemedText>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-              {new Date(item.createdAt).toLocaleTimeString("es-MX", {
+              {new Date(item.createdAt).toLocaleTimeString("es-VE", {
                 hour: "2-digit",
                 minute: "2-digit",
-              })} - {new Date(item.createdAt).toLocaleDateString("es-MX")}
+              })} - {new Date(item.createdAt).toLocaleDateString("es-VE")}
             </ThemedText>
             {item.businessName ? (
-              <ThemedText type="small" style={{ color: MouzoColors.primary, marginTop: 2 }}>
+              <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginTop: 2 }}>
                 {item.businessName}
               </ThemedText>
             ) : null}
@@ -212,7 +212,7 @@ export default function BusinessOrdersScreen() {
 
         <View style={styles.orderFooter}>
           <View>
-            <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
+            <ThemedText type="h4" style={{ color: RabbitFoodColors.primary }}>
               ${(item.subtotal / 100).toFixed(2)}
             </ThemedText>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -220,7 +220,7 @@ export default function BusinessOrdersScreen() {
             </ThemedText>
           </View>
           <View style={{ alignItems: "flex-end" }}>
-            <ThemedText type="small" style={{ color: MouzoColors.success, fontWeight: "600" }}>
+            <ThemedText type="small" style={{ color: RabbitFoodColors.success, fontWeight: "600" }}>
               Recibes: ${(item.subtotal / 100).toFixed(2)}
             </ThemedText>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -245,10 +245,10 @@ export default function BusinessOrdersScreen() {
                   },
                 ]}
               >
-                <Feather name="x" size={18} color={MouzoColors.error} />
+                <Feather name="x" size={18} color={RabbitFoodColors.error} />
                 <ThemedText
                   type="small"
-                  style={{ color: MouzoColors.error, marginLeft: Spacing.xs }}
+                  style={{ color: RabbitFoodColors.error, marginLeft: Spacing.xs }}
                 >
                   Rechazar
                 </ThemedText>
@@ -261,7 +261,7 @@ export default function BusinessOrdersScreen() {
                 style={({ pressed }) => [
                   styles.actionButton,
                   { 
-                    backgroundColor: MouzoColors.primary,
+                    backgroundColor: RabbitFoodColors.primary,
                     opacity: pressed ? 0.8 : 1,
                   },
                 ]}
@@ -282,7 +282,7 @@ export default function BusinessOrdersScreen() {
               onPress={() => handleStartPreparing(item.id)}
               style={[
                 styles.actionButton,
-                { backgroundColor: MouzoColors.primary, flex: 1 },
+                { backgroundColor: RabbitFoodColors.primary, flex: 1 },
               ]}
             >
               <Feather name="clock" size={18} color="#FFF" />
@@ -299,13 +299,13 @@ export default function BusinessOrdersScreen() {
             <View
               style={[
                 styles.actionButton,
-                { backgroundColor: MouzoColors.primary + "20", flex: 1 },
+                { backgroundColor: RabbitFoodColors.primary + "20", flex: 1 },
               ]}
             >
-              <Feather name="package" size={18} color={MouzoColors.primary} />
+              <Feather name="package" size={18} color={RabbitFoodColors.primary} />
               <ThemedText
                 type="small"
-                style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+                style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
               >
                 Esperando Repartidor
               </ThemedText>
@@ -316,13 +316,13 @@ export default function BusinessOrdersScreen() {
             <View
               style={[
                 styles.actionButton,
-                { backgroundColor: MouzoColors.success + "20", flex: 1 },
+                { backgroundColor: RabbitFoodColors.success + "20", flex: 1 },
               ]}
             >
-              <Feather name="truck" size={18} color={MouzoColors.success} />
+              <Feather name="truck" size={18} color={RabbitFoodColors.success} />
               <ThemedText
                 type="small"
-                style={{ color: MouzoColors.success, marginLeft: Spacing.xs }}
+                style={{ color: RabbitFoodColors.success, marginLeft: Spacing.xs }}
               >
                 En Camino al Cliente
               </ThemedText>
@@ -359,7 +359,7 @@ export default function BusinessOrdersScreen() {
             styles.filterButton,
             {
               backgroundColor:
-                filter === "pending" ? MouzoColors.primary : theme.card,
+                filter === "pending" ? RabbitFoodColors.primary : theme.card,
             },
           ]}
         >
@@ -376,7 +376,7 @@ export default function BusinessOrdersScreen() {
             styles.filterButton,
             {
               backgroundColor:
-                filter === "active" ? MouzoColors.primary : theme.card,
+                filter === "active" ? RabbitFoodColors.primary : theme.card,
             },
           ]}
         >
@@ -392,7 +392,7 @@ export default function BusinessOrdersScreen() {
           style={[
             styles.filterButton,
             {
-              backgroundColor: filter === "all" ? MouzoColors.primary : theme.card,
+              backgroundColor: filter === "all" ? RabbitFoodColors.primary : theme.card,
             },
           ]}
         >
@@ -414,7 +414,7 @@ export default function BusinessOrdersScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
         ListEmptyComponent={

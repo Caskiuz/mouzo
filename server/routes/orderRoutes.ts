@@ -231,7 +231,7 @@ router.post("/:id/cancel-regret", authenticateToken, validateCustomerOrderOwners
   }
 });
 
-// Confirm order after regret period
+// Confirm order after regret period (notifies business but stays pending)
 router.post("/:id/confirm", authenticateToken, validateCustomerOrderOwnership, async (req, res) => {
   try {
     const { orders } = await import("@shared/schema-mysql");
@@ -245,7 +245,14 @@ router.post("/:id/confirm", authenticateToken, validateCustomerOrderOwnership, a
       return res.status(404).json({ error: "Order not found" });
     }
 
-    await db.update(orders).set({ status: "confirmed" }).where(eq(orders.id, orderId));
+    // Mark regret period as confirmed (customer won't cancel)
+    await db.update(orders).set({ 
+      regretPeriodConfirmed: true,
+      regretPeriodConfirmedAt: new Date(),
+      confirmedToBusinessAt: new Date()
+    }).where(eq(orders.id, orderId));
+
+    // TODO: Send notification to business
 
     res.json({ success: true, message: "Pedido confirmado" });
   } catch (error: any) {

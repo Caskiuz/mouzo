@@ -9,7 +9,7 @@ import * as Haptics from "expo-haptics";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -22,7 +22,7 @@ const BANCOS = [
 ];
 
 export default function PagoMovilPaymentScreen({ route }: any) {
-  const { orderId, reference, amount, mouzo } = route.params;
+  const { orderId, reference, amount, rabbitfood } = route.params;
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { theme } = useTheme();
@@ -77,11 +77,13 @@ export default function PagoMovilPaymentScreen({ route }: any) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       showToast("Comprobante enviado. Verificaremos tu pago pronto.", "success");
 
+      const regretPeriodEndsAt = new Date(Date.now() + 60000).toISOString();
+
       navigation.reset({
         index: 0,
         routes: [
           { name: "Main" as never },
-          { name: "OrderConfirmation" as never, params: { orderId } },
+          { name: "OrderConfirmation" as never, params: { orderId, regretPeriodEndsAt } },
         ],
       });
     } catch (error) {
@@ -108,7 +110,7 @@ export default function PagoMovilPaymentScreen({ route }: any) {
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
               Monto a pagar
             </ThemedText>
-            <ThemedText type="hero" style={{ color: MouzoColors.primary }}>
+            <ThemedText type="hero" style={{ color: RabbitFoodColors.primary }}>
               Bs. {amount.toFixed(2)}
             </ThemedText>
           </View>
@@ -120,19 +122,19 @@ export default function PagoMovilPaymentScreen({ route }: any) {
           </ThemedText>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Teléfono:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{mouzo.phone}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.phone}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Banco:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{mouzo.bankName}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.bankName}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Cédula:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{mouzo.cedula}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.cedula}</ThemedText>
           </View>
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Referencia:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "700", color: MouzoColors.primary }}>
+            <ThemedText type="body" style={{ fontWeight: "700", color: RabbitFoodColors.primary }}>
               {reference}
             </ThemedText>
           </View>
@@ -170,8 +172,8 @@ export default function PagoMovilPaymentScreen({ route }: any) {
                 style={[
                   styles.bankChip,
                   {
-                    backgroundColor: clientBank === banco.id ? MouzoColors.primary : theme.backgroundSecondary,
-                    borderColor: clientBank === banco.id ? MouzoColors.primary : theme.border,
+                    backgroundColor: clientBank === banco.id ? RabbitFoodColors.primary : theme.backgroundSecondary,
+                    borderColor: clientBank === banco.id ? RabbitFoodColors.primary : theme.border,
                   },
                 ]}
               >
@@ -200,8 +202,8 @@ export default function PagoMovilPaymentScreen({ route }: any) {
             </View>
           ) : (
             <Pressable onPress={handlePickImage} style={[styles.uploadButton, { backgroundColor: theme.backgroundSecondary, borderColor: theme.border }]}>
-              <Feather name="camera" size={24} color={MouzoColors.primary} />
-              <ThemedText type="body" style={{ color: MouzoColors.primary, marginTop: Spacing.xs }}>
+              <Feather name="camera" size={24} color={RabbitFoodColors.primary} />
+              <ThemedText type="body" style={{ color: RabbitFoodColors.primary, marginTop: Spacing.xs }}>
                 Subir foto del comprobante
               </ThemedText>
             </Pressable>

@@ -22,7 +22,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 
@@ -50,7 +50,7 @@ function MessageBubble({
   isOwn: boolean;
 }) {
   const { theme } = useTheme();
-  const time = new Date(message.createdAt).toLocaleTimeString("es-MX", {
+  const time = new Date(message.createdAt).toLocaleTimeString("es-VE", {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -62,7 +62,7 @@ function MessageBubble({
         styles.messageBubble,
         isOwn ? styles.ownMessage : styles.otherMessage,
         {
-          backgroundColor: isOwn ? MouzoColors.primary : theme.card,
+          backgroundColor: isOwn ? RabbitFoodColors.primary : theme.card,
           ...Shadows.sm,
         },
       ]}
@@ -308,7 +308,7 @@ export default function OrderChatScreen() {
                 styles.sendButton,
                 {
                   backgroundColor: messageText.trim()
-                    ? MouzoColors.primary
+                    ? RabbitFoodColors.primary
                     : theme.backgroundSecondary,
                   opacity: sendMessageMutation.isPending ? 0.6 : 1,
                 },

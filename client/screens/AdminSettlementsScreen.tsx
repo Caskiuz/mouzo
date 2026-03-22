@@ -9,7 +9,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Badge } from "@/components/Badge";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -50,8 +50,8 @@ export default function AdminSettlementsScreen() {
   const settlements = data?.settlements || [];
 
   const renderSettlement = ({ item }: { item: any }) => {
-    const weekStart = new Date(item.week_start).toLocaleDateString("es-MX");
-    const weekEnd = new Date(item.week_end).toLocaleDateString("es-MX");
+    const weekStart = new Date(item.week_start).toLocaleDateString("es-VE");
+    const weekEnd = new Date(item.week_end).toLocaleDateString("es-VE");
 
     return (
       <View style={[styles.card, { backgroundColor: theme.card }, Shadows.md]}>
@@ -75,7 +75,7 @@ export default function AdminSettlementsScreen() {
           <ThemedText type="caption" style={{ color: theme.textSecondary }}>
             Monto a liquidar:
           </ThemedText>
-          <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
+          <ThemedText type="h3" style={{ color: RabbitFoodColors.primary }}>
             ${(item.amount_owed / 100).toFixed(2)}
           </ThemedText>
         </View>
@@ -85,8 +85,8 @@ export default function AdminSettlementsScreen() {
             onPress={() => Alert.alert("Comprobante", item.payment_proof_url)}
             style={styles.proofButton}
           >
-            <Feather name="image" size={16} color={MouzoColors.primary} />
-            <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: 8 }}>
+            <Feather name="image" size={16} color={RabbitFoodColors.primary} />
+            <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: 8 }}>
               Ver comprobante
             </ThemedText>
           </Pressable>
@@ -106,7 +106,7 @@ export default function AdminSettlementsScreen() {
                   ]
                 );
               }}
-              style={[styles.actionButton, { backgroundColor: MouzoColors.success }]}
+              style={[styles.actionButton, { backgroundColor: RabbitFoodColors.success }]}
             >
               <Feather name="check" size={18} color="#FFF" />
               <ThemedText type="small" style={{ color: "#FFF", marginLeft: 8 }}>
@@ -119,7 +119,7 @@ export default function AdminSettlementsScreen() {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 setRejectModal({ visible: true, id: item.id, notes: "" });
               }}
-              style={[styles.actionButton, { backgroundColor: MouzoColors.error }]}
+              style={[styles.actionButton, { backgroundColor: RabbitFoodColors.error }]}
             >
               <Feather name="x" size={18} color="#FFF" />
               <ThemedText type="small" style={{ color: "#FFF", marginLeft: 8 }}>
@@ -148,7 +148,7 @@ export default function AdminSettlementsScreen() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Feather name="check-circle" size={64} color={MouzoColors.success} />
+            <Feather name="check-circle" size={64} color={RabbitFoodColors.success} />
             <ThemedText type="h4" style={{ marginTop: Spacing.lg }}>
               Sin liquidaciones pendientes
             </ThemedText>
@@ -194,7 +194,7 @@ export default function AdminSettlementsScreen() {
                 }
                 rejectMutation.mutate({ id: rejectModal.id, notes: rejectModal.notes });
               }}
-              style={[styles.submitButton, { backgroundColor: MouzoColors.error }]}
+              style={[styles.submitButton, { backgroundColor: RabbitFoodColors.error }]}
             >
               <ThemedText type="body" style={{ color: "#FFF", fontWeight: "600" }}>
                 Rechazar liquidación

@@ -25,7 +25,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { BackButton } from "@/components/BackButton";
 import { useTheme } from "@/hooks/useTheme";
 import { useBusiness, Business } from "@/contexts/BusinessContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest, getApiUrl } from "@/lib/query-client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -206,7 +206,7 @@ export default function MyBusinessesScreen() {
       paddingTop: insets.top + Spacing.md,
       paddingHorizontal: Spacing.lg,
       paddingBottom: Spacing.md,
-      backgroundColor: MouzoColors.primary,
+      backgroundColor: RabbitFoodColors.primary,
     },
     backButton: {
       marginRight: Spacing.md,
@@ -233,7 +233,7 @@ export default function MyBusinessesScreen() {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: MouzoColors.primary,
+      backgroundColor: RabbitFoodColors.primary,
       paddingVertical: Spacing.md,
       paddingHorizontal: Spacing.lg,
       borderRadius: BorderRadius.lg,
@@ -255,7 +255,7 @@ export default function MyBusinessesScreen() {
     },
     selectedCard: {
       borderWidth: 2,
-      borderColor: MouzoColors.primary,
+      borderColor: RabbitFoodColors.primary,
     },
     businessImage: {
       width: "100%",
@@ -290,7 +290,7 @@ export default function MyBusinessesScreen() {
       marginLeft: Spacing.sm,
     },
     openBadge: {
-      backgroundColor: MouzoColors.success + "20",
+      backgroundColor: RabbitFoodColors.success + "20",
     },
     closedBadge: {
       backgroundColor: theme.theme.border,
@@ -403,8 +403,8 @@ export default function MyBusinessesScreen() {
       borderColor: theme.theme.border,
     },
     typeOptionSelected: {
-      backgroundColor: MouzoColors.primary + "20",
-      borderColor: MouzoColors.primary,
+      backgroundColor: RabbitFoodColors.primary + "20",
+      borderColor: RabbitFoodColors.primary,
     },
     typeOptionText: {
       fontSize: 14,
@@ -450,10 +450,10 @@ export default function MyBusinessesScreen() {
       borderColor: theme.theme.border,
     },
     confirmButton: {
-      backgroundColor: MouzoColors.primary,
+      backgroundColor: RabbitFoodColors.primary,
     },
     deleteButton: {
-      backgroundColor: MouzoColors.error,
+      backgroundColor: RabbitFoodColors.error,
     },
     buttonText: {
       fontSize: 16,
@@ -470,7 +470,7 @@ export default function MyBusinessesScreen() {
       width: 60,
       height: 60,
       borderRadius: 30,
-      backgroundColor: MouzoColors.error + "20",
+      backgroundColor: RabbitFoodColors.error + "20",
       justifyContent: "center",
       alignItems: "center",
       marginBottom: Spacing.md,
@@ -519,7 +519,7 @@ export default function MyBusinessesScreen() {
           <ThemedText style={styles.headerTitle}>Mis Negocios</ThemedText>
         </View>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={MouzoColors.primary} />
+          <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
         </View>
       </View>
     );
@@ -543,7 +543,7 @@ export default function MyBusinessesScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
@@ -601,7 +601,7 @@ export default function MyBusinessesScreen() {
                       <ThemedText
                         style={[
                           styles.statusText,
-                          { color: business.isOpen ? MouzoColors.success : theme.theme.textSecondary },
+                          { color: business.isOpen ? RabbitFoodColors.success : theme.theme.textSecondary },
                         ]}
                       >
                         {business.isOpen ? "Abierto" : "Cerrado"}
@@ -644,12 +644,12 @@ export default function MyBusinessesScreen() {
                     <Feather
                       name={selectedBusiness?.id === business.id ? "check-circle" : "circle"}
                       size={18}
-                      color={selectedBusiness?.id === business.id ? MouzoColors.primary : theme.theme.textSecondary}
+                      color={selectedBusiness?.id === business.id ? RabbitFoodColors.primary : theme.theme.textSecondary}
                     />
                     <ThemedText
                       style={[
                         styles.actionText,
-                        { color: selectedBusiness?.id === business.id ? MouzoColors.primary : theme.theme.textSecondary },
+                        { color: selectedBusiness?.id === business.id ? RabbitFoodColors.primary : theme.theme.textSecondary },
                       ]}
                     >
                       {selectedBusiness?.id === business.id ? "Seleccionado" : "Seleccionar"}
@@ -659,8 +659,8 @@ export default function MyBusinessesScreen() {
                     style={[styles.actionButton, styles.actionButtonDanger]}
                     onPress={() => confirmDelete(business)}
                   >
-                    <Feather name="trash-2" size={18} color={MouzoColors.error} />
-                    <ThemedText style={[styles.actionText, { color: MouzoColors.error }]}>
+                    <Feather name="trash-2" size={18} color={RabbitFoodColors.error} />
+                    <ThemedText style={[styles.actionText, { color: RabbitFoodColors.error }]}>
                       Eliminar
                     </ThemedText>
                   </Pressable>
@@ -714,7 +714,7 @@ export default function MyBusinessesScreen() {
                   <Feather
                     name={type.icon as any}
                     size={16}
-                    color={newBusiness.type === type.id ? MouzoColors.primary : theme.theme.text}
+                    color={newBusiness.type === type.id ? RabbitFoodColors.primary : theme.theme.text}
                   />
                   <ThemedText style={styles.typeOptionText}>{type.name}</ThemedText>
                 </Pressable>
@@ -794,7 +794,7 @@ export default function MyBusinessesScreen() {
         <View style={[styles.modalOverlay, { justifyContent: "center" }]}>
           <View style={styles.deleteModalContent}>
             <View style={styles.deleteIcon}>
-              <Feather name="alert-triangle" size={32} color={MouzoColors.error} />
+              <Feather name="alert-triangle" size={32} color={RabbitFoodColors.error} />
             </View>
             <ThemedText style={styles.modalTitle}>Eliminar Negocio</ThemedText>
             <ThemedText style={styles.deleteMessage}>

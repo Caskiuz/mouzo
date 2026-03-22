@@ -39,8 +39,8 @@ export const DEV_UTILS = {
     deliveryFee: 2500, // in cents
     total: 8000, // in cents
     paymentMethod: "card",
-    deliveryAddress: "Calle Ejemplo 123, Autlán, Jalisco",
-    deliveryLatitude: "19.7708",
+    deliveryAddress: "Calle Ejemplo 123, San Cristóbal, Táchira",
+    deliveryLatitude: "7.7708",
     deliveryLongitude: "-104.3636",
     createdAt: new Date().toISOString(),
     estimatedDelivery: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
@@ -48,7 +48,7 @@ export const DEV_UTILS = {
 
   // Mock delivery location
   getMockDeliveryLocation: () => ({
-    latitude: "19.7708",
+    latitude: "7.7708",
     longitude: "-104.3636",
     updatedAt: new Date().toISOString(),
   }),

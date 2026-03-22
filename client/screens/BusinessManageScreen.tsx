@@ -19,7 +19,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface Product {
@@ -212,7 +212,7 @@ export default function BusinessManageScreen() {
           onPress={() => setActiveTab("products")}
           style={[
             styles.tab,
-            activeTab === "products" && { backgroundColor: MouzoColors.primary },
+            activeTab === "products" && { backgroundColor: RabbitFoodColors.primary },
           ]}
         >
           <Feather
@@ -234,7 +234,7 @@ export default function BusinessManageScreen() {
           onPress={() => setActiveTab("settings")}
           style={[
             styles.tab,
-            activeTab === "settings" && { backgroundColor: MouzoColors.primary },
+            activeTab === "settings" && { backgroundColor: RabbitFoodColors.primary },
           ]}
         >
           <Feather
@@ -265,7 +265,7 @@ export default function BusinessManageScreen() {
           <RefreshControl
             refreshing={isRefetching}
             onRefresh={refetch}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >

@@ -17,7 +17,7 @@ import Animated, {
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
@@ -165,10 +165,10 @@ export default function OrderConfirmationScreen() {
           <View
             style={[
               styles.iconCircle,
-              { backgroundColor: MouzoColors.primary + "20" },
+              { backgroundColor: RabbitFoodColors.primary + "20" },
             ]}
           >
-            <Feather name="check" size={48} color={MouzoColors.primary} />
+            <Feather name="check" size={48} color={RabbitFoodColors.primary} />
           </View>
         </Animated.View>
 
@@ -193,7 +193,7 @@ export default function OrderConfirmationScreen() {
               ]}
             >
               <View style={styles.timerHeader}>
-                <Feather name="clock" size={20} color={MouzoColors.primary} />
+                <Feather name="clock" size={20} color={RabbitFoodColors.primary} />
                 <ThemedText
                   type="body"
                   style={{ marginLeft: Spacing.sm, fontWeight: "600" }}
@@ -205,7 +205,7 @@ export default function OrderConfirmationScreen() {
               <View style={styles.timerDisplay}>
                 <ThemedText
                   type="h1"
-                  style={{ color: MouzoColors.primary, fontSize: 64 }}
+                  style={{ color: RabbitFoodColors.primary, fontSize: 64 }}
                 >
                   {secondsRemaining}
                 </ThemedText>
@@ -239,14 +239,14 @@ export default function OrderConfirmationScreen() {
                 style={styles.cancelButton}
               >
                 {isCancelling ? (
-                  <ActivityIndicator color={MouzoColors.error} size="small" />
+                  <ActivityIndicator color={RabbitFoodColors.error} size="small" />
                 ) : (
                   <>
-                    <Feather name="x" size={20} color={MouzoColors.error} />
+                    <Feather name="x" size={20} color={RabbitFoodColors.error} />
                     <ThemedText
                       type="body"
                       style={{
-                        color: MouzoColors.error,
+                        color: RabbitFoodColors.error,
                         marginLeft: Spacing.sm,
                         fontWeight: "600",
                       }}
@@ -261,20 +261,20 @@ export default function OrderConfirmationScreen() {
                 onPress={handleSkipAndConfirm}
                 style={styles.skipButton}
               >
-                <ThemedText type="small" style={{ color: MouzoColors.primary }}>
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary }}>
                   Saltar y confirmar pedido
                 </ThemedText>
                 <Feather
                   name="arrow-right"
                   size={16}
-                  color={MouzoColors.primary}
+                  color={RabbitFoodColors.primary}
                 />
               </Pressable>
             </View>
           </>
         ) : (
           <View style={styles.confirmedContent}>
-            <ActivityIndicator color={MouzoColors.primary} size="large" />
+            <ActivityIndicator color={RabbitFoodColors.primary} size="large" />
             <ThemedText
               type="body"
               style={{ color: theme.textSecondary, marginTop: Spacing.lg }}
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: "100%",
-    backgroundColor: MouzoColors.primary,
+    backgroundColor: RabbitFoodColors.primary,
     borderRadius: 4,
   },
   actions: {
@@ -353,9 +353,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderColor: MouzoColors.error,
+    borderColor: RabbitFoodColors.error,
     borderWidth: 2,
-    backgroundColor: MouzoColors.error + "10",
+    backgroundColor: RabbitFoodColors.error + "10",
   },
   skipButton: {
     flexDirection: "row",

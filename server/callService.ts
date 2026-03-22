@@ -95,9 +95,9 @@ export function generateOrderNotificationTwiML(
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
   <Gather input="dtmf" timeout="10" numDigits="1" action="/api/twilio/handle-response/${orderId}" method="POST">
-    <Say voice="alice" language="es-MX">${message}</Say>
+    <Say voice="alice" language="es-VE">${message}</Say>
   </Gather>
-  <Say voice="alice" language="es-MX">No se recibió respuesta. El pedido quedará pendiente.</Say>
+  <Say voice="alice" language="es-VE">No se recibió respuesta. El pedido quedará pendiente.</Say>
 </Response>`;
 }
 
@@ -142,7 +142,7 @@ export async function handleCallResponse(
         action = "invalid";
         return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="alice" language="es-MX">Opción inválida. Presiona 1 para aceptar, 2 para rechazar.</Say>
+  <Say voice="alice" language="es-VE">Opción inválida. Presiona 1 para aceptar, 2 para rechazar.</Say>
   <Redirect>/api/twilio/studio-flow</Redirect>
 </Response>`;
     }
@@ -187,13 +187,13 @@ export async function handleCallResponse(
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="alice" language="es-MX">${responseMessage}</Say>
+  <Say voice="alice" language="es-VE">${responseMessage}</Say>
 </Response>`;
   } catch (error: any) {
     console.error("Handle call response error:", error);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="alice" language="es-MX">Error procesando respuesta.</Say>
+  <Say voice="alice" language="es-VE">Error procesando respuesta.</Say>
 </Response>`;
   }
 }
@@ -279,7 +279,7 @@ export async function testCall(phoneNumber: string): Promise<CallResult> {
       from: fromNumber,
       twiml: `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="alice" language="es-MX">Esta es una llamada de prueba del sistema MOUZO. Todo funciona correctamente.</Say>
+  <Say voice="alice" language="es-VE">Esta es una llamada de prueba del sistema MOUZO. Todo funciona correctamente.</Say>
 </Response>`,
     });
 

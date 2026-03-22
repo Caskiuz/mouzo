@@ -197,7 +197,7 @@ export default function LoyaltyScreen() {
   const subscriptions: Subscription[] = [
     {
       id: 'basic',
-      name: 'MOUZO Plus',
+      name: 'Rabbit Food Plus',
       price: 99,
       benefits: [
         'Entrega gratis ilimitada',
@@ -209,10 +209,10 @@ export default function LoyaltyScreen() {
     },
     {
       id: 'premium',
-      name: 'MOUZO Premium',
+      name: 'Rabbit Food Premium',
       price: 199,
       benefits: [
-        'Todo de MOUZO Plus',
+        'Todo de Rabbit Food Plus',
         '15% descuento en todos los pedidos',
         'Entrega express gratis',
         'Cashback del 5%',

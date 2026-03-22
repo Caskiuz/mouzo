@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, ActivityIndicator, Pressable, Modal, TextInput, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
-import { Spacing, MouzoColors } from "@/constants/theme";
+import { Spacing, RabbitFoodColors } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { tabStyles } from "./styles";
 
@@ -106,7 +106,7 @@ export function SupportTab({ theme, showToast }: TabProps) {
   if (loading) {
     return (
       <View style={tabStyles.centered}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
       </View>
     );
   }
@@ -118,7 +118,7 @@ export function SupportTab({ theme, showToast }: TabProps) {
           <Pressable
             key={f}
             onPress={() => setFilter(f)}
-            style={[tabStyles.sectionTab, filter === f && { backgroundColor: MouzoColors.primary }]}
+            style={[tabStyles.sectionTab, filter === f && { backgroundColor: RabbitFoodColors.primary }]}
           >
             <ThemedText type="small" style={{ color: filter === f ? "#fff" : theme.text }}>
               {f === "all" ? "Todos" : f === "open" ? "Abiertos" : "Cerrados"}
@@ -147,20 +147,20 @@ export function SupportTab({ theme, showToast }: TabProps) {
                   {ticket.subject}
                 </ThemedText>
                 <ThemedText type="small" style={{ color: theme.textSecondary }}>
-                  {ticket.userName} - {new Date(ticket.createdAt).toLocaleDateString("es-MX")}
+                  {ticket.userName} - {new Date(ticket.createdAt).toLocaleDateString("es-VE")}
                 </ThemedText>
               </View>
               <View style={[tabStyles.priorityBadge, {
                 backgroundColor:
-                  ticket.priority === "high" ? MouzoColors.error + "20" :
-                  ticket.priority === "medium" ? MouzoColors.warning + "20" :
-                  MouzoColors.success + "20"
+                  ticket.priority === "high" ? RabbitFoodColors.error + "20" :
+                  ticket.priority === "medium" ? RabbitFoodColors.warning + "20" :
+                  RabbitFoodColors.success + "20"
               }]}>
                 <ThemedText type="small" style={{
                   color:
-                    ticket.priority === "high" ? MouzoColors.error :
-                    ticket.priority === "medium" ? MouzoColors.warning :
-                    MouzoColors.success
+                    ticket.priority === "high" ? RabbitFoodColors.error :
+                    ticket.priority === "medium" ? RabbitFoodColors.warning :
+                    RabbitFoodColors.success
                 }}>
                   {ticket.priority === "high" ? "Alta" : ticket.priority === "medium" ? "Media" : "Baja"}
                 </ThemedText>
@@ -169,9 +169,9 @@ export function SupportTab({ theme, showToast }: TabProps) {
             <View style={tabStyles.cardActions}>
               <Pressable
                 onPress={() => openTicket(ticket)}
-                style={[tabStyles.actionBtn, { backgroundColor: MouzoColors.primary + "20" }]}
+                style={[tabStyles.actionBtn, { backgroundColor: RabbitFoodColors.primary + "20" }]}
               >
-                <ThemedText type="small" style={{ color: MouzoColors.primary }}>
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary }}>
                   Ver / Responder
                 </ThemedText>
               </Pressable>
@@ -179,24 +179,24 @@ export function SupportTab({ theme, showToast }: TabProps) {
                 <>
                   <Pressable
                     onPress={() => updateTicketStatus(ticket.id, "in_progress")}
-                    style={[tabStyles.actionBtn, { backgroundColor: MouzoColors.warning + "20" }]}
+                    style={[tabStyles.actionBtn, { backgroundColor: RabbitFoodColors.warning + "20" }]}
                   >
-                    <ThemedText type="small" style={{ color: MouzoColors.warning }}>
+                    <ThemedText type="small" style={{ color: RabbitFoodColors.warning }}>
                       En Proceso
                     </ThemedText>
                   </Pressable>
                   <Pressable
                     onPress={() => updateTicketStatus(ticket.id, "closed")}
-                    style={[tabStyles.actionBtn, { backgroundColor: MouzoColors.success + "20" }]}
+                    style={[tabStyles.actionBtn, { backgroundColor: RabbitFoodColors.success + "20" }]}
                   >
-                    <ThemedText type="small" style={{ color: MouzoColors.success }}>
+                    <ThemedText type="small" style={{ color: RabbitFoodColors.success }}>
                       Cerrar
                     </ThemedText>
                   </Pressable>
                 </>
               ) : (
-                <View style={[tabStyles.statusBadge, { backgroundColor: MouzoColors.success + "20" }]}>
-                  <ThemedText type="small" style={{ color: MouzoColors.success }}>
+                <View style={[tabStyles.statusBadge, { backgroundColor: RabbitFoodColors.success + "20" }]}>
+                  <ThemedText type="small" style={{ color: RabbitFoodColors.success }}>
                     Cerrado
                   </ThemedText>
                 </View>
@@ -218,20 +218,20 @@ export function SupportTab({ theme, showToast }: TabProps) {
 
             {loadingMessages ? (
               <View style={{ padding: Spacing.xl, alignItems: "center" }}>
-                <ActivityIndicator size="large" color={MouzoColors.primary} />
+                <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
               </View>
             ) : (
               <>
                 <ScrollView style={{ flex: 1, padding: Spacing.lg }}>
                   {messages.map((msg) => (
                     <View key={msg.id} style={{ marginBottom: Spacing.md, alignItems: msg.isBot ? "flex-start" : "flex-end" }}>
-                      <View style={{ backgroundColor: msg.isBot ? theme.card : MouzoColors.primary + "20", padding: Spacing.md, borderRadius: 12, maxWidth: "80%" }}>
+                      <View style={{ backgroundColor: msg.isBot ? theme.card : RabbitFoodColors.primary + "20", padding: Spacing.md, borderRadius: 12, maxWidth: "80%" }}>
                         <ThemedText type="small" style={{ fontWeight: "600", marginBottom: 4 }}>
                           {msg.senderName}
                         </ThemedText>
                         <ThemedText type="body">{msg.message}</ThemedText>
                         <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
-                          {new Date(msg.createdAt).toLocaleString("es-MX")}
+                          {new Date(msg.createdAt).toLocaleString("es-VE")}
                         </ThemedText>
                       </View>
                     </View>
@@ -250,7 +250,7 @@ export function SupportTab({ theme, showToast }: TabProps) {
                   <Pressable
                     onPress={sendReply}
                     disabled={sending || !replyText.trim()}
-                    style={{ backgroundColor: MouzoColors.primary, padding: Spacing.md, borderRadius: 8, alignItems: "center", opacity: sending || !replyText.trim() ? 0.5 : 1 }}
+                    style={{ backgroundColor: RabbitFoodColors.primary, padding: Spacing.md, borderRadius: 8, alignItems: "center", opacity: sending || !replyText.trim() ? 0.5 : 1 }}
                   >
                     {sending ? (
                       <ActivityIndicator color="#fff" />

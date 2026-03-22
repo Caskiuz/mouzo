@@ -23,7 +23,7 @@ export async function sendVerificationCode(
         to: formatPhoneNumber(phoneNumber),
         channel: "sms",
         locale: "es",
-        customFriendlyName: "MOUZO Autlán",
+        customFriendlyName: "MOUZO San Cristóbal",
       });
 
     console.log(
@@ -69,7 +69,7 @@ export async function verifyCode(
   }
 }
 
-// Format phone number for Mexico
+// Format phone number for Venezuela
 function formatPhoneNumber(phone: string): string {
   const cleaned = phone.replace(/\D/g, "");
 
@@ -79,7 +79,7 @@ function formatPhoneNumber(phone: string): string {
   }
 
   if (cleaned.length === 10) {
-    return `+52${cleaned}`;
+    return `+58${cleaned}`;
   }
 
   if (cleaned.startsWith("+")) {

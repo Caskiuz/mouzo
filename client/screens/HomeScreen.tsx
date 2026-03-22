@@ -40,7 +40,7 @@ import { BusinessCardSkeleton } from "@/components/SkeletonLoader";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApp } from "@/contexts/AppContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { Business } from "@/types";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
@@ -102,7 +102,7 @@ export default function HomeScreen() {
         minimumOrder: (b.min_order || 5000) / 100, // Convertir de centavos a pesos
         isOpen: b.isOpen ?? b.is_open ?? false,
         openingHours: [],
-        address: b.address || 'Autlán, Jalisco',
+        address: b.address || 'San Cristóbal, Táchira, Venezuela',
         phone: b.phone || '',
         categories: b.categories ? b.categories.split(',') : [],
         featured: b.is_featured || false,
@@ -203,16 +203,6 @@ export default function HomeScreen() {
   
   // Cuando hay filtros activos, mostrar todos los negocios (restaurantes + mercados)
   const displayBusinesses = hasActiveFilters ? sortedBusinesses : restaurants;
-  
-  console.log('🔍 DEBUG - activeFilter:', activeFilter);
-  console.log('🔍 DEBUG - filteredBusinesses count:', filteredBusinesses.length);
-  if (filteredBusinesses.length > 0) {
-    filteredBusinesses.forEach(b => {
-      console.log(`  - ${b.name}: type=${b.type}, rating=${b.rating}`);
-    });
-  }
-  console.log('🔍 DEBUG - restaurants count:', restaurants.length);
-  console.log('🔍 DEBUG - hasActiveFilters:', hasActiveFilters);
 
   return (
     <LinearGradient
@@ -235,7 +225,7 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -252,10 +242,10 @@ export default function HomeScreen() {
           />
           <View style={styles.logoTextContainer}>
             <ThemedText type="h2" style={styles.logoTitle}>
-              MOUZO
+              Rabbit Food
             </ThemedText>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-              Autlan de Navarro
+              Tu app de comida y delivery en Venezuela
             </ThemedText>
           </View>
         </Animated.View>
@@ -413,7 +403,7 @@ export default function HomeScreen() {
               style={({ pressed }) => [
                 styles.filterChip,
                 activeFilter === filter.id
-                  ? { backgroundColor: MouzoColors.primary }
+                  ? { backgroundColor: RabbitFoodColors.primary }
                   : { backgroundColor: theme.backgroundSecondary },
                 {
                   opacity: pressed ? 0.8 : 1,
@@ -425,7 +415,7 @@ export default function HomeScreen() {
                 name={filter.icon as any}
                 size={14}
                 color={
-                  activeFilter === filter.id ? "#FFFFFF" : MouzoColors.primary
+                  activeFilter === filter.id ? "#FFFFFF" : RabbitFoodColors.primary
                 }
               />
               <ThemedText
@@ -455,7 +445,7 @@ export default function HomeScreen() {
               ]}
             >
               <LinearGradient
-                colors={[MouzoColors.carnival.pink, "#7B1FA2", "#6A1B9A"]}
+                colors={[RabbitFoodColors.carnival.pink, "#7B1FA2", "#6A1B9A"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.carnivalGradient}
@@ -472,7 +462,7 @@ export default function HomeScreen() {
                       <Feather
                         name="star"
                         size={10}
-                        color={MouzoColors.carnival.gold}
+                        color={RabbitFoodColors.carnival.gold}
                       />
                       <ThemedText
                         type="caption"
@@ -482,7 +472,7 @@ export default function HomeScreen() {
                       </ThemedText>
                     </View>
                     <ThemedText type="h3" style={styles.carnivalTitle}>
-                      Carnaval Autlan 2026
+                      Carnaval San Cristóbal 2026
                     </ThemedText>
                     <View style={styles.carnivalCTA}>
                       <ThemedText type="small" style={styles.carnivalSubtitle}>
@@ -546,7 +536,7 @@ export default function HomeScreen() {
               }}
               style={[
                 styles.emptyStateClearButton,
-                { backgroundColor: MouzoColors.primary },
+                { backgroundColor: RabbitFoodColors.primary },
               ]}
             >
               <Feather name="x" size={16} color="#FFFFFF" />
@@ -639,14 +629,14 @@ export default function HomeScreen() {
                     styles.marketsBanner,
                     styles.bannerHalf,
                     {
-                      backgroundColor: MouzoColors.primary,
+                      backgroundColor: RabbitFoodColors.primary,
                       transform: [{ scale: pressed ? 0.97 : 1 }],
                     },
                     Shadows.md,
                   ]}
                 >
                   <LinearGradient
-                    colors={[MouzoColors.primary, "#E65100", "#D84315"]}
+                    colors={[RabbitFoodColors.primary, "#E65100", "#D84315"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.marketsGradient}
@@ -804,7 +794,7 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.md,
   },
   logoTitle: {
-    color: MouzoColors.primary,
+    color: RabbitFoodColors.primary,
     fontWeight: "700",
   },
   questionContainer: {
@@ -928,7 +918,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xs,
   },
   carnivalBadgeText: {
-    color: MouzoColors.carnival.gold,
+    color: RabbitFoodColors.carnival.gold,
     fontWeight: "600",
     marginLeft: 4,
     fontSize: 10,
@@ -962,7 +952,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Spacing.md,
     right: Spacing.md,
-    backgroundColor: MouzoColors.primary,
+    backgroundColor: RabbitFoodColors.primary,
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.xs,
     borderRadius: BorderRadius.sm,
@@ -1009,7 +999,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Spacing.xs,
     right: Spacing.xs,
-    backgroundColor: MouzoColors.primary,
+    backgroundColor: RabbitFoodColors.primary,
     width: 20,
     height: 20,
     borderRadius: 10,

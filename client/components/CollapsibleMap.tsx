@@ -18,7 +18,7 @@ let PROVIDER_GOOGLE: any = null;
 
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 
 interface Location {
   latitude: number;
@@ -95,7 +95,7 @@ export function CollapsibleMap({
     ].filter(isValidLocation);
     if (locations.length === 0) {
       return {
-        latitude: 19.7708,
+        latitude: 7.7708,
         longitude: -104.3636,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
@@ -139,17 +139,17 @@ export function CollapsibleMap({
           <View
             style={[
               styles.iconContainer,
-              { backgroundColor: MouzoColors.primary + "20" },
+              { backgroundColor: RabbitFoodColors.primary + "20" },
             ]}
           >
-            <Feather name="map" size={20} color={MouzoColors.primary} />
+            <Feather name="map" size={20} color={RabbitFoodColors.primary} />
           </View>
           <View style={styles.headerText}>
             <ThemedText type="body" style={{ fontWeight: "600" }}>
               Seguimiento en tiempo real
             </ThemedText>
             {deliveryPersonLocation ? (
-              <ThemedText type="caption" style={{ color: MouzoColors.success }}>
+              <ThemedText type="caption" style={{ color: RabbitFoodColors.success }}>
                 Repartidor en movimiento
               </ThemedText>
             ) : (
@@ -188,12 +188,12 @@ export function CollapsibleMap({
               <Marker
                 coordinate={businessLocation}
                 title="Negocio"
-                pinColor={MouzoColors.primary}
+                pinColor={RabbitFoodColors.primary}
               >
                 <View
                   style={[
                     styles.markerContainer,
-                    { backgroundColor: MouzoColors.primary },
+                    { backgroundColor: RabbitFoodColors.primary },
                   ]}
                 >
                   <Feather name="shopping-bag" size={16} color="#FFFFFF" />
@@ -205,12 +205,12 @@ export function CollapsibleMap({
               <Marker
                 coordinate={deliveryPersonLocation}
                 title="Repartidor"
-                pinColor={MouzoColors.success}
+                pinColor={RabbitFoodColors.success}
               >
                 <View
                   style={[
                     styles.markerContainer,
-                    { backgroundColor: MouzoColors.success },
+                    { backgroundColor: RabbitFoodColors.success },
                   ]}
                 >
                   <Feather name="navigation" size={16} color="#FFFFFF" />
@@ -238,7 +238,7 @@ export function CollapsibleMap({
             {getRouteCoordinates().length >= 2 ? (
               <Polyline
                 coordinates={getRouteCoordinates()}
-                strokeColor={MouzoColors.primary}
+                strokeColor={RabbitFoodColors.primary}
                 strokeWidth={3}
                 lineDashPattern={[5, 5]}
               />
@@ -250,7 +250,7 @@ export function CollapsibleMap({
               <View
                 style={[
                   styles.legendDot,
-                  { backgroundColor: MouzoColors.primary },
+                  { backgroundColor: RabbitFoodColors.primary },
                 ]}
               />
               <ThemedText type="caption">Negocio</ThemedText>
@@ -259,7 +259,7 @@ export function CollapsibleMap({
               <View
                 style={[
                   styles.legendDot,
-                  { backgroundColor: MouzoColors.success },
+                  { backgroundColor: RabbitFoodColors.success },
                 ]}
               />
               <ThemedText type="caption">Repartidor</ThemedText>

@@ -182,8 +182,16 @@ router.get("/orders", authenticateToken, requireRole("business_owner"), async (r
       .where(inArray(orders.businessId, businessIds))
       .orderBy(desc(orders.createdAt));
 
+    // Filter out pending orders that haven't been confirmed by customer yet
+    const filteredOrders = businessOrders.filter(order => {
+      if (order.status === 'pending' && !order.regretPeriodConfirmed) {
+        return false; // Don't show pending orders still in regret period
+      }
+      return true;
+    });
+
     const enrichedOrders = await Promise.all(
-      businessOrders.map(async (order) => {
+      filteredOrders.map(async (order) => {
         let customer = null;
         if (order.userId) {
           const customerResult = await db

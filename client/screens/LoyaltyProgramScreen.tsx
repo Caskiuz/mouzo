@@ -234,7 +234,7 @@ export default function LoyaltyProgramScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);
@@ -418,7 +418,7 @@ export default function LoyaltyProgramScreen() {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Text style={styles.subscriptionTitle}>MOUZO Premium</Text>
+            <Text style={styles.subscriptionTitle}>Rabbit Food Premium</Text>
             <Text style={styles.subscriptionPrice}>
               {formatCurrency(loyaltyData?.subscription.monthlyFee || 0)}/mes
             </Text>
@@ -522,7 +522,7 @@ export default function LoyaltyProgramScreen() {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Text style={styles.premiumTitle}>MOUZO Premium</Text>
+              <Text style={styles.premiumTitle}>Rabbit Food Premium</Text>
               <Text style={styles.premiumPrice}>
                 {formatCurrency(loyaltyData?.subscription.monthlyFee || 0)}/mes
               </Text>

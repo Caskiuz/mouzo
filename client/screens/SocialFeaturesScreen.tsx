@@ -130,7 +130,7 @@ export default function SocialFeaturesScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);
@@ -170,7 +170,7 @@ export default function SocialFeaturesScreen() {
           </View>
           
           <Text style={styles.groupDeadline}>
-            ⏰ Cierra: {new Date(group.deadline).toLocaleString('es-MX')}
+            ⏰ Cierra: {new Date(group.deadline).toLocaleString('es-VE')}
           </Text>
           
           {group.status === 'open' && (
@@ -326,7 +326,7 @@ export default function SocialFeaturesScreen() {
         <TouchableOpacity style={styles.interestGroup}>
           <Text style={styles.interestIcon}>🍕</Text>
           <View style={styles.interestInfo}>
-            <Text style={styles.interestTitle}>Pizza Lovers Autlán</Text>
+            <Text style={styles.interestTitle}>Pizza Lovers San Cristóbal</Text>
             <Text style={styles.interestMembers}>856 miembros</Text>
           </View>
           <Text style={styles.joinText}>Unirse</Text>
@@ -354,7 +354,7 @@ export default function SocialFeaturesScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Comunidad MOUZO</Text>
+      <Text style={styles.title}>Comunidad Rabbit Food</Text>
       
       <View style={styles.tabContainer}>
         {[

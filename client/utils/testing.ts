@@ -1,14 +1,14 @@
 import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from './distance';
 import { isInCoverageArea, AUTLAN_CENTER } from './coverage';
 
-// Test data - real coordinates in Autlán
+// Test data - real coordinates in San Cristóbal, Venezuela
 const TEST_LOCATIONS = {
-  center: { lat: 19.7708, lng: -104.3636 }, // Centro de Autlán
-  north: { lat: 19.7800, lng: -104.3636 }, // ~1km north
-  south: { lat: 19.7616, lng: -104.3636 }, // ~1km south
-  east: { lat: 19.7708, lng: -104.3500 }, // ~1km east
-  west: { lat: 19.7708, lng: -104.3772 }, // ~1km west
-  outside: { lat: 19.8000, lng: -104.4000 }, // Outside coverage
+  center: { lat: 7.7669, lng: -72.2250 }, // Centro de San Cristóbal
+  north: { lat: 7.7769, lng: -72.2250 }, // ~1km north
+  south: { lat: 7.7569, lng: -72.2250 }, // ~1km south
+  east: { lat: 7.7669, lng: -72.2150 }, // ~1km east
+  west: { lat: 7.7669, lng: -72.2350 }, // ~1km west
+  outside: { lat: 7.8000, lng: -72.3000 }, // Outside coverage
 };
 
 export const runDistanceTests = () => {

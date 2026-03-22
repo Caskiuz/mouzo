@@ -38,6 +38,7 @@ import SupportChatScreen from "@/screens/SupportChatScreen";
 import WalletScreen from "@/screens/WalletScreen";
 import ReportIssueScreen from "@/screens/ReportIssueScreen";
 import OrderConfirmationScreen from "@/screens/OrderConfirmationScreen";
+import PagoMovilPaymentScreen from "@/screens/PagoMovilPaymentScreen";
 import BusinessMapScreen from "@/screens/BusinessMapScreen";
 import BecomeDriverScreen from "@/screens/BecomeDriverScreen";
 import TermsScreen from "@/screens/TermsScreen";
@@ -103,6 +104,7 @@ export type RootStackParamList = {
   Wallet: undefined;
   ReportIssue: { orderId: string; orderNumber?: string };
   OrderConfirmation: { orderId: string; regretPeriodEndsAt: string };
+  PagoMovilPayment: { orderId: string; reference: string; amount: number; rabbitfood: { phone: string; bank: string; cedula: string; bankName: string } };
   BusinessMap: undefined;
   BecomeDriver: undefined;
   BusinessHours: undefined;
@@ -282,6 +284,11 @@ export default function RootStackNavigator() {
           <Stack.Screen
             name="OrderConfirmation"
             component={OrderConfirmationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PagoMovilPayment"
+            component={PagoMovilPaymentScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

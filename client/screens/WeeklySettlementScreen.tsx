@@ -8,7 +8,7 @@ import * as Haptics from "expo-haptics";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -65,7 +65,7 @@ export default function WeeklySettlementScreen() {
           <ThemedText type="h2">Liquidación Semanal</ThemedText>
         </View>
         <View style={styles.emptyState}>
-          <Feather name="check-circle" size={64} color={MouzoColors.success} />
+          <Feather name="check-circle" size={64} color={RabbitFoodColors.success} />
           <ThemedText type="h4" style={{ marginTop: Spacing.lg }}>
             ¡Todo al día!
           </ThemedText>
@@ -90,7 +90,7 @@ export default function WeeklySettlementScreen() {
 
         <ScrollView contentContainerStyle={styles.content}>
           {/* Monto a pagar */}
-          <View style={[styles.amountCard, { backgroundColor: MouzoColors.error }, Shadows.lg]}>
+          <View style={[styles.amountCard, { backgroundColor: RabbitFoodColors.error }, Shadows.lg]}>
             <ThemedText type="caption" style={{ color: "#FFF", opacity: 0.8 }}>
               Debes depositar
             </ThemedText>
@@ -136,7 +136,7 @@ export default function WeeklySettlementScreen() {
           )}
 
           <View style={[styles.infoCard, { backgroundColor: theme.backgroundSecondary }]}>
-            <Feather name="info" size={20} color={MouzoColors.primary} />
+            <Feather name="info" size={20} color={RabbitFoodColors.primary} />
             <View style={{ flex: 1, marginLeft: Spacing.md }}>
               <ThemedText type="body" style={{ fontWeight: "600" }}>¿Ya depositaste?</ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary, marginTop: 4 }}>
@@ -170,7 +170,7 @@ export default function WeeklySettlementScreen() {
                 submitMutation.mutate({ settlementId: "manual", proofUrl: proofUrl.trim() });
               }}
               disabled={submitMutation.isPending}
-              style={[styles.submitButton, { backgroundColor: MouzoColors.success, opacity: submitMutation.isPending ? 0.5 : 1 }]}
+              style={[styles.submitButton, { backgroundColor: RabbitFoodColors.success, opacity: submitMutation.isPending ? 0.5 : 1 }]}
             >
               <Feather name="upload" size={20} color="#FFF" />
               <ThemedText type="body" style={{ color: "#FFF", marginLeft: Spacing.sm, fontWeight: "600" }}>
@@ -183,8 +183,8 @@ export default function WeeklySettlementScreen() {
     );
   }
 
-  const weekStart = new Date(settlement.week_start).toLocaleDateString("es-MX");
-  const weekEnd = new Date(settlement.week_end).toLocaleDateString("es-MX");
+  const weekStart = new Date(settlement.week_start).toLocaleDateString("es-VE");
+  const weekEnd = new Date(settlement.week_end).toLocaleDateString("es-VE");
   const deadline = new Date(settlement.created_at);
   deadline.setDate(deadline.getDate() + 2);
   const hoursLeft = Math.max(0, Math.floor((deadline.getTime() - Date.now()) / (1000 * 60 * 60)));
@@ -201,13 +201,13 @@ export default function WeeklySettlementScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         {/* Alerta de tiempo */}
         {settlement.status === "pending" && hoursLeft < 24 && (
-          <View style={[styles.alertCard, { backgroundColor: MouzoColors.error + "20" }]}>
-            <Feather name="alert-circle" size={24} color={MouzoColors.error} />
+          <View style={[styles.alertCard, { backgroundColor: RabbitFoodColors.error + "20" }]}>
+            <Feather name="alert-circle" size={24} color={RabbitFoodColors.error} />
             <View style={{ flex: 1, marginLeft: Spacing.md }}>
-              <ThemedText type="body" style={{ color: MouzoColors.error, fontWeight: "600" }}>
+              <ThemedText type="body" style={{ color: RabbitFoodColors.error, fontWeight: "600" }}>
                 ¡Tiempo límite!
               </ThemedText>
-              <ThemedText type="small" style={{ color: MouzoColors.error }}>
+              <ThemedText type="small" style={{ color: RabbitFoodColors.error }}>
                 Te quedan {hoursLeft} horas para depositar o serás bloqueado
               </ThemedText>
             </View>
@@ -215,7 +215,7 @@ export default function WeeklySettlementScreen() {
         )}
 
         {/* Monto a pagar */}
-        <View style={[styles.amountCard, { backgroundColor: MouzoColors.primary }, Shadows.lg]}>
+        <View style={[styles.amountCard, { backgroundColor: RabbitFoodColors.primary }, Shadows.lg]}>
           <ThemedText type="caption" style={{ color: "#FFF", opacity: 0.8 }}>
             Debes depositar
           </ThemedText>
@@ -285,7 +285,7 @@ export default function WeeklySettlementScreen() {
                 submitMutation.mutate({ settlementId: settlement.id, proofUrl: proofUrl.trim() });
               }}
               disabled={submitMutation.isPending}
-              style={[styles.submitButton, { backgroundColor: MouzoColors.success, opacity: submitMutation.isPending ? 0.5 : 1 }]}
+              style={[styles.submitButton, { backgroundColor: RabbitFoodColors.success, opacity: submitMutation.isPending ? 0.5 : 1 }]}
             >
               <Feather name="upload" size={20} color="#FFF" />
               <ThemedText type="body" style={{ color: "#FFF", marginLeft: Spacing.sm, fontWeight: "600" }}>
@@ -297,9 +297,9 @@ export default function WeeklySettlementScreen() {
 
         {/* Estado: Enviado */}
         {settlement.status === "submitted" && (
-          <View style={[styles.statusCard, { backgroundColor: MouzoColors.warning + "20" }]}>
-            <Feather name="clock" size={32} color={MouzoColors.warning} />
-            <ThemedText type="h4" style={{ color: MouzoColors.warning, marginTop: Spacing.md }}>
+          <View style={[styles.statusCard, { backgroundColor: RabbitFoodColors.warning + "20" }]}>
+            <Feather name="clock" size={32} color={RabbitFoodColors.warning} />
+            <ThemedText type="h4" style={{ color: RabbitFoodColors.warning, marginTop: Spacing.md }}>
               Comprobante en revisión
             </ThemedText>
             <ThemedText type="body" style={{ color: theme.textSecondary, marginTop: Spacing.sm, textAlign: "center" }}>

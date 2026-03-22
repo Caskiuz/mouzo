@@ -10,7 +10,7 @@ type DaySchedule = {
 };
 
 function getZonedNow(): Date {
-  const timezone = process.env.BUSINESS_TIMEZONE || "America/Mexico_City";
+  const timezone = process.env.BUSINESS_TIMEZONE || "America/Venezuela_City";
   return new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
 }
 

@@ -29,13 +29,13 @@ function toRad(deg: number): number {
 
 /**
  * Calcula el delivery fee basado en la distancia
- * Tarifas ajustadas para Autlán, Jalisco
+ * Tarifas ajustadas para San Cristóbal, Táchira
  */
 export function calculateDeliveryFee(distance: number): number {
   const BASE_FEE = 15;  // $15 MXN base (reducido para ciudad pequeña)
   const PER_KM = 8;     // $8 MXN por km
   const MIN_FEE = 15;   // Mínimo $15 MXN
-  const MAX_FEE = 40;   // Máximo $40 MXN (Autlán es pequeño, ~5km diámetro)
+  const MAX_FEE = 40;   // Máximo $40 MXN (San Cristóbal es pequeño, ~5km diámetro)
   
   const fee = BASE_FEE + (distance * PER_KM);
   return Math.max(MIN_FEE, Math.min(fee, MAX_FEE));
@@ -52,7 +52,7 @@ export function estimateDeliveryTime(distance: number, prepTime: number = 20): n
 }
 
 /**
- * Valida si unas coordenadas están dentro de la zona de cobertura de Autlán
+ * Valida si unas coordenadas están dentro de la zona de cobertura de San Cristóbal
  */
 export function isInCoverageArea(latitude: number, longitude: number): boolean {
   const AUTLAN_BOUNDS = {

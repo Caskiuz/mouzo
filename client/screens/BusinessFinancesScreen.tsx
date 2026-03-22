@@ -16,7 +16,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Badge } from "@/components/Badge";
 import { useTheme } from "@/hooks/useTheme";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 type Period = "week" | "month" | "all";
@@ -89,14 +89,14 @@ export default function BusinessFinancesScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "delivered":
-        return MouzoColors.success;
+        return RabbitFoodColors.success;
       case "pending":
       case "accepted":
       case "preparing":
       case "on_the_way":
-        return MouzoColors.warning;
+        return RabbitFoodColors.warning;
       case "cancelled":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       default:
         return theme.textSecondary;
     }
@@ -121,7 +121,7 @@ export default function BusinessFinancesScreen() {
         style={styles.container}
       >
         <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
-          <ActivityIndicator size="large" color={MouzoColors.primary} />
+          <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
           <ThemedText style={{ marginTop: Spacing.md }}>Cargando finanzas...</ThemedText>
         </View>
       </LinearGradient>
@@ -143,7 +143,7 @@ export default function BusinessFinancesScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
@@ -218,7 +218,7 @@ export default function BusinessFinancesScreen() {
         {/* Información de Stripe */}
         <View style={[styles.infoCard, { backgroundColor: theme.card }, Shadows.sm]}>
           <View style={styles.infoHeader}>
-            <Feather name="info" size={20} color={MouzoColors.primary} />
+            <Feather name="info" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
               Sistema de Pagos
             </ThemedText>
@@ -227,7 +227,7 @@ export default function BusinessFinancesScreen() {
             • Recibes el 100% del precio base de tus productos
           </ThemedText>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
-            • MOUZO agrega un 15% de markup al precio final
+            • Rabbit Food agrega un 15% de markup al precio final
           </ThemedText>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
             • Pagos procesados con Stripe de forma segura
@@ -283,7 +283,7 @@ export default function BusinessFinancesScreen() {
                     {transaction.customerName || "Cliente"}
                   </ThemedText>
                   <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                    {new Date(transaction.createdAt).toLocaleDateString("es-MX", {
+                    {new Date(transaction.createdAt).toLocaleDateString("es-VE", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",

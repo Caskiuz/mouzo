@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/hooks/useTheme";
-import { MouzoColors } from "@/constants/theme";
+import { RabbitFoodColors } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 
 interface Business {
@@ -358,7 +358,7 @@ export default function MapViewScreen({ navigation }: any) {
   if (loading) {
     return (
       <View style={[styles.loadingContainer, { backgroundColor: theme.background }]}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
         <Text style={[styles.loadingText, { color: theme.text }]}>Cargando mapa en tiempo real...</Text>
       </View>
     );
@@ -398,7 +398,7 @@ export default function MapViewScreen({ navigation }: any) {
             }} 
             style={styles.headerButton}
           >
-            <Feather name={soundEnabled ? "volume-2" : "volume-x"} size={20} color={soundEnabled ? MouzoColors.primary : theme.textSecondary} />
+            <Feather name={soundEnabled ? "volume-2" : "volume-x"} size={20} color={soundEnabled ? RabbitFoodColors.primary : theme.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity 
             onPress={() => {
@@ -407,7 +407,7 @@ export default function MapViewScreen({ navigation }: any) {
             }} 
             style={styles.headerButton}
           >
-            <Feather name={notificationsEnabled ? "bell" : "bell-off"} size={20} color={notificationsEnabled ? MouzoColors.primary : theme.textSecondary} />
+            <Feather name={notificationsEnabled ? "bell" : "bell-off"} size={20} color={notificationsEnabled ? RabbitFoodColors.primary : theme.textSecondary} />
           </TouchableOpacity>
           <TouchableOpacity 
             onPress={() => {
@@ -438,9 +438,9 @@ export default function MapViewScreen({ navigation }: any) {
                 latitude: business.latitude,
                 longitude: business.longitude,
               }}
-              pinColor={business.isActive ? MouzoColors.success : MouzoColors.error}
+              pinColor={business.isActive ? RabbitFoodColors.success : RabbitFoodColors.error}
             >
-              <View style={[styles.businessMarker, { backgroundColor: business.isActive ? MouzoColors.success : MouzoColors.error }]}>
+              <View style={[styles.businessMarker, { backgroundColor: business.isActive ? RabbitFoodColors.success : RabbitFoodColors.error }]}>
                 <Feather name="shopping-bag" size={16} color="#fff" />
               </View>
             </Marker>
@@ -460,7 +460,7 @@ export default function MapViewScreen({ navigation }: any) {
         <View style={[styles.ordersPanel, { backgroundColor: theme.card }]}>
           <View style={styles.ordersPanelHeader}>
             <Text style={[styles.ordersPanelTitle, { color: theme.text }]}>Pedidos Activos</Text>
-            <View style={[styles.liveIndicator, { backgroundColor: MouzoColors.error }]}>
+            <View style={[styles.liveIndicator, { backgroundColor: RabbitFoodColors.error }]}>
               <Text style={styles.liveText}>● LIVE</Text>
             </View>
           </View>
@@ -472,8 +472,8 @@ export default function MapViewScreen({ navigation }: any) {
                 style={[
                   styles.filterButton,
                   {
-                    backgroundColor: statusFilter === filter.key ? MouzoColors.primary : theme.backgroundSecondary,
-                    borderColor: statusFilter === filter.key ? MouzoColors.primary : theme.border,
+                    backgroundColor: statusFilter === filter.key ? RabbitFoodColors.primary : theme.backgroundSecondary,
+                    borderColor: statusFilter === filter.key ? RabbitFoodColors.primary : theme.border,
                   },
                 ]}
                 onPress={() => {

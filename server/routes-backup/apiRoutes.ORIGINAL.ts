@@ -106,7 +106,7 @@ router.get("/delivery-zones", async (req, res) => {
       {
         id: 'zone-centro',
         name: 'Centro',
-        description: 'Centro de Autlán',
+        description: 'Centro de San Cristóbal',
         deliveryFee: 2500,
         maxDeliveryTime: 30,
         isActive: true,
@@ -117,7 +117,7 @@ router.get("/delivery-zones", async (req, res) => {
       {
         id: 'zone-norte',
         name: 'Norte',
-        description: 'Zona Norte de Autlán',
+        description: 'Zona Norte de San Cristóbal',
         deliveryFee: 3000,
         maxDeliveryTime: 35,
         isActive: true,
@@ -128,7 +128,7 @@ router.get("/delivery-zones", async (req, res) => {
       {
         id: 'zone-sur',
         name: 'Sur',
-        description: 'Zona Sur de Autlán',
+        description: 'Zona Sur de San Cristóbal',
         deliveryFee: 3000,
         maxDeliveryTime: 35,
         isActive: true,

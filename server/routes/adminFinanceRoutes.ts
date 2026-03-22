@@ -274,7 +274,7 @@ router.post("/export-csv", authenticateToken, requireRole("admin", "super_admin"
     // Generar CSV
     const csvHeader = "Fecha,Pedido ID,Negocio,Comisión (MXN),Estado\n";
     const csvRows = filteredOrders.map(order => {
-      const date = new Date(order.createdAt).toLocaleDateString("es-MX");
+      const date = new Date(order.createdAt).toLocaleDateString("es-VE");
       const commission = ((order.nemyCommission || 0) / 100).toFixed(2);
       return `${date},${order.id},${order.businessName},${commission},${order.status}`;
     }).join("\n");

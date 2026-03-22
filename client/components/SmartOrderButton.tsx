@@ -3,7 +3,7 @@ import { View, Pressable, StyleSheet, Alert, ActivityIndicator } from 'react-nat
 import { Feather } from '@expo/vector-icons';
 import { ThemedText } from './ThemedText';
 import { useTheme } from '@/hooks/useTheme';
-import { Spacing, BorderRadius, MouzoColors } from '@/constants/theme';
+import { Spacing, BorderRadius, RabbitFoodColors } from '@/constants/theme';
 
 // Función local para evitar problemas de importación
 const getButtonInfo = (status: string) => {
@@ -82,10 +82,10 @@ export const SmartOrderButton: React.FC<SmartOrderButtonProps> = ({
   // Mapear colores del sistema a los colores del tema
   const getThemeColor = (color: string) => {
     switch (color) {
-      case "#3B82F6": return MouzoColors.primary;
-      case "#F59E0B": return MouzoColors.warning;
-      case "#10B981": return MouzoColors.success;
-      case "#EF4444": return MouzoColors.error;
+      case "#3B82F6": return RabbitFoodColors.primary;
+      case "#F59E0B": return RabbitFoodColors.warning;
+      case "#10B981": return RabbitFoodColors.success;
+      case "#EF4444": return RabbitFoodColors.error;
       default: return theme.textSecondary;
     }
   };
@@ -154,7 +154,7 @@ export const SmartOrderButton: React.FC<SmartOrderButtonProps> = ({
           {buttonInfo.requiresBusinessAction && (
             <ThemedText
               type="caption"
-              style={{ color: MouzoColors.warning, marginTop: Spacing.xs, fontStyle: 'italic' }}
+              style={{ color: RabbitFoodColors.warning, marginTop: Spacing.xs, fontStyle: 'italic' }}
             >
               ⚠️ Requiere acción del negocio
             </ThemedText>
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.md,
     borderLeftWidth: 3,
-    borderLeftColor: MouzoColors.primary,
+    borderLeftColor: RabbitFoodColors.primary,
   },
   statusRow: {
     flexDirection: "row",

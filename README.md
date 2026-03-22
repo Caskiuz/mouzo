@@ -1,10 +1,22 @@
-# MOUZO - Plataforma de Delivery
+# Rabbit Food - Plataforma de Delivery
 
 > Conectando negocios locales con la comunidad de San Cristóbal, Venezuela
 
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue.svg)](https://www.mysql.com/)
+
+## 🎨 Diseño
+
+- **Logo**: SVG vectorial con conejo, comida y delivery
+- **Colores**: Paleta crema (#D4A574, #E8C9A0, #F5F1EB)
+- **Modo Oscuro**: Automático con soporte completo
+- **Tema**: Cálido y acogedor, inspirado en comida casera
+
+### Generar Assets del Logo
+```bash
+npm run generate:logo
+```
 
 ## 🚀 Stack Tecnológico
 
@@ -26,8 +38,8 @@
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/tu-usuario/mouzo.git
-cd mouzo
+git clone https://github.com/tu-usuario/rabbitfood.git
+cd rabbitfood
 
 # Instalar dependencias
 npm install
@@ -37,7 +49,7 @@ cp .env.example .env.local
 
 # Configurar base de datos
 mysql -u root -p
-CREATE DATABASE mouzo_db_local;
+CREATE DATABASE rabbitfood_db_local;
 exit
 
 # Aplicar schema
@@ -52,12 +64,12 @@ Crea un archivo `.env.local` con las siguientes variables:
 
 ```env
 # Base de Datos
-DATABASE_URL=mysql://root:password@localhost:3306/mouzo_db_local
+DATABASE_URL=mysql://root:password@localhost:3306/rabbitfood_db_local
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=mouzo_db_local
+DB_NAME=rabbitfood_db_local
 
 # JWT
 JWT_SECRET=your_jwt_secret
@@ -125,7 +137,7 @@ mysql -u root -p mouzo_db_local < backup.sql
 ## 🏗️ Estructura del Proyecto
 
 ```
-MOUZO/
+Rabbit Food/
 ├── client/              # Frontend React Native
 │   ├── components/      # Componentes reutilizables
 │   ├── screens/         # Pantallas de la app
@@ -145,7 +157,7 @@ MOUZO/
 ## 💳 Sistema de Pagos
 
 ### Comisiones
-- Plataforma MOUZO: 15% de markup sobre productos
+- Plataforma Rabbit Food: 15% de markup sobre productos
 - Negocio: 100% del precio base de productos
 - Repartidor: 100% de la tarifa de entrega
 
@@ -224,7 +236,7 @@ npm run check:types
 
 ## 📄 Licencia
 
-Propietario - MOUZO © 2026
+Propietario - Rabbit Food © 2026
 
 ## 🆘 Soporte
 

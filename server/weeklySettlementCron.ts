@@ -1,6 +1,5 @@
 import cron from "node-cron";
 import { WeeklySettlementService } from "./weeklySettlementService";
-import { StripeWeeklyTransferService } from "./stripeWeeklyTransferService";
 
 export class WeeklySettlementCron {
   /**
@@ -29,20 +28,10 @@ export class WeeklySettlementCron {
       }
     });
 
-    // Sábados a las 2:00 AM - Transferencias Stripe Connect (como Uber/Rappi)
-    cron.schedule("0 2 * * 6", async () => {
-      console.log("🕐 Procesando transferencias semanales Stripe Connect...");
-      try {
-        const result = await StripeWeeklyTransferService.processWeeklyTransfers();
-        console.log(`💰 Transferencias completadas: ${result.transfersSuccessful}/${result.driversProcessed} - $${(result.totalAmount / 100).toFixed(2)}`);
-      } catch (error) {
-        console.error("❌ Error en transferencias Stripe:", error);
-      }
-    });
+
 
     console.log("⏰ Cron jobs de liquidación semanal iniciados:");
     console.log("   - Viernes 11:59 PM: FLUJO RESTRICTIVO - Cierre y bloqueo inmediato");
     console.log("   - Lunes 12:00 AM: Bloqueo definitivo de drivers sin pago");
-    console.log("   - Sábados 2:00 AM: Transferencias Stripe Connect (como Uber/Rappi)");
   }
 }

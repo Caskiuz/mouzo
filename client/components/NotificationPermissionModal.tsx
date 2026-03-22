@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
-import { MouzoColors, Spacing, BorderRadius } from "@/constants/theme";
+import { RabbitFoodColors, Spacing, BorderRadius } from "@/constants/theme";
 
 interface NotificationPermissionModalProps {
   visible: boolean;
@@ -36,10 +36,10 @@ export function NotificationPermissionModal({
           <View
             style={[
               styles.iconContainer,
-              { backgroundColor: MouzoColors.primaryLight },
+              { backgroundColor: RabbitFoodColors.primaryLight },
             ]}
           >
-            <Feather name="bell" size={40} color={MouzoColors.primary} />
+            <Feather name="bell" size={40} color={RabbitFoodColors.primary} />
           </View>
 
           <ThemedText type="h3" style={styles.title}>
@@ -59,7 +59,7 @@ export function NotificationPermissionModal({
               <Feather
                 name="check-circle"
                 size={18}
-                color={MouzoColors.success}
+                color={RabbitFoodColors.success}
               />
               <ThemedText type="body" style={styles.benefitText}>
                 Estado de tu pedido en tiempo real
@@ -69,7 +69,7 @@ export function NotificationPermissionModal({
               <Feather
                 name="check-circle"
                 size={18}
-                color={MouzoColors.success}
+                color={RabbitFoodColors.success}
               />
               <ThemedText type="body" style={styles.benefitText}>
                 Aviso cuando llegue el repartidor
@@ -79,7 +79,7 @@ export function NotificationPermissionModal({
               <Feather
                 name="check-circle"
                 size={18}
-                color={MouzoColors.success}
+                color={RabbitFoodColors.success}
               />
               <ThemedText type="body" style={styles.benefitText}>
                 Promociones y descuentos exclusivos

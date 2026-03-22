@@ -19,7 +19,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { BackButton } from '@/components/BackButton';
 import { useTheme } from '@/hooks/useTheme';
 import { useBusiness } from '@/contexts/BusinessContext';
-import { Spacing, BorderRadius, MouzoColors, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from '@/constants/theme';
 import { apiRequest } from '@/lib/query-client';
 
 interface StripeStatus {
@@ -152,9 +152,9 @@ export default function BusinessStripeSetupScreen() {
 
   const getStatusColor = () => {
     if (!stripeStatus.connected) return theme.textSecondary;
-    if (stripeStatus.chargesEnabled && stripeStatus.payoutsEnabled) return MouzoColors.success;
-    if (stripeStatus.detailsSubmitted) return MouzoColors.warning;
-    return MouzoColors.error;
+    if (stripeStatus.chargesEnabled && stripeStatus.payoutsEnabled) return RabbitFoodColors.success;
+    if (stripeStatus.detailsSubmitted) return RabbitFoodColors.warning;
+    return RabbitFoodColors.error;
   };
 
   const getStatusText = () => {
@@ -180,7 +180,7 @@ export default function BusinessStripeSetupScreen() {
           <View style={{ width: 40 }} />
         </View>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={MouzoColors.primary} />
+          <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
           <ThemedText style={{ marginTop: Spacing.md, color: theme.textSecondary }}>
             Cargando información...
           </ThemedText>
@@ -207,7 +207,7 @@ export default function BusinessStripeSetupScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
@@ -233,7 +233,7 @@ export default function BusinessStripeSetupScreen() {
                 <Feather
                   name={stripeStatus.chargesEnabled ? 'check-circle' : 'x-circle'}
                   size={18}
-                  color={stripeStatus.chargesEnabled ? MouzoColors.success : MouzoColors.error}
+                  color={stripeStatus.chargesEnabled ? RabbitFoodColors.success : RabbitFoodColors.error}
                 />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   Recibir pagos
@@ -243,7 +243,7 @@ export default function BusinessStripeSetupScreen() {
                 <Feather
                   name={stripeStatus.payoutsEnabled ? 'check-circle' : 'x-circle'}
                   size={18}
-                  color={stripeStatus.payoutsEnabled ? MouzoColors.success : MouzoColors.error}
+                  color={stripeStatus.payoutsEnabled ? RabbitFoodColors.success : RabbitFoodColors.error}
                 />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   Transferencias bancarias
@@ -256,8 +256,8 @@ export default function BusinessStripeSetupScreen() {
         {/* Actions */}
         {!stripeStatus.connected ? (
           <>
-            <View style={[styles.infoCard, { backgroundColor: MouzoColors.primary + '15' }]}>
-              <Feather name="info" size={20} color={MouzoColors.primary} />
+            <View style={[styles.infoCard, { backgroundColor: RabbitFoodColors.primary + '15' }]}>
+              <Feather name="info" size={20} color={RabbitFoodColors.primary} />
               <View style={{ flex: 1, marginLeft: Spacing.md }}>
                 <ThemedText type="body" style={{ fontWeight: '600', marginBottom: 4 }}>
                   Conecta tu cuenta de Stripe
@@ -269,7 +269,7 @@ export default function BusinessStripeSetupScreen() {
             </View>
 
             <Pressable
-              style={[styles.primaryButton, { backgroundColor: MouzoColors.primary }, Shadows.md]}
+              style={[styles.primaryButton, { backgroundColor: RabbitFoodColors.primary }, Shadows.md]}
               onPress={handleConnectStripe}
               disabled={connecting}
             >
@@ -290,31 +290,31 @@ export default function BusinessStripeSetupScreen() {
                 ¿Qué necesitas?
               </ThemedText>
               <View style={styles.requirementRow}>
-                <Feather name="check" size={18} color={MouzoColors.success} />
+                <Feather name="check" size={18} color={RabbitFoodColors.success} />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   Identificación oficial (INE/Pasaporte)
                 </ThemedText>
               </View>
               <View style={styles.requirementRow}>
-                <Feather name="check" size={18} color={MouzoColors.success} />
+                <Feather name="check" size={18} color={RabbitFoodColors.success} />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   RFC (Registro Federal de Contribuyentes)
                 </ThemedText>
               </View>
               <View style={styles.requirementRow}>
-                <Feather name="check" size={18} color={MouzoColors.success} />
+                <Feather name="check" size={18} color={RabbitFoodColors.success} />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   CURP
                 </ThemedText>
               </View>
               <View style={styles.requirementRow}>
-                <Feather name="check" size={18} color={MouzoColors.success} />
+                <Feather name="check" size={18} color={RabbitFoodColors.success} />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   Cuenta bancaria (CLABE interbancaria)
                 </ThemedText>
               </View>
               <View style={styles.requirementRow}>
-                <Feather name="check" size={18} color={MouzoColors.success} />
+                <Feather name="check" size={18} color={RabbitFoodColors.success} />
                 <ThemedText type="body" style={{ marginLeft: Spacing.sm }}>
                   Comprobante de domicilio
                 </ThemedText>
@@ -327,18 +327,18 @@ export default function BusinessStripeSetupScreen() {
               style={[styles.secondaryButton, { backgroundColor: theme.card, borderColor: theme.border }, Shadows.sm]}
               onPress={handleOpenStripeDashboard}
             >
-              <Feather name="external-link" size={20} color={MouzoColors.primary} />
-              <ThemedText type="body" style={{ color: MouzoColors.primary, fontWeight: '600', marginLeft: Spacing.sm }}>
+              <Feather name="external-link" size={20} color={RabbitFoodColors.primary} />
+              <ThemedText type="body" style={{ color: RabbitFoodColors.primary, fontWeight: '600', marginLeft: Spacing.sm }}>
                 Abrir Dashboard de Stripe
               </ThemedText>
             </Pressable>
 
             <Pressable
-              style={[styles.dangerButton, { backgroundColor: theme.card, borderColor: MouzoColors.error }]}
+              style={[styles.dangerButton, { backgroundColor: theme.card, borderColor: RabbitFoodColors.error }]}
               onPress={handleDisconnectStripe}
             >
-              <Feather name="x-circle" size={20} color={MouzoColors.error} />
-              <ThemedText type="body" style={{ color: MouzoColors.error, fontWeight: '600', marginLeft: Spacing.sm }}>
+              <Feather name="x-circle" size={20} color={RabbitFoodColors.error} />
+              <ThemedText type="body" style={{ color: RabbitFoodColors.error, fontWeight: '600', marginLeft: Spacing.sm }}>
                 Desconectar Cuenta
               </ThemedText>
             </Pressable>
@@ -388,7 +388,7 @@ export default function BusinessStripeSetupScreen() {
           <Feather name="help-circle" size={20} color={theme.textSecondary} />
           <View style={{ flex: 1, marginLeft: Spacing.md }}>
             <ThemedText type="small" style={{ color: theme.textSecondary }}>
-              Tus ingresos se procesan directamente a través de Stripe Connect. Recibes el 100% del precio base de tus productos. MOUZO agrega un 15% de markup al precio final del cliente.
+              Tus ingresos se procesan directamente a través de Stripe Connect. Recibes el 100% del precio base de tus productos. Rabbit Food agrega un 15% de markup al precio final del cliente.
             </ThemedText>
           </View>
         </View>

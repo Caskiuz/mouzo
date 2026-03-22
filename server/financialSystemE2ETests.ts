@@ -91,9 +91,9 @@ export class FinancialSystemE2ETests {
     try {
       // Create test users with INSERT IGNORE to avoid duplicates
       const testUserData = [
-        { id: 'test-customer-1', name: 'Test Customer', role: 'customer', phone: '+521234567890' },
-        { id: 'test-business-1', name: 'Test Business Owner', role: 'business_owner', phone: '+521234567891' },
-        { id: 'test-driver-1', name: 'Test Driver', role: 'delivery_driver', phone: '+521234567892' }
+        { id: 'test-customer-1', name: 'Test Customer', role: 'customer', phone: '+581234567890' },
+        { id: 'test-business-1', name: 'Test Business Owner', role: 'business_owner', phone: '+581234567891' },
+        { id: 'test-driver-1', name: 'Test Driver', role: 'delivery_driver', phone: '+581234567892' }
       ];
 
       for (const userData of testUserData) {

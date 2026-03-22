@@ -16,7 +16,7 @@ router.post("/send-code", async (req, res) => {
     const { db } = await import("../db");
 
     const normalizedPhone = phone.startsWith('+') ? phone.replace(/[\s-()]/g, '') : 
-                           phone.replace(/[^\d]/g, '').length === 10 ? `+52${phone.replace(/[^\d]/g, '')}` :
+                           phone.replace(/[^\d]/g, '').length === 10 ? `+58${phone.replace(/[^\d]/g, '')}` :
                            `+${phone.replace(/[^\d]/g, '')}`;
     const phoneDigits = normalizedPhone.replace(/[^\d]/g, '');
 
@@ -97,8 +97,8 @@ router.post("/phone-login", async (req, res) => {
 
     const phoneDigits = phone.replace(/[^\d]/g, '');
     const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : 
-                           phoneDigits.length === 10 ? `+52${phoneDigits}` :
-                           phone.startsWith('+') ? phone : `+52${phoneDigits}`;
+                           phoneDigits.length === 10 ? `+58${phoneDigits}` :
+                           phone.startsWith('+') ? phone : `+58${phoneDigits}`;
 
     console.log('📱 Phone normalization in phone-login:', { original: phone, digits: phoneDigits, normalized: normalizedPhone });
 
@@ -109,8 +109,8 @@ router.post("/phone-login", async (req, res) => {
         or(
           eq(users.phone, normalizedPhone),
           eq(users.phone, phone),
-          eq(users.phone, `+52 ${phoneDigits.slice(-10, -7)} ${phoneDigits.slice(-7, -4)} ${phoneDigits.slice(-4)}`),
-          eq(users.phone, `+52${phoneDigits.slice(-10)}`),
+          eq(users.phone, `+58 ${phoneDigits.slice(-10, -7)} ${phoneDigits.slice(-7, -4)} ${phoneDigits.slice(-4)}`),
+          eq(users.phone, `+58${phoneDigits.slice(-10)}`),
           like(users.phone, `%${phoneDigits.slice(-10)}`)
         )
       )
@@ -122,10 +122,10 @@ router.post("/phone-login", async (req, res) => {
 
     if (!user[0].verificationCode || user[0].verificationCode !== code) {
       const testPhones = [
-        "+52 341 234 5678", "+52 341 456 7892", "+523414567892",
-        "+52 341 345 6789", "+52 341 456 7890", "+52 341 567 8901",
-        "+52 317 123 4567", "+52 317 234 5678", "+52 317 345 6789",
-        "+523414567890", "+52 3414567890", "+52 341 456 7890"
+        "+58 341 234 5678", "+58 341 456 7892", "+583414567892",
+        "+58 341 345 6789", "+58 341 456 7890", "+58 341 567 8901",
+        "+58 317 123 4567", "+58 317 234 5678", "+58 317 345 6789",
+        "+583414567890", "+58 3414567890", "+58 341 456 7890"
       ];
       
       const isTestPhone = testPhones.some(testPhone => {

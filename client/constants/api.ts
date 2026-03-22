@@ -1,4 +1,4 @@
-// API Configuration for MOUZO Frontend
+// API Configuration for Rabbit Food Frontend
 import { Platform } from "react-native";
 import Constants from "expo-constants";
 
@@ -10,21 +10,17 @@ export const getApiBaseUrl = (): string => {
   // Check expo config first (from app.config.js) - works in both dev and prod
   const expoBackendUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
   if (expoBackendUrl) {
-    console.log('✅ Using EXPO_PUBLIC_BACKEND_URL from config:', expoBackendUrl);
     return expoBackendUrl;
   }
 
   // Check for environment variable (development)
   const envBackendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   if (envBackendUrl) {
-    const trimmed = envBackendUrl.trim();
-    console.log('Using EXPO_PUBLIC_BACKEND_URL from env:', trimmed);
-    return trimmed;
+    return envBackendUrl.trim();
   }
 
   // Development mode - use localhost
   if (__DEV__) {
-    console.log('🔧 Development mode: using localhost:5000');
     return "http://localhost:5000";
   }
 
@@ -34,8 +30,7 @@ export const getApiBaseUrl = (): string => {
   }
 
   // Production fallback
-  console.log('✅ Using production URL: https://mouzo-backend.onrender.com');
-  return "https://mouzo-backend.onrender.com";
+  return "https://rabbitfood-backend.onrender.com";
 };
 
 export const API_CONFIG = {
@@ -90,8 +85,3 @@ export const getDefaultHeaders = (token?: string) => {
   return headers;
 };
 
-console.log("🔗 API Configuration:", {
-  baseUrl: API_CONFIG.BASE_URL,
-  isDev: __DEV__,
-  platform: Platform.OS,
-});

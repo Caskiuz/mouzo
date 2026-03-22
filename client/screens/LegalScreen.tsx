@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors } from "@/constants/theme";
 
 type LegalScreenRouteProp = RouteProp<
   {
@@ -24,12 +24,12 @@ const legalContent = {
       {
         title: "1. Aceptacion de Terminos",
         content:
-          "Al utilizar la aplicacion MOUZO, aceptas estos terminos y condiciones. MOUZO es un servicio de entrega de comida y productos de mercado en Autlan de Navarro, Jalisco, Mexico.",
+          "Al utilizar la aplicacion Rabbit Food, aceptas estos terminos y condiciones. Rabbit Food es un servicio de entrega de comida y productos de mercado en Autlan de Navarro, Venezuela, Venezuela.",
       },
       {
         title: "2. Uso del Servicio",
         content:
-          "MOUZO proporciona una plataforma para conectar clientes con restaurantes, mercados y repartidores locales. Los usuarios deben tener al menos 18 anos para utilizar el servicio.",
+          "Rabbit Food proporciona una plataforma para conectar clientes con restaurantes, mercados y repartidores locales. Los usuarios deben tener al menos 18 anos para utilizar el servicio.",
       },
       {
         title: "3. Pedidos y Pagos",
@@ -44,12 +44,12 @@ const legalContent = {
       {
         title: "5. Responsabilidad",
         content:
-          "MOUZO actua como intermediario entre clientes y negocios. No somos responsables de la calidad de los productos o servicios proporcionados por terceros.",
+          "Rabbit Food actua como intermediario entre clientes y negocios. No somos responsables de la calidad de los productos o servicios proporcionados por terceros.",
       },
       {
         title: "6. Propiedad Intelectual",
         content:
-          "El nombre MOUZO, logotipos y contenido de la aplicacion son propiedad de MOUZO. Esta prohibida su reproduccion sin autorizacion.",
+          "El nombre Rabbit Food, logotipos y contenido de la aplicacion son propiedad de Rabbit Food. Esta prohibida su reproduccion sin autorizacion.",
       },
     ],
   },
@@ -80,7 +80,7 @@ const legalContent = {
       {
         title: "5. Tus Derechos",
         content:
-          "Puedes solicitar acceso, correccion o eliminacion de tus datos personales contactando a soporte@mouzo.mx.",
+          "Puedes solicitar acceso, correccion o eliminacion de tus datos personales contactando a soporte@rabbitfood.mx.",
       },
       {
         title: "6. Cookies y Analisis",
@@ -146,7 +146,7 @@ export default function LegalScreen() {
           <Feather name="arrow-left" size={24} color={theme.text} />
         </Pressable>
         <View style={styles.headerTitle}>
-          <Feather name={content.icon} size={20} color={MouzoColors.primary} />
+          <Feather name={content.icon} size={20} color={RabbitFoodColors.primary} />
           <ThemedText type="h3" style={{ marginLeft: 8 }}>
             {content.title}
           </ThemedText>
@@ -161,14 +161,14 @@ export default function LegalScreen() {
         <View
           style={[
             styles.brandBadge,
-            { backgroundColor: MouzoColors.primary + "15" },
+            { backgroundColor: RabbitFoodColors.primary + "15" },
           ]}
         >
           <ThemedText
             type="body"
-            style={{ color: MouzoColors.primary, fontWeight: "600" }}
+            style={{ color: RabbitFoodColors.primary, fontWeight: "600" }}
           >
-            MOUZO - Autlan de Navarro
+            Rabbit Food - Autlan de Navarro
           </ThemedText>
           <ThemedText
             type="small"
@@ -196,13 +196,13 @@ export default function LegalScreen() {
         ))}
 
         <View style={[styles.contactSection, { backgroundColor: theme.card }]}>
-          <Feather name="mail" size={20} color={MouzoColors.primary} />
+          <Feather name="mail" size={20} color={RabbitFoodColors.primary} />
           <View style={{ marginLeft: Spacing.md }}>
             <ThemedText type="body" style={{ fontWeight: "600" }}>
               Preguntas?
             </ThemedText>
             <ThemedText type="small" style={{ color: theme.textSecondary }}>
-              Contactanos: soporte@mouzo.mx
+              Contactanos: soporte@rabbitfood.mx
             </ThemedText>
           </View>
         </View>

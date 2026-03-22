@@ -4,19 +4,100 @@
   <meta charset="utf-8" />
   <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1.00001, viewport-fit=cover" />
-  <title>MOUZO - Delivery en Autlán</title>
-  <meta name="description" content="MOUZO - Plataforma de delivery que conecta negocios locales con la comunidad de Autlán, Jalisco." />
-  <meta name="theme-color" content="#FF8C00" />
-  <meta property="og:title" content="MOUZO - Delivery en Autlán" />
+  <title>Rabbit Food - Delivery en San Cristóbal</title>
+  <meta name="description" content="Rabbit Food - Plataforma de delivery que conecta negocios locales con la comunidad de San Cristóbal, Venezuela." />
+  <meta name="theme-color" content="#E8B4A8" />
+  <meta property="og:title" content="Rabbit Food - Delivery en San Cristóbal" />
   <meta property="og:description" content="Conectando negocios locales con la comunidad" />
   <meta property="og:type" content="website" />
   <style>
     html, body, #root { width: 100%; height: 100%; margin: 0; padding: 0; }
     #root { display: flex; }
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #E8B4A8 0%, #D4A89C 100%);
+    }
+    .loading-logo-svg {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 24px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .loading-logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+    .loading-text {
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
   </style>
 </head>
 <body>
-  <noscript>Necesitas habilitar JavaScript para usar MOUZO.</noscript>
-  <div id="root"></div>
+  <noscript>Necesitas habilitar JavaScript para usar Rabbit Food.</noscript>
+  <div id="root">
+    <div class="loading-container">
+      <!-- Rabbit Food Logo SVG -->
+      <svg class="loading-logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="95" fill="#F5F1EB"/>
+        <circle cx="100" cy="100" r="85" fill="#FFFCF7"/>
+        <ellipse cx="100" cy="110" rx="35" ry="40" fill="#E8B4A8"/>
+        <ellipse cx="85" cy="65" rx="12" ry="35" fill="#E8B4A8" transform="rotate(-15 85 65)"/>
+        <ellipse cx="85" cy="65" rx="7" ry="28" fill="#F5D5CC" transform="rotate(-15 85 65)"/>
+        <ellipse cx="115" cy="65" rx="12" ry="35" fill="#E8B4A8" transform="rotate(15 115 65)"/>
+        <ellipse cx="115" cy="65" rx="7" ry="28" fill="#F5D5CC" transform="rotate(15 115 65)"/>
+        <circle cx="90" cy="105" r="4" fill="#3D3226"/>
+        <circle cx="110" cy="105" r="4" fill="#3D3226"/>
+        <circle cx="91" cy="104" r="1.5" fill="#FFFCF7"/>
+        <circle cx="111" cy="104" r="1.5" fill="#FFFCF7"/>
+        <ellipse cx="100" cy="115" rx="3" ry="4" fill="#D4A89C"/>
+        <path d="M 100 115 Q 95 120 92 118" stroke="#3D3226" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M 100 115 Q 105 120 108 118" stroke="#3D3226" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="70" y1="110" x2="85" y2="108" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+        <line x1="70" y1="115" x2="85" y2="115" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+        <line x1="130" y1="110" x2="115" y2="108" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+        <line x1="130" y1="115" x2="115" y2="115" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+        <path d="M 70 145 L 75 165 L 125 165 L 130 145 Z" fill="#F5D5CC" stroke="#D4A89C" stroke-width="2"/>
+        <ellipse cx="100" cy="145" rx="30" ry="8" fill="#E8B4A8"/>
+        <path d="M 85 150 L 82 160 L 88 160 Z" fill="#E8A84E"/>
+        <line x1="85" y1="150" x2="85" y2="147" stroke="#6BAF6B" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="100" cy="155" r="5" fill="#6BAF6B" opacity="0.8"/>
+        <circle cx="103" cy="153" r="4" fill="#7BC47B" opacity="0.8"/>
+        <circle cx="115" cy="155" r="4" fill="#D84A4A"/>
+        <path d="M 115 152 L 113 150 L 117 150 Z" fill="#6BAF6B"/>
+        <circle cx="145" cy="75" r="22" fill="#E8B4A8"/>
+        <circle cx="145" cy="75" r="18" fill="#FFFCF7"/>
+        <path d="M 138 75 L 145 70 L 145 80 Z" fill="#E8B4A8"/>
+        <path d="M 145 75 L 152 70 L 152 80 Z" fill="#E8B4A8"/>
+        <line x1="132" y1="70" x2="136" y2="70" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="132" y1="75" x2="136" y2="75" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="132" y1="80" x2="136" y2="80" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="55" cy="75" r="22" fill="#E8B4A8"/>
+        <circle cx="55" cy="75" r="18" fill="#FFFCF7"/>
+        <ellipse cx="55" cy="78" rx="8" ry="3" fill="#E8B4A8"/>
+        <path d="M 47 78 Q 47 68 55 68 Q 63 68 63 78 Z" fill="#E8B4A8"/>
+        <ellipse cx="55" cy="68" rx="4" ry="4" fill="#F5D5CC"/>
+      </svg>
+      <div class="loading-logo">Rabbit Food</div>
+      <div class="loading-text">Cargando...</div>
+    </div>
+  </div>
 </body>
 </html>

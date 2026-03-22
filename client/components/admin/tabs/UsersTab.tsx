@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import * as Haptics from "expo-haptics";
-import { MouzoColors } from "../../../constants/theme";
+import { RabbitFoodColors } from "../../../constants/theme";
 import { AdminUser } from "../types/admin.types";
 
 interface UsersTabProps {

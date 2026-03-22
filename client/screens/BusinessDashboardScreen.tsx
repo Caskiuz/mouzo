@@ -21,7 +21,7 @@ import { Badge } from "@/components/Badge";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
@@ -59,7 +59,7 @@ function StatCard({
   label,
   value,
   subtext,
-  color = MouzoColors.primary,
+  color = RabbitFoodColors.primary,
   delay = 0,
 }: {
   icon: string;
@@ -106,8 +106,8 @@ function TopProductRow({
       entering={FadeInDown.delay(index * 50).springify()}
       style={[styles.productRow, { backgroundColor: theme.card }, Shadows.sm]}
     >
-      <View style={[styles.rankBadge, { backgroundColor: MouzoColors.primary + "20" }]}>
-        <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
+      <View style={[styles.rankBadge, { backgroundColor: RabbitFoodColors.primary + "20" }]}>
+        <ThemedText type="h4" style={{ color: RabbitFoodColors.primary }}>
           {index + 1}
         </ThemedText>
       </View>
@@ -281,7 +281,7 @@ export default function BusinessDashboardScreen() {
     return (
       <LinearGradient colors={[theme.gradientStart || '#FFFFFF', theme.gradientEnd || '#F5F5F5']} style={styles.container}>
         <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
-          <ActivityIndicator size="large" color={MouzoColors.primary} />
+          <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
           <ThemedText style={{ marginTop: Spacing.md }}>Cargando dashboard...</ThemedText>
         </View>
       </LinearGradient>
@@ -294,7 +294,7 @@ export default function BusinessDashboardScreen() {
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 100 }]}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={MouzoColors.primary} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={RabbitFoodColors.primary} />
         }
       >
         <View style={styles.header}>
@@ -308,10 +308,10 @@ export default function BusinessDashboardScreen() {
                   navigation.navigate("MyBusinesses");
                 }}
               >
-                <ThemedText type="caption" style={{ color: MouzoColors.primary }}>
+                <ThemedText type="caption" style={{ color: RabbitFoodColors.primary }}>
                   {selectedBusiness?.name || "Seleccionar negocio"}
                 </ThemedText>
-                <Feather name="chevron-down" size={14} color={MouzoColors.primary} />
+                <Feather name="chevron-down" size={14} color={RabbitFoodColors.primary} />
               </Pressable>
             ) : (
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -390,20 +390,20 @@ export default function BusinessDashboardScreen() {
             icon="clock"
             label="Pendientes"
             value={dashboard.pendingOrders}
-            color={dashboard.pendingOrders > 0 ? MouzoColors.warning : theme.textSecondary}
+            color={dashboard.pendingOrders > 0 ? RabbitFoodColors.warning : theme.textSecondary}
             delay={100}
           />
           <StatCard
             icon="x-circle"
             label="Cancelados"
             value={stats.orders.cancelled}
-            color={MouzoColors.error}
+            color={RabbitFoodColors.error}
             delay={150}
           />
         </View>
 
         <View style={[styles.avgCard, { backgroundColor: theme.card }, Shadows.sm]}>
-          <Feather name="trending-up" size={20} color={MouzoColors.primary} />
+          <Feather name="trending-up" size={20} color={RabbitFoodColors.primary} />
           <View style={{ marginLeft: Spacing.md, flex: 1 }}>
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>Ticket promedio</ThemedText>
             <ThemedText type="h3">${(stats.orders.avgValue / 100).toFixed(2)}</ThemedText>
@@ -430,7 +430,7 @@ export default function BusinessDashboardScreen() {
             <View style={styles.sectionHeader}>
               <ThemedText type="h3">Pedidos Recientes</ThemedText>
               <Pressable onPress={() => navigation.navigate("BusinessOrders" as any)}>
-                <ThemedText type="small" style={{ color: MouzoColors.primary }}>Ver todos</ThemedText>
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary }}>Ver todos</ThemedText>
               </Pressable>
             </View>
             {dashboard.recentOrders.slice(0, 5).map((order: any, index: number) => (
@@ -445,14 +445,14 @@ export default function BusinessDashboardScreen() {
                   </ThemedText>
                   <Badge
                     label={getStatusTranslation(order.status)}
-                    color={order.status === "delivered" ? "#4CAF50" : order.status === "cancelled" ? MouzoColors.error : MouzoColors.primary}
+                    color={order.status === "delivered" ? "#4CAF50" : order.status === "cancelled" ? RabbitFoodColors.error : RabbitFoodColors.primary}
                   />
                 </View>
                 <View style={styles.orderDetails}>
                   <ThemedText type="caption" style={{ color: theme.textSecondary }}>
                     {order.customerName || "Cliente"}
                   </ThemedText>
-                  <ThemedText type="body" style={{ fontWeight: "600", color: MouzoColors.primary }}>
+                  <ThemedText type="body" style={{ fontWeight: "600", color: RabbitFoodColors.primary }}>
                     ${((order.subtotal || 0) / 100).toFixed(2)}
                   </ThemedText>
                 </View>
@@ -468,14 +468,14 @@ export default function BusinessDashboardScreen() {
               style={[styles.actionButton, { backgroundColor: theme.card }]}
               onPress={() => navigation.navigate("BusinessOrders" as any)}
             >
-              <Feather name="clipboard" size={24} color={MouzoColors.primary} />
+              <Feather name="clipboard" size={24} color={RabbitFoodColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs }}>Pedidos</ThemedText>
             </Pressable>
             <Pressable
               style={[styles.actionButton, { backgroundColor: theme.card }]}
               onPress={() => navigation.navigate("BusinessProducts" as any)}
             >
-              <Feather name="package" size={24} color={MouzoColors.primary} />
+              <Feather name="package" size={24} color={RabbitFoodColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs }}>Productos</ThemedText>
             </Pressable>
             <Pressable
@@ -498,7 +498,7 @@ export default function BusinessDashboardScreen() {
               style={[styles.actionButton, { backgroundColor: theme.card }]}
               onPress={() => navigation.navigate("BusinessProfile" as any)}
             >
-              <Feather name="settings" size={24} color={MouzoColors.primary} />
+              <Feather name="settings" size={24} color={RabbitFoodColors.primary} />
               <ThemedText type="small" style={{ marginTop: Spacing.xs, textAlign: 'center' }}>Ajustes</ThemedText>
             </Pressable>
           </View>

@@ -23,7 +23,7 @@ import { CartButton } from "@/components/CartButton";
 import { ProductCardSkeleton } from "@/components/SkeletonLoader";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { mockBusinesses, mockProducts } from "@/data/mockData";
 import { Business, Product } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
@@ -72,7 +72,7 @@ export default function BusinessDetailScreen() {
             minimumOrder: (data.business.minOrder || 5000) / 100,
             isOpen: data.business.isOpen || false,
             openingHours: [],
-            address: data.business.address || 'Autlán, Jalisco',
+            address: data.business.address || 'San Cristóbal, Táchira, Venezuela',
             phone: data.business.phone || '',
             categories: data.business.categories ? data.business.categories.split(',') : [],
             featured: data.business.isFeatured || false,
@@ -195,7 +195,7 @@ export default function BusinessDetailScreen() {
               <View style={styles.businessInfo}>
                 <ThemedText type="h2">{business.name}</ThemedText>
                 <View style={styles.ratingRow}>
-                  <Feather name="star" size={16} color={MouzoColors.warning} />
+                  <Feather name="star" size={16} color={RabbitFoodColors.warning} />
                   <ThemedText type="body" style={styles.rating}>
                     {business.rating}
                   </ThemedText>
@@ -256,11 +256,11 @@ export default function BusinessDetailScreen() {
                     { backgroundColor: theme.backgroundSecondary },
                   ]}
                 >
-                  <Feather name="phone" size={18} color={MouzoColors.primary} />
+                  <Feather name="phone" size={18} color={RabbitFoodColors.primary} />
                   <ThemedText
                     type="small"
                     style={{
-                      color: MouzoColors.primary,
+                      color: RabbitFoodColors.primary,
                       marginLeft: Spacing.xs,
                     }}
                   >
@@ -298,7 +298,7 @@ export default function BusinessDetailScreen() {
                     styles.categoryChip,
                     {
                       backgroundColor: !selectedCategory
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.backgroundSecondary,
                     },
                   ]}
@@ -325,7 +325,7 @@ export default function BusinessDetailScreen() {
                       {
                         backgroundColor:
                           selectedCategory === cat
-                            ? MouzoColors.primary
+                            ? RabbitFoodColors.primary
                             : theme.backgroundSecondary,
                       },
                     ]}

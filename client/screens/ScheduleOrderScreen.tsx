@@ -18,7 +18,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -81,7 +81,7 @@ export default function ScheduleOrderScreen() {
     onSuccess: () => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       showToast(
-        `Pedido programado para ${scheduledDate.toLocaleDateString("es-MX")}`,
+        `Pedido programado para ${scheduledDate.toLocaleDateString("es-VE")}`,
         "success",
       );
       navigation.goBack();
@@ -162,7 +162,7 @@ export default function ScheduleOrderScreen() {
           style={[styles.card, { backgroundColor: theme.card }, Shadows.md]}
         >
           <View style={styles.businessInfo}>
-            <Feather name="shopping-bag" size={24} color={MouzoColors.primary} />
+            <Feather name="shopping-bag" size={24} color={RabbitFoodColors.primary} />
             <View style={{ marginLeft: Spacing.md }}>
               <ThemedText type="h4">{businessName || "Negocio"}</ThemedText>
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -190,10 +190,10 @@ export default function ScheduleOrderScreen() {
                 styles.toggleButton,
                 {
                   backgroundColor: !isRecurring
-                    ? MouzoColors.primary
+                    ? RabbitFoodColors.primary
                     : theme.backgroundSecondary,
                   borderColor: !isRecurring
-                    ? MouzoColors.primary
+                    ? RabbitFoodColors.primary
                     : "transparent",
                 },
               ]}
@@ -223,9 +223,9 @@ export default function ScheduleOrderScreen() {
                 styles.toggleButton,
                 {
                   backgroundColor: isRecurring
-                    ? MouzoColors.primary
+                    ? RabbitFoodColors.primary
                     : theme.backgroundSecondary,
-                  borderColor: isRecurring ? MouzoColors.primary : "transparent",
+                  borderColor: isRecurring ? RabbitFoodColors.primary : "transparent",
                 },
               ]}
             >
@@ -264,7 +264,7 @@ export default function ScheduleOrderScreen() {
                     styles.dayButton,
                     {
                       backgroundColor: recurringDays.includes(day.id)
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.backgroundSecondary,
                     },
                   ]}
@@ -299,9 +299,9 @@ export default function ScheduleOrderScreen() {
                 { backgroundColor: theme.backgroundSecondary },
               ]}
             >
-              <Feather name="calendar" size={20} color={MouzoColors.primary} />
+              <Feather name="calendar" size={20} color={RabbitFoodColors.primary} />
               <ThemedText type="body" style={{ marginLeft: Spacing.md }}>
-                {scheduledDate.toLocaleDateString("es-MX", {
+                {scheduledDate.toLocaleDateString("es-VE", {
                   weekday: "long",
                   day: "numeric",
                   month: "long",
@@ -331,9 +331,9 @@ export default function ScheduleOrderScreen() {
               { backgroundColor: theme.backgroundSecondary },
             ]}
           >
-            <Feather name="clock" size={20} color={MouzoColors.primary} />
+            <Feather name="clock" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="body" style={{ marginLeft: Spacing.md }}>
-              {scheduledDate.toLocaleTimeString("es-MX", {
+              {scheduledDate.toLocaleTimeString("es-VE", {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
@@ -381,7 +381,7 @@ export default function ScheduleOrderScreen() {
           style={[
             styles.scheduleButton,
             {
-              backgroundColor: MouzoColors.primary,
+              backgroundColor: RabbitFoodColors.primary,
               opacity:
                 createScheduledOrderMutation.isPending ||
                 createRecurringOrderMutation.isPending

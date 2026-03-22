@@ -135,21 +135,21 @@ export default function EnhancedWalletScreen() {
           {
             id: '1',
             name: 'María González',
-            phone: '+52 33 1234 5678',
+            phone: '+58 33 1234 5678',
             avatar: 'https://via.placeholder.com/50x50',
             lastTransfer: '2024-01-09',
           },
           {
             id: '2',
             name: 'Carlos Ruiz',
-            phone: '+52 33 8765 4321',
+            phone: '+58 33 8765 4321',
             avatar: 'https://via.placeholder.com/50x50',
             lastTransfer: '2024-01-05',
           },
           {
             id: '3',
             name: 'Ana López',
-            phone: '+52 33 5555 1234',
+            phone: '+58 33 5555 1234',
             avatar: 'https://via.placeholder.com/50x50',
             lastTransfer: '2024-01-03',
           },
@@ -170,7 +170,7 @@ export default function EnhancedWalletScreen() {
       const mockInvestments: Investment[] = [
         {
           id: '1',
-          name: 'Ahorro MOUZO',
+          name: 'Ahorro Rabbit Food',
           type: 'savings',
           amount: 50000,
           interestRate: 8.5,
@@ -273,14 +273,14 @@ export default function EnhancedWalletScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-MX', {
+    return new Date(dateString).toLocaleDateString('es-VE', {
       day: '2-digit',
       month: 'short',
       hour: '2-digit',
@@ -323,7 +323,7 @@ export default function EnhancedWalletScreen() {
         end={{ x: 1, y: 1 }}
       >
         <View style={styles.balanceHeader}>
-          <Text style={styles.balanceTitle}>MOUZO Wallet</Text>
+          <Text style={styles.balanceTitle}>Rabbit Food Wallet</Text>
           <TouchableOpacity onPress={() => setShowQRModal(true)}>
             <Text style={styles.qrIcon}>📱</Text>
           </TouchableOpacity>
@@ -561,7 +561,7 @@ export default function EnhancedWalletScreen() {
         <TouchableOpacity style={styles.investmentOption}>
           <Text style={styles.investmentOptionIcon}>💰</Text>
           <View style={styles.investmentOptionInfo}>
-            <Text style={styles.investmentOptionTitle}>Ahorro MOUZO</Text>
+            <Text style={styles.investmentOptionTitle}>Ahorro Rabbit Food</Text>
             <Text style={styles.investmentOptionDescription}>
               8.5% anual • Sin riesgo • Retiro flexible
             </Text>
@@ -634,7 +634,7 @@ export default function EnhancedWalletScreen() {
         end={{ x: 1, y: 1 }}
       >
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>MOUZO Card</Text>
+          <Text style={styles.cardTitle}>Rabbit Food Card</Text>
           <Text style={styles.cardType}>Virtual</Text>
         </View>
         
@@ -705,7 +705,7 @@ export default function EnhancedWalletScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MOUZO Wallet</Text>
+      <Text style={styles.title}>Rabbit Food Wallet</Text>
       
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
@@ -754,7 +754,7 @@ export default function EnhancedWalletScreen() {
 
           <View style={styles.qrContainer}>
             <QRCode
-              value={`mouzo://pay/${user?.id}`}
+              value={`rabbitfood://pay/${user?.id}`}
               size={200}
               backgroundColor="white"
               color="black"

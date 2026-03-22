@@ -64,7 +64,7 @@ export async function sendOrderConfirmationEmail(
             <p>¡Gracias por usar MOUZO! 🚀</p>
           </div>
           <div class="footer">
-            <p>MOUZO - Conectando Autlán</p>
+            <p>MOUZO - Conectando San Cristóbal</p>
             <p>Del náhuatl "vivir"</p>
           </div>
         </div>
@@ -123,7 +123,7 @@ export async function sendOrderOnTheWayEmail(
             <p>¡Prepárate para recibir tu pedido! 🎉</p>
           </div>
           <div class="footer">
-            <p>MOUZO - Conectando Autlán</p>
+            <p>MOUZO - Conectando San Cristóbal</p>
           </div>
         </div>
       </body>
@@ -181,7 +181,7 @@ export async function sendOrderDeliveredEmail(
             <p>¡Gracias por usar MOUZO! 🎉</p>
           </div>
           <div class="footer">
-            <p>MOUZO - Conectando Autlán</p>
+            <p>MOUZO - Conectando San Cristóbal</p>
           </div>
         </div>
       </body>
@@ -252,7 +252,7 @@ export async function sendPaymentReceiptEmail(
             <p>Gracias por tu compra. 🙏</p>
           </div>
           <div class="footer">
-            <p>MOUZO - Conectando Autlán</p>
+            <p>MOUZO - Conectando San Cristóbal</p>
             <p>Este es un recibo electrónico</p>
           </div>
         </div>

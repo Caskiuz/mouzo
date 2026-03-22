@@ -18,7 +18,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Badge } from "@/components/Badge";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { gpsService } from '@/services/gpsService';
 import { GPS_CONFIG } from '@/constants/api';
@@ -253,7 +253,7 @@ export default function DriverAvailableOrdersScreen() {
             <ThemedText type="caption" style={{ color: theme.textSecondary }}>
               Ganancia estimada
             </ThemedText>
-            <ThemedText type="h3" style={{ color: MouzoColors.success }}>
+            <ThemedText type="h3" style={{ color: RabbitFoodColors.success }}>
               ${((item.deliveryFee || 0) / 100).toFixed(2)}
             </ThemedText>
           </View>
@@ -266,7 +266,7 @@ export default function DriverAvailableOrdersScreen() {
             style={[
               styles.acceptButton,
               {
-                backgroundColor: MouzoColors.primary,
+                backgroundColor: RabbitFoodColors.primary,
                 opacity: acceptingOrderId === item.id ? 0.7 : 1,
               },
             ]}
@@ -297,12 +297,12 @@ export default function DriverAvailableOrdersScreen() {
             <View
               style={[
                 styles.statusIndicator,
-                { backgroundColor: isOnline ? MouzoColors.success : theme.textSecondary },
+                { backgroundColor: isOnline ? RabbitFoodColors.success : theme.textSecondary },
               ]}
             />
             <ThemedText
               type="small"
-              style={{ marginHorizontal: Spacing.xs, color: isOnline ? MouzoColors.success : theme.textSecondary }}
+              style={{ marginHorizontal: Spacing.xs, color: isOnline ? RabbitFoodColors.success : theme.textSecondary }}
             >
               {isOnline ? "En línea" : "Desconectado"}
             </ThemedText>
@@ -310,15 +310,15 @@ export default function DriverAvailableOrdersScreen() {
               value={isOnline}
               onValueChange={handleToggleStatus}
               disabled={isTogglingStatus}
-              trackColor={{ false: theme.border, true: MouzoColors.success + "60" }}
-              thumbColor={isOnline ? MouzoColors.success : theme.textSecondary}
+              trackColor={{ false: theme.border, true: RabbitFoodColors.success + "60" }}
+              thumbColor={isOnline ? RabbitFoodColors.success : theme.textSecondary}
             />
           </View>
         </View>
         {!isOnline && (
-          <View style={[styles.offlineWarning, { backgroundColor: MouzoColors.warning + "20" }]}>
-            <Feather name="alert-circle" size={16} color={MouzoColors.warning} />
-            <ThemedText type="small" style={{ color: MouzoColors.warning, marginLeft: Spacing.xs, flex: 1 }}>
+          <View style={[styles.offlineWarning, { backgroundColor: RabbitFoodColors.warning + "20" }]}>
+            <Feather name="alert-circle" size={16} color={RabbitFoodColors.warning} />
+            <ThemedText type="small" style={{ color: RabbitFoodColors.warning, marginLeft: Spacing.xs, flex: 1 }}>
               Activa tu estado para recibir pedidos
             </ThemedText>
           </View>
@@ -334,13 +334,13 @@ export default function DriverAvailableOrdersScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
             {loadingOrders ? (
-              <ActivityIndicator size="large" color={MouzoColors.primary} />
+              <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
             ) : (
               <>
                 <Feather name="inbox" size={64} color={theme.textSecondary} />

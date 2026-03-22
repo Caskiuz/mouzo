@@ -114,10 +114,10 @@ export default function App() {
             <KeyboardProvider>
               <StripeProvider>
                 <AppProvider>
-                  <AuthProvider>
-                    <BusinessProvider>
-                      <CartProvider>
-                        <ToastProvider>
+                  <ToastProvider>
+                    <AuthProvider>
+                      <BusinessProvider>
+                        <CartProvider>
                           <AppThemedShell>
                             <RootStackNavigator />
                           </AppThemedShell>
@@ -131,10 +131,10 @@ export default function App() {
                             onAccept={handleAcceptNotifications}
                             onDecline={handleDeclineNotifications}
                           />
-                        </ToastProvider>
-                      </CartProvider>
-                    </BusinessProvider>
-                  </AuthProvider>
+                        </CartProvider>
+                      </BusinessProvider>
+                    </AuthProvider>
+                  </ToastProvider>
                 </AppProvider>
               </StripeProvider>
               <StatusBar style="auto" />

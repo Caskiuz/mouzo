@@ -1,30 +1,30 @@
-// Unified Design System for MOUZO App
+// Unified Design System for Rabbit Food App
 export const theme = {
   colors: {
-    primary: '#FF8C00',
-    primaryDark: '#FF7F00',
-    primaryLight: '#FFA500',
-    secondary: '#FF6B35',
-    background: '#FFFFFF',
-    backgroundSecondary: '#F5F5F5',
-    surface: '#FFFFFF',
-    error: '#F44336',
-    warning: '#FF9800',
-    success: '#4CAF50',
-    info: '#2196F3',
+    primary: '#E8B4A8',
+    primaryDark: '#D4A89C',
+    primaryLight: '#F5D5CC',
+    secondary: '#C9A882',
+    background: '#FAF8F5',
+    backgroundSecondary: '#F5F1EB',
+    surface: '#FFFCF7',
+    error: '#D84A4A',
+    warning: '#E8A84E',
+    success: '#6BAF6B',
+    info: '#5BA3D4',
     text: {
-      primary: '#212121',
-      secondary: '#757575',
-      disabled: '#BDBDBD',
-      inverse: '#FFFFFF',
+      primary: '#3D3226',
+      secondary: '#6B5D4F',
+      disabled: '#B5A89A',
+      inverse: '#FFFCF7',
     },
-    border: '#E0E0E0',
-    divider: '#EEEEEE',
-    overlay: 'rgba(0, 0, 0, 0.5)',
+    border: '#E5DDD1',
+    divider: '#F0E9DD',
+    overlay: 'rgba(61, 50, 38, 0.5)',
     carnival: {
-      pink: '#E91E63',
-      purple: '#9C27B0',
-      gold: '#FF8C00',
+      pink: '#E8B4A8',
+      purple: '#D4A89C',
+      gold: '#F5D5CC',
     },
   },
   spacing: {
@@ -83,7 +83,8 @@ export const theme = {
 export type Theme = typeof theme;
 
 // Export individual objects for easier imports
-export const MouzoColors = theme.colors;
+export const RabbitFoodColors = theme.colors;
+export const MouzoColors = theme.colors; // Legacy alias
 export const Spacing = theme.spacing;
 export const BorderRadius = theme.borderRadius;
 export const Typography = theme.typography;

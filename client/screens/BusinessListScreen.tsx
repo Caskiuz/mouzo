@@ -19,7 +19,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { BusinessCard } from "@/components/BusinessCard";
 import { BusinessCardSkeleton } from "@/components/SkeletonLoader";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { Business } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
@@ -75,7 +75,7 @@ export default function BusinessListScreen() {
         minimumOrder: (b.min_order || 5000) / 100,
         isOpen: b.isOpen ?? b.is_open ?? false,
         openingHours: [],
-        address: b.address || "Autlán, Jalisco",
+        address: b.address || "San Cristóbal, Táchira, Venezuela",
         phone: b.phone || "",
         categories: b.categories ? b.categories.split(",") : [],
         featured: b.is_featured || false,
@@ -235,7 +235,7 @@ export default function BusinessListScreen() {
                   style={({ pressed }) => [
                     styles.tab,
                     activeTab === tab.id
-                      ? { backgroundColor: MouzoColors.primary }
+                      ? { backgroundColor: RabbitFoodColors.primary }
                       : { backgroundColor: theme.card },
                     { opacity: pressed ? 0.8 : 1 },
                     Shadows.sm,
@@ -269,15 +269,15 @@ export default function BusinessListScreen() {
                     {
                       backgroundColor: theme.card,
                       borderWidth: 1,
-                      borderColor: MouzoColors.error,
+                      borderColor: RabbitFoodColors.error,
                       opacity: pressed ? 0.8 : 1,
                     },
                   ]}
                 >
-                  <Feather name="x" size={14} color={MouzoColors.error} />
+                  <Feather name="x" size={14} color={RabbitFoodColors.error} />
                   <ThemedText
                     type="caption"
-                    style={{ color: MouzoColors.error, marginLeft: 4 }}
+                    style={{ color: RabbitFoodColors.error, marginLeft: 4 }}
                   >
                     Limpiar
                   </ThemedText>
@@ -290,7 +290,7 @@ export default function BusinessListScreen() {
                   style={({ pressed }) => [
                     styles.filterChip,
                     activeFilters.includes(filter.id)
-                      ? { backgroundColor: MouzoColors.primaryLight, borderWidth: 1, borderColor: MouzoColors.primary }
+                      ? { backgroundColor: RabbitFoodColors.primaryLight, borderWidth: 1, borderColor: RabbitFoodColors.primary }
                       : { backgroundColor: theme.card },
                     { opacity: pressed ? 0.8 : 1 },
                   ]}
@@ -300,7 +300,7 @@ export default function BusinessListScreen() {
                     size={14}
                     color={
                       activeFilters.includes(filter.id)
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.textSecondary
                     }
                   />
@@ -308,7 +308,7 @@ export default function BusinessListScreen() {
                     type="caption"
                     style={{
                       color: activeFilters.includes(filter.id)
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.text,
                       marginLeft: 4,
                       fontWeight: activeFilters.includes(filter.id) ? "600" : "400",
@@ -366,7 +366,7 @@ export default function BusinessListScreen() {
                   onPress={clearFilters}
                   style={[
                     styles.emptyButton,
-                    { backgroundColor: MouzoColors.primary },
+                    { backgroundColor: RabbitFoodColors.primary },
                   ]}
                 >
                   <Feather name="x" size={16} color="#FFFFFF" />
@@ -397,7 +397,7 @@ export default function BusinessListScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
         showsVerticalScrollIndicator={false}

@@ -16,7 +16,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 
 interface EarningsData {
   stats: {
@@ -46,7 +46,7 @@ function StatCard({
   icon,
   label,
   value,
-  color = MouzoColors.primary,
+  color = RabbitFoodColors.primary,
   delay = 0,
 }: {
   icon: string;
@@ -140,7 +140,7 @@ export default function DriverEarningsScreen() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("es-MX", {
+    return date.toLocaleDateString("es-VE", {
       day: "numeric",
       month: "short",
       hour: "2-digit",
@@ -171,7 +171,7 @@ export default function DriverEarningsScreen() {
           <RefreshControl
             refreshing={isRefetching}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
@@ -180,7 +180,7 @@ export default function DriverEarningsScreen() {
           entering={FadeInDown.delay(100).springify()}
           style={[
             styles.earningsCard,
-            { backgroundColor: MouzoColors.primary },
+            { backgroundColor: RabbitFoodColors.primary },
             Shadows.lg,
           ]}
         >
@@ -233,7 +233,7 @@ export default function DriverEarningsScreen() {
                   style={{
                     color:
                       selectedPeriod === period
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "#FFFFFF",
                     fontWeight: "600",
                   }}
@@ -252,7 +252,7 @@ export default function DriverEarningsScreen() {
             { backgroundColor: theme.backgroundSecondary },
           ]}
         >
-          <Feather name="info" size={20} color={MouzoColors.primary} />
+          <Feather name="info" size={20} color={RabbitFoodColors.primary} />
           <View style={{ flex: 1, marginLeft: Spacing.md }}>
             <ThemedText type="body" style={{ fontWeight: "600" }}>
               Pagos automáticos
@@ -275,17 +275,17 @@ export default function DriverEarningsScreen() {
               <ThemedText type="caption" style={{ color: theme.textSecondary }}>
                 Total ganado histórico
               </ThemedText>
-              <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
+              <ThemedText type="h2" style={{ color: RabbitFoodColors.primary }}>
                 ${earnings.total.toFixed(2)}
               </ThemedText>
             </View>
             <View
               style={[
                 styles.iconCircle,
-                { backgroundColor: MouzoColors.primary + "20" },
+                { backgroundColor: RabbitFoodColors.primary + "20" },
               ]}
             >
-              <Feather name="award" size={24} color={MouzoColors.primary} />
+              <Feather name="award" size={24} color={RabbitFoodColors.primary} />
             </View>
           </View>
         </View>
@@ -347,10 +347,10 @@ export default function DriverEarningsScreen() {
               <View
                 style={[
                   styles.deliveryIcon,
-                  { backgroundColor: MouzoColors.success + "20" },
+                  { backgroundColor: RabbitFoodColors.success + "20" },
                 ]}
               >
-                <Feather name="check-circle" size={20} color={MouzoColors.success} />
+                <Feather name="check-circle" size={20} color={RabbitFoodColors.success} />
               </View>
               <View style={styles.deliveryInfo}>
                 <ThemedText type="body">{tx.description}</ThemedText>
@@ -361,7 +361,7 @@ export default function DriverEarningsScreen() {
               <ThemedText
                 type="body"
                 style={{
-                  color: MouzoColors.success,
+                  color: RabbitFoodColors.success,
                   fontWeight: "600",
                 }}
               >

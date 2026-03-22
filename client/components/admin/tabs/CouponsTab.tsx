@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { MouzoColors, Spacing, BorderRadius } from "../../../constants/theme";
+import { RabbitFoodColors, Spacing, BorderRadius } from "../../../constants/theme";
 import { apiRequest } from "../../../lib/query-client";
 
 interface Coupon {
@@ -112,7 +112,7 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
       </View>
     );
   }
@@ -125,7 +125,7 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
         </Text>
         <Pressable
           onPress={() => setShowModal(true)}
-          style={[styles.addButton, { backgroundColor: MouzoColors.primary }]}
+          style={[styles.addButton, { backgroundColor: RabbitFoodColors.primary }]}
         >
           <Feather name="plus" size={20} color="#FFF" />
           <Text style={styles.addButtonText}>Crear cupón</Text>
@@ -149,7 +149,7 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
             >
               <View style={styles.cardHeader}>
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.couponCode, { color: MouzoColors.primary }]}>
+                  <Text style={[styles.couponCode, { color: RabbitFoodColors.primary }]}>
                     {coupon.code}
                   </Text>
                   <Text style={[styles.couponDiscount, { color: theme.textSecondary }]}>
@@ -163,15 +163,15 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
                     styles.statusBadge,
                     {
                       backgroundColor: coupon.isActive
-                        ? MouzoColors.success + "20"
-                        : MouzoColors.error + "20",
+                        ? RabbitFoodColors.success + "20"
+                        : RabbitFoodColors.error + "20",
                     },
                   ]}
                 >
                   <Text
                     style={[
                       styles.statusText,
-                      { color: coupon.isActive ? MouzoColors.success : MouzoColors.error },
+                      { color: coupon.isActive ? RabbitFoodColors.success : RabbitFoodColors.error },
                     ]}
                   >
                     {coupon.isActive ? "Activo" : "Inactivo"}
@@ -198,7 +198,7 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
                   <View style={styles.stat}>
                     <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Expira</Text>
                     <Text style={[styles.statValue, { color: theme.text }]}>
-                      {new Date(coupon.expiresAt).toLocaleDateString("es-MX")}
+                      {new Date(coupon.expiresAt).toLocaleDateString("es-VE")}
                     </Text>
                   </View>
                 ) : null}
@@ -235,23 +235,23 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
               <View style={styles.radioGroup}>
                 <Pressable
                   onPress={() => setFormData({ ...formData, discountType: "percentage" })}
-                  style={[styles.radioOption, { borderColor: formData.discountType === "percentage" ? MouzoColors.primary : theme.border }]}
+                  style={[styles.radioOption, { borderColor: formData.discountType === "percentage" ? RabbitFoodColors.primary : theme.border }]}
                 >
                   <Feather
                     name={formData.discountType === "percentage" ? "check-circle" : "circle"}
                     size={20}
-                    color={formData.discountType === "percentage" ? MouzoColors.primary : theme.textSecondary}
+                    color={formData.discountType === "percentage" ? RabbitFoodColors.primary : theme.textSecondary}
                   />
                   <Text style={[styles.radioLabel, { color: theme.text }]}>Porcentaje (%)</Text>
                 </Pressable>
                 <Pressable
                   onPress={() => setFormData({ ...formData, discountType: "fixed" })}
-                  style={[styles.radioOption, { borderColor: formData.discountType === "fixed" ? MouzoColors.primary : theme.border }]}
+                  style={[styles.radioOption, { borderColor: formData.discountType === "fixed" ? RabbitFoodColors.primary : theme.border }]}
                 >
                   <Feather
                     name={formData.discountType === "fixed" ? "check-circle" : "circle"}
                     size={20}
-                    color={formData.discountType === "fixed" ? MouzoColors.primary : theme.textSecondary}
+                    color={formData.discountType === "fixed" ? RabbitFoodColors.primary : theme.textSecondary}
                   />
                   <Text style={[styles.radioLabel, { color: theme.text }]}>Monto fijo ($)</Text>
                 </Pressable>
@@ -319,7 +319,7 @@ export const CouponsTab: React.FC<CouponsTabProps> = ({ theme, showToast, onSele
               </Pressable>
               <Pressable
                 onPress={handleCreateCoupon}
-                style={[styles.modalButton, { backgroundColor: MouzoColors.primary }]}
+                style={[styles.modalButton, { backgroundColor: RabbitFoodColors.primary }]}
               >
                 <Text style={{ color: "#FFF", fontWeight: "600" }}>Crear</Text>
               </Pressable>

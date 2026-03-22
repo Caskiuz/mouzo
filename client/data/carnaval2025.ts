@@ -76,7 +76,7 @@ export const carnavalEvents: CarnavalEvent[] = [
     time: "11:30",
     category: "Cultural",
     location: "Plaza de Toros",
-    description: "Ceremonia oficial de apertura del Carnaval Autlán 2025.",
+    description: "Ceremonia oficial de apertura del Carnaval San Cristóbal 2025.",
   },
   {
     id: "e6",
@@ -97,7 +97,7 @@ export const carnavalEvents: CarnavalEvent[] = [
     category: "Tradición",
     location: "Centro",
     description:
-      "Baile tradicional con música de banda en el centro de Autlán.",
+      "Baile tradicional con música de banda en el centro de San Cristóbal.",
   },
   {
     id: "e8",
@@ -372,7 +372,7 @@ export const carnavalEvents: CarnavalEvent[] = [
     time: "19:00",
     category: "Tradición",
     location: "Centro",
-    description: "Baile tradicional en honor a los hijos ausentes de Autlán.",
+    description: "Baile tradicional en honor a los hijos ausentes de San Cristóbal.",
   },
   {
     id: "e34",
@@ -382,7 +382,7 @@ export const carnavalEvents: CarnavalEvent[] = [
     time: "21:00",
     category: "Cultural",
     location: "Jardín Constitución",
-    description: "Evento de elección de la reina del Carnaval Autlán 2025.",
+    description: "Evento de elección de la reina del Carnaval San Cristóbal 2025.",
   },
   {
     id: "e35",
@@ -526,11 +526,11 @@ export const carnavalEvents: CarnavalEvent[] = [
     id: "e48",
     date: "2026-03-04",
     day: "Martes",
-    title: "Gran Clausura del Carnaval Autlán 2025",
+    title: "Gran Clausura del Carnaval San Cristóbal 2025",
     time: "20:00",
     category: "Cultural",
     location: "Plaza de Toros",
-    description: "Ceremonia de clausura del Carnaval Autlán 2025.",
+    description: "Ceremonia de clausura del Carnaval San Cristóbal 2025.",
   },
 ];
 

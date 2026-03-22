@@ -14,7 +14,7 @@ import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest, getApiUrl } from "@/lib/query-client";
 
 function resolveProfileImageUrl(profileImage: string): string {
@@ -196,11 +196,11 @@ export default function EditProfileScreen() {
             <View
               style={[
                 styles.avatar,
-                { backgroundColor: MouzoColors.primary + "20" },
+                { backgroundColor: RabbitFoodColors.primary + "20" },
               ]}
             >
               {isUploadingImage ? (
-                <ActivityIndicator size="large" color={MouzoColors.primary} />
+                <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
               ) : user?.profileImage ? (
                 <Image
                   source={{ uri: resolveProfileImageUrl(user.profileImage) }}
@@ -208,10 +208,10 @@ export default function EditProfileScreen() {
                   contentFit="cover"
                 />
               ) : (
-                <Feather name="user" size={40} color={MouzoColors.primary} />
+                <Feather name="user" size={40} color={RabbitFoodColors.primary} />
               )}
             </View>
-            <View style={[styles.cameraButton, { backgroundColor: MouzoColors.primary }]}>
+            <View style={[styles.cameraButton, { backgroundColor: RabbitFoodColors.primary }]}>
               <Feather name="camera" size={16} color="#fff" />
             </View>
           </Pressable>
@@ -247,7 +247,7 @@ export default function EditProfileScreen() {
             value={phone}
             onChangeText={setPhone}
             error={errors.phone}
-            placeholder="+52 xxx xxx xxxx"
+            placeholder="+58 xxx xxx xxxx"
             keyboardType="phone-pad"
             autoCorrect={false}
           />
@@ -271,7 +271,7 @@ export default function EditProfileScreen() {
             { backgroundColor: theme.backgroundSecondary },
           ]}
         >
-          <Feather name="info" size={20} color={MouzoColors.primary} />
+          <Feather name="info" size={20} color={RabbitFoodColors.primary} />
           <ThemedText
             type="caption"
             style={{

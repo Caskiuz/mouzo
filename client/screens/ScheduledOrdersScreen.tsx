@@ -242,7 +242,7 @@ export default function ScheduledOrdersScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);
@@ -251,13 +251,13 @@ export default function ScheduledOrdersScreen() {
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
-      date: date.toLocaleDateString('es-MX', { 
+      date: date.toLocaleDateString('es-VE', { 
         weekday: 'long', 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric' 
       }),
-      time: date.toLocaleTimeString('es-MX', { 
+      time: date.toLocaleTimeString('es-VE', { 
         hour: '2-digit', 
         minute: '2-digit' 
       }),
@@ -600,7 +600,7 @@ export default function ScheduledOrdersScreen() {
               onPress={() => setShowDatePicker(true)}
             >
               <Text style={styles.dateButtonText}>
-                📅 {scheduleForm.deliveryDate.toLocaleDateString('es-MX')}
+                📅 {scheduleForm.deliveryDate.toLocaleDateString('es-VE')}
               </Text>
             </TouchableOpacity>
 

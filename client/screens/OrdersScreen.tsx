@@ -19,7 +19,7 @@ import { Badge } from "@/components/Badge";
 import { EmptyState } from "@/components/EmptyState";
 import { OrderProgressBar } from "@/components/OrderProgressBar";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { Order, OrderStatus } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
@@ -119,11 +119,11 @@ export default function OrdersScreen() {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) {
-      return `Hoy, ${date.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}`;
+      return `Hoy, ${date.toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit" })}`;
     } else if (diffDays === 1) {
-      return `Ayer, ${date.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}`;
+      return `Ayer, ${date.toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit" })}`;
     } else {
-      return date.toLocaleDateString("es-MX", {
+      return date.toLocaleDateString("es-VE", {
         day: "numeric",
         month: "short",
         hour: "2-digit",
@@ -184,17 +184,17 @@ export default function OrdersScreen() {
             {item.items.length}{" "}
             {item.items.length === 1 ? "producto" : "productos"}
           </ThemedText>
-          <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
+          <ThemedText type="h4" style={{ color: RabbitFoodColors.primary }}>
             ${((item.total || 0) / 100).toFixed(2)}
           </ThemedText>
         </View>
 
         {isActive ? (
           <View style={[styles.trackButton, { borderTopColor: theme.border }]}>
-            <Feather name="map-pin" size={16} color={MouzoColors.primary} />
+            <Feather name="map-pin" size={16} color={RabbitFoodColors.primary} />
             <ThemedText
               type="small"
-              style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+              style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
             >
               Ver seguimiento
             </ThemedText>
@@ -207,10 +207,10 @@ export default function OrdersScreen() {
               { backgroundColor: theme.backgroundSecondary },
             ]}
           >
-            <Feather name="refresh-cw" size={16} color={MouzoColors.primary} />
+            <Feather name="refresh-cw" size={16} color={RabbitFoodColors.primary} />
             <ThemedText
               type="small"
-              style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+              style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
             >
               Reordenar
             </ThemedText>
@@ -281,7 +281,7 @@ export default function OrdersScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
         showsVerticalScrollIndicator={false}

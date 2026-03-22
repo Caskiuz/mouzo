@@ -306,7 +306,7 @@ export default function SuperAppScreen() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
+    return new Intl.NumberFormat('es-VE', {
       style: 'currency',
       currency: 'MXN',
     }).format(amount / 100);
@@ -716,7 +716,7 @@ export default function SuperAppScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MOUZO Super App</Text>
+      <Text style={styles.title}>Rabbit Food Super App</Text>
       
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>

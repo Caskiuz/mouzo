@@ -1,23 +1,21 @@
 import { db } from './db';
-import { wallets, withdrawalRequests, users, stripeConnectAccounts } from '../shared/schema-mysql';
+import { wallets, withdrawalRequests, users } from '../shared/schema-mysql';
 import { eq, and, desc } from 'drizzle-orm';
-import Stripe from 'stripe';
-import * as stripeConnectService from './stripeConnectService';
 
-const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' })
-  : null;
-
-const MINIMUM_WITHDRAWAL = 5000; // $50 MXN en centavos
+const MINIMUM_WITHDRAWAL = 5000; // Bs. 50 en centavos
 
 export interface WithdrawalRequest {
   userId: string;
   amount: number;
-  method: 'stripe' | 'bank_transfer';
+  method: 'pago_movil' | 'bank_transfer';
+  pagoMovilPhone?: string;
+  pagoMovilBank?: string;
+  pagoMovilCedula?: string;
   bankAccount?: {
-    clabe: string;
+    accountNumber: string;
     bankName: string;
     accountHolder: string;
+    accountType: string;
   };
 }
 
@@ -56,9 +54,13 @@ export class WithdrawalService {
       walletId: wallet.id,
       amount: request.amount,
       method: request.method,
-      bankClabe: request.bankAccount?.clabe,
+      pagoMovilPhone: request.pagoMovilPhone,
+      pagoMovilBank: request.pagoMovilBank,
+      pagoMovilCedula: request.pagoMovilCedula,
+      bankAccountNumber: request.bankAccount?.accountNumber,
       bankName: request.bankAccount?.bankName,
       accountHolder: request.bankAccount?.accountHolder,
+      accountType: request.bankAccount?.accountType,
       status: 'pending',
       requestedAt: new Date(),
     });
@@ -71,90 +73,7 @@ export class WithdrawalService {
       .orderBy(desc(withdrawalRequests.requestedAt))
       .limit(1);
 
-    // 3. Procesar según método
-    if (request.method === 'stripe') {
-      return await this.processStripeWithdrawal(withdrawal.id, request.userId, request.amount);
-    } else {
-      return withdrawal; // Admin procesará manualmente
-    }
-  }
-
-  private async processStripeWithdrawal(withdrawalId: string, userId: string, amount: number) {
-    try {
-      // Verificar cuenta Connect
-      const connectAccount = await stripeConnectService.getConnectAccountByUserId(userId);
-      if (!connectAccount || !connectAccount.payoutsEnabled) {
-        throw new Error('Cuenta Stripe Connect no configurada para retiros');
-      }
-
-      // Para desarrollo, simular el payout exitoso
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🧪 Simulando payout de Stripe en desarrollo');
-        
-        // Actualizar solicitud como completada
-        await db.update(withdrawalRequests)
-          .set({
-            status: 'completed',
-            stripePayoutId: 'po_test_' + Date.now(),
-            completedAt: new Date(),
-          })
-          .where(eq(withdrawalRequests.id, withdrawalId));
-
-        // Descontar de wallet
-        await db.update(wallets)
-          .set({
-            balance: db.raw(`balance - ${amount}`),
-            totalWithdrawn: db.raw(`total_withdrawn + ${amount}`)
-          })
-          .where(eq(wallets.userId, userId));
-
-        return { success: true, payoutId: 'po_test_' + Date.now(), message: 'Retiro simulado exitoso (desarrollo)' };
-      }
-
-      if (!stripe) {
-        throw new Error('Stripe no está configurado. Usa el método de transferencia bancaria.');
-      }
-
-      // Crear payout en Stripe Connect
-      const payout = await stripe.payouts.create({
-        amount,
-        currency: 'mxn',
-        method: 'instant',
-        metadata: {
-          withdrawalId,
-          userId,
-        },
-      }, {
-        stripeAccount: connectAccount.stripeAccountId
-      });
-
-      // Actualizar solicitud
-      await db.update(withdrawalRequests)
-        .set({
-          status: 'processing',
-          stripePayoutId: payout.id,
-        })
-        .where(eq(withdrawalRequests.id, withdrawalId));
-
-      // Descontar de wallet inmediatamente
-      await db.update(wallets)
-        .set({
-          balance: db.raw(`balance - ${amount}`)
-        })
-        .where(eq(wallets.userId, userId));
-
-      return { success: true, payoutId: payout.id };
-    } catch (error: any) {
-      // Marcar como fallido
-      await db.update(withdrawalRequests)
-        .set({
-          status: 'failed',
-          errorMessage: error.message,
-        })
-        .where(eq(withdrawalRequests.id, withdrawalId));
-
-      throw error;
-    }
+    return withdrawal; // Admin procesará manualmente
   }
 
   async getWithdrawalHistory(userId: string) {
@@ -167,7 +86,6 @@ export class WithdrawalService {
         requestedAt: withdrawalRequests.requestedAt,
         completedAt: withdrawalRequests.completedAt,
         errorMessage: withdrawalRequests.errorMessage,
-        stripePayoutId: withdrawalRequests.stripePayoutId,
       })
       .from(withdrawalRequests)
       .where(eq(withdrawalRequests.userId, userId))
@@ -270,7 +188,6 @@ export async function getWithdrawalHistory(userId: string) {
         requestedAt: withdrawalRequests.requestedAt,
         completedAt: withdrawalRequests.completedAt,
         errorMessage: withdrawalRequests.errorMessage,
-        stripePayoutId: withdrawalRequests.stripePayoutId,
       })
       .from(withdrawalRequests)
       .where(eq(withdrawalRequests.userId, userId))

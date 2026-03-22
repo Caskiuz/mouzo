@@ -52,7 +52,7 @@ async function getConfig() {
 
 /**
  * Calcula el delivery fee basado en la distancia
- * Tarifas ajustadas para Autlán, Jalisco
+ * Tarifas ajustadas para San Cristóbal, Táchira, Venezuela
  */
 export const calculateDeliveryFee = async (distance: number): Promise<number> => {
   const config = await getConfig();

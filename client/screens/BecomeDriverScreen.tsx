@@ -20,7 +20,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
@@ -156,13 +156,13 @@ export default function BecomeDriverScreen() {
         <View
           style={[
             styles.infoCard,
-            { backgroundColor: MouzoColors.primary + "15" },
+            { backgroundColor: RabbitFoodColors.primary + "15" },
           ]}
         >
-          <Feather name="truck" size={32} color={MouzoColors.primary} />
+          <Feather name="truck" size={32} color={RabbitFoodColors.primary} />
           <ThemedText
             type="h3"
-            style={{ marginTop: Spacing.md, color: MouzoColors.primary }}
+            style={{ marginTop: Spacing.md, color: RabbitFoodColors.primary }}
           >
             Gana dinero entregando
           </ThemedText>
@@ -194,13 +194,13 @@ export default function BecomeDriverScreen() {
               <View
                 style={[
                   styles.benefitIcon,
-                  { backgroundColor: MouzoColors.primaryLight },
+                  { backgroundColor: RabbitFoodColors.primaryLight },
                 ]}
               >
                 <Feather
                   name={benefit.icon as any}
                   size={16}
-                  color={MouzoColors.primary}
+                  color={RabbitFoodColors.primary}
                 />
               </View>
               <ThemedText type="body">{benefit.text}</ThemedText>
@@ -231,11 +231,11 @@ export default function BecomeDriverScreen() {
                   {
                     backgroundColor:
                       vehicleType === type.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.backgroundSecondary,
                     borderColor:
                       vehicleType === type.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : theme.border,
                   },
                 ]}
@@ -430,7 +430,7 @@ export default function BecomeDriverScreen() {
             style={[
               styles.submitButton,
               {
-                backgroundColor: MouzoColors.primary,
+                backgroundColor: RabbitFoodColors.primary,
                 opacity: isSubmitting ? 0.6 : 1,
               },
             ]}

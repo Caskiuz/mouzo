@@ -1,0 +1,76 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="#F5F1EB"/>
+  <circle cx="100" cy="100" r="85" fill="#FFFCF7"/>
+  
+  <!-- Rabbit Head -->
+  <ellipse cx="100" cy="110" rx="35" ry="40" fill="#E8B4A8"/>
+  
+  <!-- Left Ear -->
+  <ellipse cx="85" cy="65" rx="12" ry="35" fill="#E8B4A8" transform="rotate(-15 85 65)"/>
+  <ellipse cx="85" cy="65" rx="7" ry="28" fill="#F5D5CC" transform="rotate(-15 85 65)"/>
+  
+  <!-- Right Ear -->
+  <ellipse cx="115" cy="65" rx="12" ry="35" fill="#E8B4A8" transform="rotate(15 115 65)"/>
+  <ellipse cx="115" cy="65" rx="7" ry="28" fill="#F5D5CC" transform="rotate(15 115 65)"/>
+  
+  <!-- Eyes -->
+  <circle cx="90" cy="105" r="4" fill="#3D3226"/>
+  <circle cx="110" cy="105" r="4" fill="#3D3226"/>
+  <circle cx="91" cy="104" r="1.5" fill="#FFFCF7"/>
+  <circle cx="111" cy="104" r="1.5" fill="#FFFCF7"/>
+  
+  <!-- Nose -->
+  <ellipse cx="100" cy="115" rx="3" ry="4" fill="#D4A89C"/>
+  
+  <!-- Mouth -->
+  <path d="M 100 115 Q 95 120 92 118" stroke="#3D3226" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M 100 115 Q 105 120 108 118" stroke="#3D3226" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Whiskers Left -->
+  <line x1="70" y1="110" x2="85" y2="108" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+  <line x1="70" y1="115" x2="85" y2="115" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Whiskers Right -->
+  <line x1="130" y1="110" x2="115" y2="108" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+  <line x1="130" y1="115" x2="115" y2="115" stroke="#3D3226" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Food Bowl -->
+  <path d="M 70 145 L 75 165 L 125 165 L 130 145 Z" fill="#F5D5CC" stroke="#D4A89C" stroke-width="2"/>
+  <ellipse cx="100" cy="145" rx="30" ry="8" fill="#E8B4A8"/>
+  
+  <!-- Food Items in Bowl -->
+  <!-- Carrot -->
+  <path d="M 85 150 L 82 160 L 88 160 Z" fill="#E8A84E"/>
+  <line x1="85" y1="150" x2="85" y2="147" stroke="#6BAF6B" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Lettuce -->
+  <circle cx="100" cy="155" r="5" fill="#6BAF6B" opacity="0.8"/>
+  <circle cx="103" cy="153" r="4" fill="#7BC47B" opacity="0.8"/>
+  
+  <!-- Tomato -->
+  <circle cx="115" cy="155" r="4" fill="#D84A4A"/>
+  <path d="M 115 152 L 113 150 L 117 150 Z" fill="#6BAF6B"/>
+  
+  <!-- Delivery Badge -->
+  <circle cx="145" cy="75" r="22" fill="#E8B4A8"/>
+  <circle cx="145" cy="75" r="18" fill="#FFFCF7"/>
+  
+  <!-- Delivery Icon (Fast Forward) -->
+  <path d="M 138 75 L 145 70 L 145 80 Z" fill="#E8B4A8"/>
+  <path d="M 145 75 L 152 70 L 152 80 Z" fill="#E8B4A8"/>
+  
+  <!-- Speed Lines -->
+  <line x1="132" y1="70" x2="136" y2="70" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="132" y1="75" x2="136" y2="75" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="132" y1="80" x2="136" y2="80" stroke="#D4A89C" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Chef Hat Badge -->
+  <circle cx="55" cy="75" r="22" fill="#E8B4A8"/>
+  <circle cx="55" cy="75" r="18" fill="#FFFCF7"/>
+  
+  <!-- Chef Hat -->
+  <ellipse cx="55" cy="78" rx="8" ry="3" fill="#E8B4A8"/>
+  <path d="M 47 78 Q 47 68 55 68 Q 63 68 63 78 Z" fill="#E8B4A8"/>
+  <ellipse cx="55" cy="68" rx="4" ry="4" fill="#F5D5CC"/>
+</svg>

@@ -20,8 +20,8 @@ router.post("/phone-login", async (req, res) => {
 
     const phoneDigits = phone.replace(/[^\d]/g, '');
     const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : 
-                           phoneDigits.length === 10 ? `+52${phoneDigits}` :
-                           phone.startsWith('+') ? phone : `+52${phoneDigits}`;
+                           phoneDigits.length === 10 ? `+58${phoneDigits}` :
+                           phone.startsWith('+') ? phone : `+58${phoneDigits}`;
 
     let user = await db
       .select()
@@ -40,7 +40,7 @@ router.post("/phone-login", async (req, res) => {
     }
 
     if (!user[0].verificationCode || user[0].verificationCode !== code) {
-      const testPhones = ["+52 341 234 5678", "+52 341 456 7892", "+523414567892"];
+      const testPhones = ["+58 341 234 5678", "+58 341 456 7892", "+583414567892"];
       const isTestPhone = testPhones.some(testPhone => {
         const testDigits = testPhone.replace(/[^\d]/g, '');
         return phoneDigits.slice(-10) === testDigits.slice(-10);
@@ -218,7 +218,7 @@ router.post("/send-code", async (req, res) => {
     const { eq, or, like } = await import("drizzle-orm");
 
     const phoneDigits = phone.replace(/[^\d]/g, '');
-    const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : `+52${phoneDigits}`;
+    const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : `+58${phoneDigits}`;
 
     let user = await db
       .select()
@@ -405,7 +405,7 @@ router.post("/biometric-login", async (req, res) => {
     const jwt = await import("jsonwebtoken");
 
     const phoneDigits = phone.replace(/[^\d]/g, '');
-    const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : `+52${phoneDigits}`;
+    const normalizedPhone = phoneDigits.startsWith('52') ? `+${phoneDigits}` : `+58${phoneDigits}`;
 
     let user = await db
       .select()

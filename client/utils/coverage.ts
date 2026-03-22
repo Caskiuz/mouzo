@@ -1,29 +1,33 @@
 /**
- * Coordenadas de cobertura de Autlán, Jalisco
+ * Coordenadas de cobertura de San Cristóbal, Táchira, Venezuela
  */
-export const AUTLAN_BOUNDS = {
-  minLat: 19.75,
-  maxLat: 19.80,
-  minLng: -104.40,
-  maxLng: -104.30,
+export const SAN_CRISTOBAL_BOUNDS = {
+  minLat: 7.75,
+  maxLat: 7.80,
+  minLng: -72.25,
+  maxLng: -72.20,
 };
 
 /**
- * Centro de Autlán para inicializar mapas
+ * Centro de San Cristóbal para inicializar mapas
  */
-export const AUTLAN_CENTER = {
-  latitude: 19.7708,
-  longitude: -104.3636,
+export const SAN_CRISTOBAL_CENTER = {
+  latitude: 7.7669,
+  longitude: -72.2250,
 };
+
+// Legacy aliases
+export const AUTLAN_BOUNDS = SAN_CRISTOBAL_BOUNDS;
+export const AUTLAN_CENTER = SAN_CRISTOBAL_CENTER;
 
 /**
  * Valida si unas coordenadas están dentro de la zona de cobertura
  */
 export const isInCoverageArea = (latitude: number, longitude: number): boolean => {
   return (
-    latitude >= AUTLAN_BOUNDS.minLat &&
-    latitude <= AUTLAN_BOUNDS.maxLat &&
-    longitude >= AUTLAN_BOUNDS.minLng &&
-    longitude <= AUTLAN_BOUNDS.maxLng
+    latitude >= SAN_CRISTOBAL_BOUNDS.minLat &&
+    latitude <= SAN_CRISTOBAL_BOUNDS.maxLat &&
+    longitude >= SAN_CRISTOBAL_BOUNDS.minLng &&
+    longitude <= SAN_CRISTOBAL_BOUNDS.maxLng
   );
 };

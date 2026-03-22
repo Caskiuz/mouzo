@@ -17,7 +17,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -140,7 +140,7 @@ export default function ReviewScreen() {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="shopping-bag" size={20} color={MouzoColors.primary} />
+            <Feather name="shopping-bag" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
               {businessName}
             </ThemedText>
@@ -218,7 +218,7 @@ export default function ReviewScreen() {
           style={[
             styles.submitButton,
             {
-              backgroundColor: MouzoColors.primary,
+              backgroundColor: RabbitFoodColors.primary,
               opacity: submitReviewMutation.isPending ? 0.6 : 1,
             },
           ]}

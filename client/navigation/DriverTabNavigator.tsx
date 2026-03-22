@@ -7,7 +7,7 @@ import DriverMyDeliveriesScreen from "@/screens/DriverMyDeliveriesScreen";
 import DriverEarningsScreen from "@/screens/DriverEarningsScreen";
 import ProfileScreen from "@/screens/ProfileScreen";
 import { useTheme } from "@/hooks/useTheme";
-import { MouzoColors } from "@/constants/theme";
+import { RabbitFoodColors } from "@/constants/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,7 @@ export default function DriverTabNavigator() {
           backgroundColor: theme.background,
         },
         headerTintColor: theme.text,
-        tabBarActiveTintColor: MouzoColors.primary,
+        tabBarActiveTintColor: RabbitFoodColors.primary,
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: {
           backgroundColor: theme.background,

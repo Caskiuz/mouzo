@@ -21,9 +21,9 @@ interface CachedMapData {
   cachedAt: number;
 }
 
-const LOCATION_QUEUE_KEY = '@nemy_location_queue';
-const CACHED_MAPS_KEY = '@nemy_cached_maps';
-const LAST_LOCATION_KEY = '@mouzo_last_location';
+const LOCATION_QUEUE_KEY = '@rabbitfood_location_queue';
+const CACHED_MAPS_KEY = '@rabbitfood_cached_maps';
+const LAST_LOCATION_KEY = '@rabbitfood_last_location';
 
 class OfflineGPSService {
   private isOnline: boolean = true;
@@ -148,7 +148,7 @@ class OfflineGPSService {
     return null;
   }
 
-  // Cache map data for Autlán region
+  // Cache map data for San Cristóbal region
   async cacheMapRegion(region: {
     latitude: number;
     longitude: number;

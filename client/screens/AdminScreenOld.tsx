@@ -21,7 +21,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
 import { NativeMap } from "@/components/NativeMap";
@@ -525,17 +525,17 @@ export default function AdminScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return MouzoColors.warning;
+        return RabbitFoodColors.warning;
       case "confirmed":
         return "#2196F3";
       case "preparing":
-        return MouzoColors.primary;
+        return RabbitFoodColors.primary;
       case "on_the_way":
         return "#9C27B0";
       case "delivered":
-        return MouzoColors.success;
+        return RabbitFoodColors.success;
       case "cancelled":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       default:
         return theme.textSecondary;
     }
@@ -578,17 +578,17 @@ export default function AdminScreen() {
   const getLogActionColor = (action: string) => {
     switch (action) {
       case "LOGIN_SUCCESS":
-        return MouzoColors.success;
+        return RabbitFoodColors.success;
       case "LOGIN_FAILED":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       case "RATE_LIMIT_BLOCKED":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       case "CREATE":
         return "#2196F3";
       case "UPDATE":
-        return MouzoColors.warning;
+        return RabbitFoodColors.warning;
       case "DELETE":
-        return MouzoColors.error;
+        return RabbitFoodColors.error;
       default:
         return theme.textSecondary;
     }
@@ -597,7 +597,7 @@ export default function AdminScreen() {
   if (isLoading) {
     return (
       <ThemedView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color={MouzoColors.primary} />
+        <ActivityIndicator size="large" color={RabbitFoodColors.primary} />
       </ThemedView>
     );
   }
@@ -657,20 +657,20 @@ export default function AdminScreen() {
                 styles.tab,
                 {
                   backgroundColor:
-                    activeTab === tab ? MouzoColors.primary : "transparent",
-                  borderColor: MouzoColors.primary,
+                    activeTab === tab ? RabbitFoodColors.primary : "transparent",
+                  borderColor: RabbitFoodColors.primary,
                 },
               ]}
             >
               <Feather
                 name={config.icon as any}
                 size={18}
-                color={activeTab === tab ? "#FFFFFF" : MouzoColors.primary}
+                color={activeTab === tab ? "#FFFFFF" : RabbitFoodColors.primary}
               />
               <ThemedText
                 type="small"
                 style={{
-                  color: activeTab === tab ? "#FFFFFF" : MouzoColors.primary,
+                  color: activeTab === tab ? "#FFFFFF" : RabbitFoodColors.primary,
                   marginLeft: Spacing.xs,
                 }}
               >
@@ -689,7 +689,7 @@ export default function AdminScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={MouzoColors.primary}
+            tintColor={RabbitFoodColors.primary}
           />
         }
       >
@@ -757,9 +757,9 @@ export default function AdminScreen() {
                         {
                           backgroundColor:
                             selectedBusinessId === b.id
-                              ? MouzoColors.primary
+                              ? RabbitFoodColors.primary
                               : "transparent",
-                          borderColor: MouzoColors.primary,
+                          borderColor: RabbitFoodColors.primary,
                         },
                       ]}
                     >
@@ -769,7 +769,7 @@ export default function AdminScreen() {
                           color:
                             selectedBusinessId === b.id
                               ? "#FFFFFF"
-                              : MouzoColors.primary,
+                              : RabbitFoodColors.primary,
                         }}
                       >
                         {b.name}
@@ -799,7 +799,7 @@ export default function AdminScreen() {
                   }}
                   style={[
                     styles.addButton,
-                    { backgroundColor: MouzoColors.primary },
+                    { backgroundColor: RabbitFoodColors.primary },
                   ]}
                 >
                   <Feather name="plus" size={20} color="#FFFFFF" />
@@ -848,7 +848,7 @@ export default function AdminScreen() {
                               styles.orderIcon,
                               {
                                 backgroundColor: p.isAvailable
-                                  ? MouzoColors.primaryLight
+                                  ? RabbitFoodColors.primaryLight
                                   : theme.backgroundSecondary,
                               },
                             ]}
@@ -858,7 +858,7 @@ export default function AdminScreen() {
                               size={20}
                               color={
                                 p.isAvailable
-                                  ? MouzoColors.primary
+                                  ? RabbitFoodColors.primary
                                   : theme.textSecondary
                               }
                             />
@@ -877,7 +877,7 @@ export default function AdminScreen() {
                         </View>
                         <ThemedText
                           type="h4"
-                          style={{ color: MouzoColors.primary }}
+                          style={{ color: RabbitFoodColors.primary }}
                         >
                           ${(p.price / 100).toFixed(2)}
                         </ThemedText>
@@ -894,12 +894,12 @@ export default function AdminScreen() {
                             <View
                               style={[
                                 styles.badge,
-                                { backgroundColor: MouzoColors.warning + "20" },
+                                { backgroundColor: RabbitFoodColors.warning + "20" },
                               ]}
                             >
                               <ThemedText
                                 type="caption"
-                                style={{ color: MouzoColors.warning }}
+                                style={{ color: RabbitFoodColors.warning }}
                               >
                                 Por peso
                               </ThemedText>
@@ -910,8 +910,8 @@ export default function AdminScreen() {
                               styles.badge,
                               {
                                 backgroundColor: p.isAvailable
-                                  ? MouzoColors.success + "20"
-                                  : MouzoColors.error + "20",
+                                  ? RabbitFoodColors.success + "20"
+                                  : RabbitFoodColors.error + "20",
                               },
                             ]}
                           >
@@ -919,8 +919,8 @@ export default function AdminScreen() {
                               type="caption"
                               style={{
                                 color: p.isAvailable
-                                  ? MouzoColors.success
-                                  : MouzoColors.error,
+                                  ? RabbitFoodColors.success
+                                  : RabbitFoodColors.error,
                               }}
                             >
                               {p.isAvailable ? "Disponible" : "Agotado"}
@@ -932,14 +932,14 @@ export default function AdminScreen() {
                             <Feather
                               name="edit-2"
                               size={18}
-                              color={MouzoColors.primary}
+                              color={RabbitFoodColors.primary}
                             />
                           </Pressable>
                           <Pressable onPress={() => handleDeleteProduct(p.id)}>
                             <Feather
                               name="trash-2"
                               size={18}
-                              color={MouzoColors.error}
+                              color={RabbitFoodColors.error}
                             />
                           </Pressable>
                         </View>
@@ -1016,7 +1016,7 @@ export default function AdminScreen() {
                       type="small"
                       style={{ color: theme.textSecondary }}
                     >
-                      {new Date(log.createdAt).toLocaleString("es-MX")}
+                      {new Date(log.createdAt).toLocaleString("es-VE")}
                     </ThemedText>
                   </View>
                   <ThemedText type="body" style={{ marginTop: Spacing.xs }}>
@@ -1127,9 +1127,9 @@ export default function AdminScreen() {
                       {
                         backgroundColor:
                           businessForm.type === t
-                            ? MouzoColors.primary
+                            ? RabbitFoodColors.primary
                             : "transparent",
-                        borderColor: MouzoColors.primary,
+                        borderColor: RabbitFoodColors.primary,
                       },
                     ]}
                   >
@@ -1139,7 +1139,7 @@ export default function AdminScreen() {
                         color:
                           businessForm.type === t
                             ? "#FFFFFF"
-                            : MouzoColors.primary,
+                            : RabbitFoodColors.primary,
                       }}
                     >
                       {t === "restaurant" ? "Restaurante" : "Mercado"}
@@ -1293,9 +1293,9 @@ export default function AdminScreen() {
                   style={[
                     styles.checkbox,
                     {
-                      borderColor: MouzoColors.primary,
+                      borderColor: RabbitFoodColors.primary,
                       backgroundColor: businessForm.isActive
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "transparent",
                     },
                   ]}
@@ -1313,7 +1313,7 @@ export default function AdminScreen() {
               onPress={handleSaveBusiness}
               style={[
                 styles.saveButton,
-                { backgroundColor: MouzoColors.primary },
+                { backgroundColor: RabbitFoodColors.primary },
               ]}
             >
               <ThemedText
@@ -1468,9 +1468,9 @@ export default function AdminScreen() {
                   style={[
                     styles.checkbox,
                     {
-                      borderColor: MouzoColors.primary,
+                      borderColor: RabbitFoodColors.primary,
                       backgroundColor: productForm.isWeightBased
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "transparent",
                     },
                   ]}
@@ -1507,9 +1507,9 @@ export default function AdminScreen() {
                             {
                               backgroundColor:
                                 productForm.weightUnit === u
-                                  ? MouzoColors.primary
+                                  ? RabbitFoodColors.primary
                                   : "transparent",
-                              borderColor: MouzoColors.primary,
+                              borderColor: RabbitFoodColors.primary,
                               paddingHorizontal: Spacing.sm,
                             },
                           ]}
@@ -1520,7 +1520,7 @@ export default function AdminScreen() {
                               color:
                                 productForm.weightUnit === u
                                   ? "#FFFFFF"
-                                  : MouzoColors.primary,
+                                  : RabbitFoodColors.primary,
                             }}
                           >
                             {u}
@@ -1563,9 +1563,9 @@ export default function AdminScreen() {
                   style={[
                     styles.checkbox,
                     {
-                      borderColor: MouzoColors.primary,
+                      borderColor: RabbitFoodColors.primary,
                       backgroundColor: productForm.isAvailable
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "transparent",
                     },
                   ]}
@@ -1583,7 +1583,7 @@ export default function AdminScreen() {
               onPress={handleSaveProduct}
               style={[
                 styles.saveButton,
-                { backgroundColor: MouzoColors.primary },
+                { backgroundColor: RabbitFoodColors.primary },
               ]}
             >
               <ThemedText
@@ -1610,8 +1610,8 @@ export default function AdminScreen() {
               {selectedUser ? (
                 <>
                   <View style={[styles.userDetailCard, { backgroundColor: theme.backgroundSecondary }]}>
-                    <View style={[styles.avatar, { backgroundColor: MouzoColors.primaryLight, width: 60, height: 60 }]}>
-                      <ThemedText type="h2" style={{ color: MouzoColors.primaryDark }}>
+                    <View style={[styles.avatar, { backgroundColor: RabbitFoodColors.primaryLight, width: 60, height: 60 }]}>
+                      <ThemedText type="h2" style={{ color: RabbitFoodColors.primaryDark }}>
                         {selectedUser.name.charAt(0).toUpperCase()}
                       </ThemedText>
                     </View>
@@ -1632,7 +1632,7 @@ export default function AdminScreen() {
                         <Feather
                           name={selectedUser.emailVerified ? "check-circle" : "x-circle"}
                           size={14}
-                          color={selectedUser.emailVerified ? MouzoColors.success : MouzoColors.error}
+                          color={selectedUser.emailVerified ? RabbitFoodColors.success : RabbitFoodColors.error}
                         />
                         <ThemedText type="caption" style={{ marginLeft: 4 }}>
                           Email {selectedUser.emailVerified ? "verificado" : "sin verificar"}
@@ -1642,7 +1642,7 @@ export default function AdminScreen() {
                         <Feather
                           name={(selectedUser as any).phoneVerified ? "check-circle" : "x-circle"}
                           size={14}
-                          color={(selectedUser as any).phoneVerified ? MouzoColors.success : MouzoColors.error}
+                          color={(selectedUser as any).phoneVerified ? RabbitFoodColors.success : RabbitFoodColors.error}
                         />
                         <ThemedText type="caption" style={{ marginLeft: 4 }}>
                           Tel {(selectedUser as any).phoneVerified ? "verificado" : "sin verificar"}
@@ -1662,14 +1662,14 @@ export default function AdminScreen() {
                           style={[
                             styles.tab,
                             {
-                              backgroundColor: userRoleEdit === role ? MouzoColors.primary : "transparent",
-                              borderColor: MouzoColors.primary,
+                              backgroundColor: userRoleEdit === role ? RabbitFoodColors.primary : "transparent",
+                              borderColor: RabbitFoodColors.primary,
                             },
                           ]}
                         >
                           <ThemedText
                             type="small"
-                            style={{ color: userRoleEdit === role ? "#FFFFFF" : MouzoColors.primary }}
+                            style={{ color: userRoleEdit === role ? "#FFFFFF" : RabbitFoodColors.primary }}
                           >
                             {getRoleLabel(role)}
                           </ThemedText>
@@ -1685,7 +1685,7 @@ export default function AdminScreen() {
             </ScrollView>
             <Pressable
               onPress={handleUpdateUserRole}
-              style={[styles.saveButton, { backgroundColor: MouzoColors.primary }]}
+              style={[styles.saveButton, { backgroundColor: RabbitFoodColors.primary }]}
             >
               <ThemedText type="body" style={{ color: "#FFFFFF", fontWeight: "600" }}>
                 Guardar Cambios
@@ -1708,8 +1708,8 @@ export default function AdminScreen() {
               {selectedOrder ? (
                 <>
                   <View style={[styles.userDetailCard, { backgroundColor: theme.backgroundSecondary }]}>
-                    <View style={[styles.orderIcon, { backgroundColor: MouzoColors.primaryLight, width: 50, height: 50 }]}>
-                      <Feather name="package" size={24} color={MouzoColors.primary} />
+                    <View style={[styles.orderIcon, { backgroundColor: RabbitFoodColors.primaryLight, width: 50, height: 50 }]}>
+                      <Feather name="package" size={24} color={RabbitFoodColors.primary} />
                     </View>
                     <ThemedText type="h3" style={{ marginTop: Spacing.md }}>
                       #{selectedOrder.id.slice(0, 8)}
@@ -1759,7 +1759,7 @@ export default function AdminScreen() {
                           const url = `https://www.google.com/maps?q=${selectedOrder.deliveryLatitude},${selectedOrder.deliveryLongitude}`;
                           Linking.openURL(url);
                         }}
-                        style={[styles.mapButton, { backgroundColor: MouzoColors.primary }]}
+                        style={[styles.mapButton, { backgroundColor: RabbitFoodColors.primary }]}
                       >
                         <Feather name="map" size={16} color="#FFFFFF" />
                         <ThemedText type="small" style={{ color: "#FFFFFF", marginLeft: Spacing.xs }}>
@@ -1801,7 +1801,7 @@ export default function AdminScreen() {
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: theme.border }}>
                       <ThemedText type="h4">Total</ThemedText>
-                      <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
+                      <ThemedText type="h4" style={{ color: RabbitFoodColors.primary }}>
                         ${(selectedOrder.total / 100).toFixed(2)}
                       </ThemedText>
                     </View>

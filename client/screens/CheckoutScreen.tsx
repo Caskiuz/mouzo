@@ -20,7 +20,7 @@ import { Button } from "@/components/Button";
 import { useTheme } from "@/hooks/useTheme";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { apiRequest } from "@/lib/query-client";
 import { useToast } from "@/contexts/ToastContext";
@@ -28,7 +28,7 @@ import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from "@
 
 type SubstitutionOption = "refund" | "call" | "substitute";
 
-type PaymentMethod = "pago_movil" | "efectivo";
+type PaymentMethod = "pago_movil";
 
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -146,7 +146,7 @@ export default function CheckoutScreen({ route }: any) {
     if (!business || !selectedAddress) return;
     
     const distance = calculateDistance(
-      business.latitude || 19.7708,
+      business.latitude || 7.7708,
       business.longitude || -104.3636,
       selectedAddress.latitude,
       selectedAddress.longitude
@@ -221,23 +221,8 @@ export default function CheckoutScreen({ route }: any) {
                 orderId: order.orderId || order.id,
                 reference: pmData.reference,
                 amount: total,
-                mouzo: pmData.mouzo,
+                rabbitfood: pmData.rabbitfood,
               },
-            },
-          ],
-        });
-      } else {
-        await clearCart();
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        setIsLoading(false);
-
-        navigation.reset({
-          index: 0,
-          routes: [
-            { name: "Main" },
-            {
-              name: "OrderConfirmation",
-              params: { orderId: order.orderId || order.id },
             },
           ],
         });
@@ -371,7 +356,7 @@ export default function CheckoutScreen({ route }: any) {
                       styles.modalAddress,
                       {
                         borderColor: isSelected
-                          ? MouzoColors.primary
+                          ? RabbitFoodColors.primary
                           : theme.border,
                         backgroundColor: theme.backgroundSecondary,
                       },
@@ -392,7 +377,7 @@ export default function CheckoutScreen({ route }: any) {
                       <Feather
                         name="check-circle"
                         size={18}
-                        color={MouzoColors.primary}
+                        color={RabbitFoodColors.primary}
                       />
                     ) : null}
                   </Pressable>
@@ -410,10 +395,10 @@ export default function CheckoutScreen({ route }: any) {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="plus" size={16} color={MouzoColors.primary} />
+                <Feather name="plus" size={16} color={RabbitFoodColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
                 >
                   Nueva dirección
                 </ThemedText>
@@ -428,10 +413,10 @@ export default function CheckoutScreen({ route }: any) {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="map" size={16} color={MouzoColors.primary} />
+                <Feather name="map" size={16} color={RabbitFoodColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
                 >
                   Ver todas
                 </ThemedText>
@@ -462,7 +447,7 @@ export default function CheckoutScreen({ route }: any) {
         >
           <View style={styles.sectionHeader}>
             <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-              <Feather name="map-pin" size={20} color={MouzoColors.primary} />
+              <Feather name="map-pin" size={20} color={RabbitFoodColors.primary} />
               <ThemedText type="h4" style={styles.sectionTitle}>
                 Dirección de entrega
               </ThemedText>
@@ -474,8 +459,8 @@ export default function CheckoutScreen({ route }: any) {
               }}
               style={styles.inlineLink}
             >
-              <Feather name="edit-3" size={16} color={MouzoColors.primary} />
-              <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
+              <Feather name="edit-3" size={16} color={RabbitFoodColors.primary} />
+              <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}>
                 Cambiar
               </ThemedText>
             </Pressable>
@@ -487,16 +472,16 @@ export default function CheckoutScreen({ route }: any) {
                 styles.addressCard,
                 {
                   backgroundColor: theme.backgroundSecondary,
-                  borderColor: MouzoColors.primary,
+                  borderColor: RabbitFoodColors.primary,
                   borderStyle: "dashed",
                 },
               ]}
             >
               <View style={styles.addressContent}>
-                <Feather name="plus" size={20} color={MouzoColors.primary} />
+                <Feather name="plus" size={20} color={RabbitFoodColors.primary} />
                 <ThemedText
                   type="body"
-                  style={{ color: MouzoColors.primary, marginLeft: Spacing.sm }}
+                  style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.sm }}
                 >
                   Agregar dirección
                 </ThemedText>
@@ -516,7 +501,7 @@ export default function CheckoutScreen({ route }: any) {
                     backgroundColor: theme.backgroundSecondary,
                     borderColor:
                       selectedAddress?.id === addr.id
-                        ? MouzoColors.primary
+                        ? RabbitFoodColors.primary
                         : "transparent",
                   },
                 ]}
@@ -537,7 +522,7 @@ export default function CheckoutScreen({ route }: any) {
                   <Feather
                     name="check-circle"
                     size={20}
-                    color={MouzoColors.primary}
+                    color={RabbitFoodColors.primary}
                   />
                 ) : null}
               </Pressable>
@@ -550,8 +535,8 @@ export default function CheckoutScreen({ route }: any) {
                 onPress={() => navigation.navigate("AddAddress", { address: selectedAddress, fromCheckout: true } as never)}
                 style={[styles.manageAddressButton, { backgroundColor: theme.backgroundSecondary }]}
               >
-                <Feather name="edit-2" size={16} color={MouzoColors.primary} />
-                <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
+                <Feather name="edit-2" size={16} color={RabbitFoodColors.primary} />
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}>
                   Editar esta
                 </ThemedText>
               </Pressable>
@@ -559,8 +544,8 @@ export default function CheckoutScreen({ route }: any) {
                 onPress={() => navigation.navigate("SavedAddresses" as never)}
                 style={[styles.manageAddressButton, { backgroundColor: theme.backgroundSecondary }]}
               >
-                <Feather name="map" size={16} color={MouzoColors.primary} />
-                <ThemedText type="small" style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}>
+                <Feather name="map" size={16} color={RabbitFoodColors.primary} />
+                <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}>
                   Gestionar direcciones
                 </ThemedText>
               </Pressable>
@@ -572,7 +557,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="credit-card" size={20} color={MouzoColors.primary} />
+            <Feather name="credit-card" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Método de pago
             </ThemedText>
@@ -586,8 +571,8 @@ export default function CheckoutScreen({ route }: any) {
             style={[
               styles.paymentOption,
               {
-                backgroundColor: paymentMethod === "pago_movil" ? MouzoColors.primaryLight : theme.backgroundSecondary,
-                borderColor: paymentMethod === "pago_movil" ? MouzoColors.primary : "transparent",
+                backgroundColor: RabbitFoodColors.primaryLight,
+                borderColor: RabbitFoodColors.primary,
               },
             ]}
           >
@@ -602,38 +587,7 @@ export default function CheckoutScreen({ route }: any) {
                 </ThemedText>
               </View>
             </View>
-            {paymentMethod === "pago_movil" && (
-              <Feather name="check-circle" size={20} color={MouzoColors.primary} />
-            )}
-          </Pressable>
-
-          <Pressable
-            onPress={() => {
-              setPaymentMethod("efectivo");
-              Haptics.selectionAsync();
-            }}
-            style={[
-              styles.paymentOption,
-              {
-                backgroundColor: paymentMethod === "efectivo" ? MouzoColors.primaryLight : theme.backgroundSecondary,
-                borderColor: paymentMethod === "efectivo" ? MouzoColors.primary : "transparent",
-              },
-            ]}
-          >
-            <View style={styles.paymentContent}>
-              <Feather name="dollar-sign" size={24} color={theme.text} />
-              <View style={styles.paymentText}>
-                <ThemedText type="body" style={{ fontWeight: "600" }}>
-                  Efectivo
-                </ThemedText>
-                <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                  Paga al recibir tu pedido
-                </ThemedText>
-              </View>
-            </View>
-            {paymentMethod === "efectivo" && (
-              <Feather name="check-circle" size={20} color={MouzoColors.primary} />
-            )}
+            <Feather name="check-circle" size={20} color={RabbitFoodColors.primary} />
           </Pressable>
         </View>
 
@@ -642,16 +596,16 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="tag" size={20} color={MouzoColors.primary} />
+            <Feather name="tag" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Cupón de descuento
             </ThemedText>
           </View>
           
           {appliedCoupon ? (
-            <View style={[styles.appliedCouponBox, { backgroundColor: MouzoColors.success + "15", borderColor: MouzoColors.success }]}>
+            <View style={[styles.appliedCouponBox, { backgroundColor: RabbitFoodColors.success + "15", borderColor: RabbitFoodColors.success }]}>
               <View style={{ flex: 1 }}>
-                <ThemedText type="body" style={{ fontWeight: "600", color: MouzoColors.success }}>
+                <ThemedText type="body" style={{ fontWeight: "600", color: RabbitFoodColors.success }}>
                   {couponCode.toUpperCase()}
                 </ThemedText>
                 <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
@@ -659,7 +613,7 @@ export default function CheckoutScreen({ route }: any) {
                 </ThemedText>
               </View>
               <Pressable onPress={handleRemoveCoupon} style={styles.removeCouponButton}>
-                <Feather name="x" size={20} color={MouzoColors.error} />
+                <Feather name="x" size={20} color={RabbitFoodColors.error} />
               </Pressable>
             </View>
           ) : (
@@ -676,7 +630,7 @@ export default function CheckoutScreen({ route }: any) {
               <Pressable
                 onPress={handleApplyCoupon}
                 disabled={couponLoading || !couponCode.trim()}
-                style={[styles.applyCouponButton, { backgroundColor: couponLoading || !couponCode.trim() ? theme.textSecondary : MouzoColors.primary }]}
+                style={[styles.applyCouponButton, { backgroundColor: couponLoading || !couponCode.trim() ? theme.textSecondary : RabbitFoodColors.primary }]}
               >
                 {couponLoading ? (
                   <ActivityIndicator size="small" color="#FFF" />
@@ -695,7 +649,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="refresh-cw" size={20} color={MouzoColors.primary} />
+            <Feather name="refresh-cw" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Si algo no está disponible...
             </ThemedText>
@@ -724,10 +678,10 @@ export default function CheckoutScreen({ route }: any) {
                       styles.substitutionOption,
                       {
                         backgroundColor: isSelected
-                          ? MouzoColors.primary + "15"
+                          ? RabbitFoodColors.primary + "15"
                           : theme.backgroundSecondary,
                         borderColor: isSelected
-                          ? MouzoColors.primary
+                          ? RabbitFoodColors.primary
                           : "transparent",
                       },
                     ]}
@@ -737,13 +691,13 @@ export default function CheckoutScreen({ route }: any) {
                       name={info.icon}
                       size={20}
                       color={
-                        isSelected ? MouzoColors.primary : theme.textSecondary
+                        isSelected ? RabbitFoodColors.primary : theme.textSecondary
                       }
                     />
                     <ThemedText
                       type="small"
                       style={{
-                        color: isSelected ? MouzoColors.primary : theme.text,
+                        color: isSelected ? RabbitFoodColors.primary : theme.text,
                         marginTop: Spacing.xs,
                         fontWeight: isSelected ? "600" : "400",
                       }}
@@ -764,7 +718,7 @@ export default function CheckoutScreen({ route }: any) {
             }}
             style={styles.itemSubstitutionToggle}
           >
-            <ThemedText type="small" style={{ color: MouzoColors.primary }}>
+            <ThemedText type="small" style={{ color: RabbitFoodColors.primary }}>
               {showItemSubstitutions
                 ? "Usar misma opción para todos"
                 : "Elegir por producto"}
@@ -772,7 +726,7 @@ export default function CheckoutScreen({ route }: any) {
             <Feather
               name={showItemSubstitutions ? "chevron-up" : "chevron-down"}
               size={16}
-              color={MouzoColors.primary}
+              color={RabbitFoodColors.primary}
             />
           </Pressable>
 
@@ -816,7 +770,7 @@ export default function CheckoutScreen({ route }: any) {
                             styles.itemSubstitutionButton,
                             {
                               backgroundColor: isSelected
-                                ? MouzoColors.primary
+                                ? RabbitFoodColors.primary
                                 : theme.backgroundSecondary,
                             },
                           ]}
@@ -840,7 +794,7 @@ export default function CheckoutScreen({ route }: any) {
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
           <View style={styles.sectionHeader}>
-            <Feather name="shopping-bag" size={20} color={MouzoColors.primary} />
+            <Feather name="shopping-bag" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={styles.sectionTitle}>
               Resumen del pedido
             </ThemedText>
@@ -882,7 +836,7 @@ export default function CheckoutScreen({ route }: any) {
         </View>
         <View style={styles.totalRow}>
           <ThemedText type="body" style={{ color: theme.textSecondary }}>
-            Comision MOUZO (15%)
+            Comision Rabbit Food (15%)
           </ThemedText>
           <ThemedText type="body">Bs. {nemyCommission.toFixed(2)}</ThemedText>
         </View>
@@ -894,17 +848,17 @@ export default function CheckoutScreen({ route }: any) {
         </View>
         {couponDiscount > 0 && (
           <View style={styles.totalRow}>
-            <ThemedText type="body" style={{ color: MouzoColors.success }}>
+            <ThemedText type="body" style={{ color: RabbitFoodColors.success }}>
               Cupón ({couponCode})
             </ThemedText>
-            <ThemedText type="body" style={{ color: MouzoColors.success }}>
+            <ThemedText type="body" style={{ color: RabbitFoodColors.success }}>
               -Bs. {couponDiscount.toFixed(2)}
             </ThemedText>
           </View>
         )}
         <View style={[styles.totalRow, styles.grandTotal]}>
           <ThemedText type="h3">Total</ThemedText>
-          <ThemedText type="h2" style={{ color: MouzoColors.primary }}>
+          <ThemedText type="h2" style={{ color: RabbitFoodColors.primary }}>
             Bs. {total.toFixed(2)}
           </ThemedText>
         </View>

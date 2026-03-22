@@ -22,7 +22,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { OrderProgressBar } from "@/components/OrderProgressBar";
 import { CollapsibleMap } from "@/components/CollapsibleMap";
 import { useTheme } from "@/hooks/useTheme";
-import { Spacing, BorderRadius, MouzoColors, Shadows } from "@/constants/theme";
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { Order } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { mockOrders } from "@/data/mockData";
@@ -34,7 +34,7 @@ type OrderTrackingNavigationProp = NativeStackNavigationProp<
   "OrderTracking"
 >;
 
-const ORDERS_KEY = "@mouzo_orders";
+const ORDERS_KEY = "@rabbitfood_orders";
 const { width } = Dimensions.get("window");
 
 const parseDeliveryAddress = (address: string | null): string => {
@@ -92,9 +92,9 @@ export default function OrderTrackingScreen() {
     }
   };
 
-  // Business location (Autlan, Mexico center)
+  // Business location (Autlan, Venezuela center)
   const businessLocation = {
-    latitude: 19.7708,
+    latitude: 7.7708,
     longitude: -104.3636,
     title: "Negocio",
   };
@@ -227,14 +227,14 @@ export default function OrderTrackingScreen() {
             deliveryFee: 25.0,
             total: 55.0,
             paymentMethod: "card",
-            deliveryAddress: "Calle Ejemplo 123, Autlán, Jalisco",
+            deliveryAddress: "Calle Ejemplo 123, San Cristóbal, Táchira, Venezuela",
             createdAt: new Date().toISOString(),
             estimatedDelivery: new Date(
               Date.now() + 30 * 60 * 1000,
             ).toISOString(),
             deliveryPersonId: "delivery_demo",
             deliveryPersonName: "Carlos Repartidor",
-            deliveryPersonPhone: "+523171234569",
+            deliveryPersonPhone: "+583171234569",
           };
           setOrder(mockOrder);
         }
@@ -310,7 +310,7 @@ export default function OrderTrackingScreen() {
   const dynamicEta = etaRange ? `${etaRange.min}-${etaRange.max} min` : null;
 
   const estimatedTime = order.estimatedDelivery
-    ? new Date(order.estimatedDelivery).toLocaleTimeString("es-MX", {
+    ? new Date(order.estimatedDelivery).toLocaleTimeString("es-VE", {
         hour: "2-digit",
         minute: "2-digit",
       })
@@ -342,8 +342,8 @@ export default function OrderTrackingScreen() {
         {dynamicEta && (
           <View style={[styles.statusCard, { backgroundColor: theme.card }, Shadows.md]}>
             <View style={styles.businessRow}>
-              <View style={[styles.iconContainer, { backgroundColor: MouzoColors.primary + '20' }]}>
-                <Feather name="clock" size={24} color={MouzoColors.primary} />
+              <View style={[styles.iconContainer, { backgroundColor: RabbitFoodColors.primary + '20' }]}>
+                <Feather name="clock" size={24} color={RabbitFoodColors.primary} />
               </View>
               <View style={styles.businessInfo}>
                 <ThemedText type="caption" style={{ color: theme.textSecondary }}>
@@ -352,7 +352,7 @@ export default function OrderTrackingScreen() {
                    order.status === 'preparing' ? 'Preparando tu pedido' :
                    order.status === 'on_the_way' ? 'En camino' : 'Procesando'}
                 </ThemedText>
-                <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
+                <ThemedText type="h3" style={{ color: RabbitFoodColors.primary }}>
                   {dynamicEta}
                 </ThemedText>
               </View>
@@ -394,7 +394,7 @@ export default function OrderTrackingScreen() {
                 >
                   ETA
                 </ThemedText>
-                <ThemedText type="h3" style={{ color: MouzoColors.primary }}>
+                <ThemedText type="h3" style={{ color: RabbitFoodColors.primary }}>
                   {dynamicEta}
                 </ThemedText>
               </View>
@@ -452,10 +452,10 @@ export default function OrderTrackingScreen() {
                   { backgroundColor: theme.backgroundSecondary },
                 ]}
               >
-                <Feather name="phone" size={20} color={MouzoColors.primary} />
+                <Feather name="phone" size={20} color={RabbitFoodColors.primary} />
                 <ThemedText
                   type="small"
-                  style={{ color: MouzoColors.primary, marginLeft: Spacing.xs }}
+                  style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
                 >
                   Llamar
                 </ThemedText>
@@ -470,7 +470,7 @@ export default function OrderTrackingScreen() {
                 }
                 style={[
                   styles.contactBtn,
-                  { backgroundColor: MouzoColors.primary },
+                  { backgroundColor: RabbitFoodColors.primary },
                 ]}
               >
                 <Feather name="message-square" size={20} color="#FFFFFF" />
@@ -493,7 +493,7 @@ export default function OrderTrackingScreen() {
           ]}
         >
           <View style={styles.addressHeader}>
-            <Feather name="map-pin" size={20} color={MouzoColors.primary} />
+            <Feather name="map-pin" size={20} color={RabbitFoodColors.primary} />
             <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
               Dirección de entrega
             </ThemedText>
@@ -545,7 +545,7 @@ export default function OrderTrackingScreen() {
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="small" style={{ color: theme.textSecondary }}>
-                Comision MOUZO (15%)
+                Comision Rabbit Food (15%)
               </ThemedText>
               <ThemedText type="small">${nemyCommission.toFixed(2)}</ThemedText>
             </View>
@@ -559,7 +559,7 @@ export default function OrderTrackingScreen() {
             </View>
             <View style={styles.itemRow}>
               <ThemedText type="h4">Total</ThemedText>
-              <ThemedText type="h4" style={{ color: MouzoColors.primary }}>
+              <ThemedText type="h4" style={{ color: RabbitFoodColors.primary }}>
                 ${order.total.toFixed(2)}
               </ThemedText>
             </View>
@@ -581,7 +581,7 @@ export default function OrderTrackingScreen() {
             ]}
           >
             <View style={styles.tipHeader}>
-              <Feather name="heart" size={20} color={MouzoColors.primary} />
+              <Feather name="heart" size={20} color={RabbitFoodColors.primary} />
               <ThemedText type="h4" style={{ marginLeft: Spacing.sm }}>
                 Agregar propina
               </ThemedText>
@@ -605,10 +605,10 @@ export default function OrderTrackingScreen() {
                     {
                       backgroundColor:
                         selectedTip === tip
-                          ? MouzoColors.primary
+                          ? RabbitFoodColors.primary
                           : theme.backgroundSecondary,
                       borderColor:
-                        selectedTip === tip ? MouzoColors.primary : theme.border,
+                        selectedTip === tip ? RabbitFoodColors.primary : theme.border,
                     },
                   ]}
                 >
@@ -631,7 +631,7 @@ export default function OrderTrackingScreen() {
                 styles.tipButton,
                 {
                   backgroundColor: selectedTip
-                    ? MouzoColors.primary
+                    ? RabbitFoodColors.primary
                     : theme.backgroundSecondary,
                   opacity: selectedTip && !sendingTip ? 1 : 0.5,
                 },
@@ -675,7 +675,7 @@ export default function OrderTrackingScreen() {
             }}
             style={[
               styles.confirmButton,
-              { backgroundColor: MouzoColors.success },
+              { backgroundColor: RabbitFoodColors.success },
               Shadows.md,
             ]}
           >
@@ -723,7 +723,7 @@ export default function OrderTrackingScreen() {
             }}
             style={[styles.reportButton, { borderColor: theme.border }]}
           >
-            <Feather name="alert-circle" size={18} color={MouzoColors.warning} />
+            <Feather name="alert-circle" size={18} color={RabbitFoodColors.warning} />
             <ThemedText
               type="body"
               style={{ marginLeft: Spacing.sm, color: theme.textSecondary }}

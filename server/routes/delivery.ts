@@ -51,7 +51,7 @@ router.get("/zones", async (req, res) => {
       {
         id: "zone-centro",
         name: "Centro",
-        description: "Centro de Autlán",
+        description: "Centro de San Cristóbal",
         deliveryFee: 2500,
         maxDeliveryTime: 30,
         isActive: true,
@@ -62,7 +62,7 @@ router.get("/zones", async (req, res) => {
       {
         id: "zone-norte",
         name: "Norte", 
-        description: "Zona Norte de Autlán",
+        description: "Zona Norte de San Cristóbal",
         deliveryFee: 3000,
         maxDeliveryTime: 35,
         isActive: true,
@@ -73,7 +73,7 @@ router.get("/zones", async (req, res) => {
       {
         id: "zone-sur",
         name: "Sur",
-        description: "Zona Sur de Autlán", 
+        description: "Zona Sur de San Cristóbal", 
         deliveryFee: 3000,
         maxDeliveryTime: 35,
         isActive: true,
@@ -247,8 +247,8 @@ router.patch("/orders/:id/status", authenticateToken, requireRole("delivery_driv
   }
 });
 
-// Get driver location for an order (polling from OrderTrackingScreen)
-router.get("/location/:orderId", authenticateToken, async (req, res) => {
+// Get driver location for an order (public - customers need to track their orders)
+router.get("/location/:orderId", async (req, res) => {
   try {
     const { orders, deliveryDrivers, users } = await import("@shared/schema-mysql");
     const { db } = await import("../db");

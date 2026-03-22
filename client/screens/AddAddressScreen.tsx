@@ -24,7 +24,7 @@ import { apiRequest } from '@/lib/query-client';
 import { isInCoverageArea, AUTLAN_CENTER } from '@/utils/coverage';
 import { checkDuplicateAddress, suggestSimilarAddresses, Address } from '@/utils/addressValidation';
 import { useDebounce, usePerformanceMonitor } from '@/hooks/usePerformance';
-import { Spacing, BorderRadius, MouzoColors, Shadows } from '@/constants/theme';
+import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from '@/constants/theme';
 import * as Location from 'expo-location';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddAddress'>;
@@ -48,8 +48,8 @@ export default function AddAddressScreen() {
 
   const [label, setLabel] = useState(existingAddress?.label || '');
   const [street, setStreet] = useState(existingAddress?.street || '');
-  const [city, setCity] = useState(existingAddress?.city || 'Autlán');
-  const [state, setState] = useState(existingAddress?.state || 'Jalisco');
+  const [city, setCity] = useState(existingAddress?.city || 'San Cristóbal');
+  const [state, setState] = useState(existingAddress?.state || 'Venezuela');
   const [zipCode, setZipCode] = useState(existingAddress?.zipCode || '');
   const [loading, setLoading] = useState(false);
   const [locating, setLocating] = useState(false);
@@ -167,9 +167,9 @@ export default function AddAddressScreen() {
       >
         {/* Error banner */}
         {error && (
-          <View style={[styles.banner, { backgroundColor: MouzoColors.error + '15', borderColor: MouzoColors.error + '40' }]}>
-            <Feather name="alert-circle" size={16} color={MouzoColors.error} />
-            <ThemedText type="small" style={{ color: MouzoColors.error, flex: 1, marginLeft: Spacing.sm }}>
+          <View style={[styles.banner, { backgroundColor: RabbitFoodColors.error + '15', borderColor: RabbitFoodColors.error + '40' }]}>
+            <Feather name="alert-circle" size={16} color={RabbitFoodColors.error} />
+            <ThemedText type="small" style={{ color: RabbitFoodColors.error, flex: 1, marginLeft: Spacing.sm }}>
               {error}
             </ThemedText>
           </View>
@@ -177,9 +177,9 @@ export default function AddAddressScreen() {
 
         {/* Success banner */}
         {success && (
-          <View style={[styles.banner, { backgroundColor: MouzoColors.success + '15', borderColor: MouzoColors.success + '40' }]}>
-            <Feather name="check-circle" size={16} color={MouzoColors.success} />
-            <ThemedText type="small" style={{ color: MouzoColors.success, flex: 1, marginLeft: Spacing.sm }}>
+          <View style={[styles.banner, { backgroundColor: RabbitFoodColors.success + '15', borderColor: RabbitFoodColors.success + '40' }]}>
+            <Feather name="check-circle" size={16} color={RabbitFoodColors.success} />
+            <ThemedText type="small" style={{ color: RabbitFoodColors.success, flex: 1, marginLeft: Spacing.sm }}>
               {existingAddress?.id ? 'Dirección actualizada' : 'Dirección guardada correctamente'}
             </ThemedText>
           </View>
@@ -189,7 +189,7 @@ export default function AddAddressScreen() {
         <Pressable
           style={[
             styles.gpsButton,
-            { backgroundColor: MouzoColors.primary, opacity: locating ? 0.7 : 1 },
+            { backgroundColor: RabbitFoodColors.primary, opacity: locating ? 0.7 : 1 },
             Shadows.sm,
           ]}
           onPress={async () => {
@@ -251,7 +251,7 @@ export default function AddAddressScreen() {
                   style={[styles.suggestionItem, { backgroundColor: theme.card, borderColor: theme.border }]}
                   onPress={() => handleSuggestionSelect(addr)}
                 >
-                  <ThemedText type="small" style={{ color: MouzoColors.primary, fontWeight: '600' }}>
+                  <ThemedText type="small" style={{ color: RabbitFoodColors.primary, fontWeight: '600' }}>
                     {addr.label}
                   </ThemedText>
                   <ThemedText type="caption" style={{ color: theme.textSecondary, marginTop: 2 }}>
@@ -264,13 +264,13 @@ export default function AddAddressScreen() {
 
           {/* Duplicate warning */}
           {duplicateWarning && (
-            <View style={[styles.banner, { backgroundColor: MouzoColors.warning + '15', borderColor: MouzoColors.warning + '40' }]}>
-              <Feather name="alert-triangle" size={16} color={MouzoColors.warning} />
+            <View style={[styles.banner, { backgroundColor: RabbitFoodColors.warning + '15', borderColor: RabbitFoodColors.warning + '40' }]}>
+              <Feather name="alert-triangle" size={16} color={RabbitFoodColors.warning} />
               <View style={{ flex: 1, marginLeft: Spacing.sm }}>
-                <ThemedText type="small" style={{ color: MouzoColors.warning, fontWeight: '600' }}>
+                <ThemedText type="small" style={{ color: RabbitFoodColors.warning, fontWeight: '600' }}>
                   Similar a "{duplicateWarning.label}"
                 </ThemedText>
-                <ThemedText type="caption" style={{ color: MouzoColors.warning }}>
+                <ThemedText type="caption" style={{ color: RabbitFoodColors.warning }}>
                   {duplicateWarning.street}
                 </ThemedText>
               </View>
@@ -317,8 +317,8 @@ export default function AddAddressScreen() {
             style={[
               styles.mapButton,
               {
-                backgroundColor: coordinates ? MouzoColors.primary + '15' : theme.card,
-                borderColor: coordinates ? MouzoColors.primary : theme.border,
+                backgroundColor: coordinates ? RabbitFoodColors.primary + '15' : theme.card,
+                borderColor: coordinates ? RabbitFoodColors.primary : theme.border,
               },
               Shadows.sm,
             ]}
@@ -334,13 +334,13 @@ export default function AddAddressScreen() {
             <Feather
               name={coordinates ? 'check-circle' : 'map-pin'}
               size={20}
-              color={coordinates ? MouzoColors.primary : theme.textSecondary}
+              color={coordinates ? RabbitFoodColors.primary : theme.textSecondary}
             />
             <ThemedText
               type="body"
               style={{
                 marginLeft: Spacing.sm,
-                color: coordinates ? MouzoColors.primary : theme.textSecondary,
+                color: coordinates ? RabbitFoodColors.primary : theme.textSecondary,
                 fontWeight: '600',
               }}
             >
@@ -348,10 +348,10 @@ export default function AddAddressScreen() {
             </ThemedText>
           </Pressable>
         ) : (
-          <View style={[styles.banner, { backgroundColor: MouzoColors.primary + '10', borderColor: MouzoColors.primary + '30' }]}>
-            <Feather name="globe" size={16} color={MouzoColors.primary} />
-            <ThemedText type="small" style={{ color: MouzoColors.primary, flex: 1, marginLeft: Spacing.sm }}>
-              En la versión web se usará la ubicación del centro de Autlán por defecto.
+          <View style={[styles.banner, { backgroundColor: RabbitFoodColors.primary + '10', borderColor: RabbitFoodColors.primary + '30' }]}>
+            <Feather name="globe" size={16} color={RabbitFoodColors.primary} />
+            <ThemedText type="small" style={{ color: RabbitFoodColors.primary, flex: 1, marginLeft: Spacing.sm }}>
+              En la versión web se usará la ubicación del centro de San Cristóbal por defecto.
             </ThemedText>
           </View>
         )}

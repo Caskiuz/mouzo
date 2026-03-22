@@ -589,7 +589,7 @@ export default function WithdrawalScreen() {
                    tx.status === 'pending' ? 'Pendiente' : 'Fallido'}
                 </Text>
                 <Text style={styles.historyDate}>
-                  {new Date(tx.createdAt).toLocaleDateString('es-MX', {
+                  {new Date(tx.createdAt).toLocaleDateString('es-VE', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit'

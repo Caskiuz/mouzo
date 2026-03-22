@@ -33,7 +33,7 @@ function formatPhoneNumber(phone: string): string {
   }
 
   if (cleaned.length === 10) {
-    return `+52${cleaned}`;
+    return `+58${cleaned}`;
   }
 
   if (cleaned.startsWith("+")) {
