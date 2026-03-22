@@ -368,6 +368,67 @@ router.get("/logs", authenticateToken, requireRole("admin"), async (req, res) =>
   } catch (error: any) { res.status(500).json({ error: error.message }); }
 });
 
+// System Settings
+router.get("/settings", authenticateToken, requireRole("admin"), async (req, res) => {
+  try {
+    const { systemSettings } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    const settings = await db.select().from(systemSettings).orderBy(systemSettings.category, systemSettings.key);
+    res.json({ success: true, settings });
+  } catch (error: any) {
+    console.error("Get settings error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.put("/settings", authenticateToken, requireRole("admin"), async (req, res) => {
+  try {
+    const { key, value } = req.body;
+    if (!key || value === undefined) {
+      return res.status(400).json({ error: "Key y value requeridos" });
+    }
+    const { systemSettings } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    await db.update(systemSettings).set({ value: String(value), updatedAt: new Date() }).where(eq(systemSettings.key, key));
+    res.json({ success: true, message: "Configuración actualizada" });
+  } catch (error: any) {
+    console.error("Update setting error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/settings/initialize", authenticateToken, requireRole("admin"), async (req, res) => {
+  try {
+    const { systemSettings } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    
+    const defaultSettings = [
+      { key: "rabbit_food_commission", value: "15", type: "number", category: "commissions", description: "Comisión Rabbit Food (%)", isPublic: false },
+      { key: "business_commission", value: "100", type: "number", category: "commissions", description: "Comisión Negocio (%)", isPublic: false },
+      { key: "driver_commission", value: "100", type: "number", category: "commissions", description: "Comisión Repartidor (%)", isPublic: false },
+      { key: "regret_period_seconds", value: "60", type: "number", category: "operations", description: "Período de arrepentimiento (segundos)", isPublic: true },
+      { key: "business_call_delay_minutes", value: "3", type: "number", category: "operations", description: "Retraso llamada negocio (minutos)", isPublic: false },
+      { key: "fund_hold_hours", value: "1", type: "number", category: "payments", description: "Retención de fondos (horas)", isPublic: false },
+      { key: "max_cash_owed", value: "50000", type: "number", category: "payments", description: "Máximo efectivo adeudado (Bs.)", isPublic: false },
+      { key: "liquidation_deadline_days", value: "7", type: "number", category: "payments", description: "Plazo liquidación (días)", isPublic: false },
+      { key: "warning_threshold_days", value: "5", type: "number", category: "payments", description: "Umbral advertencia (días)", isPublic: false },
+      { key: "pago_movil_phone", value: "0414-000-0000", type: "string", category: "payments", description: "Teléfono Pago Móvil", isPublic: true },
+      { key: "pago_movil_bank", value: "banesco", type: "string", category: "payments", description: "Banco Pago Móvil", isPublic: true },
+      { key: "pago_movil_bank_name", value: "Banesco", type: "string", category: "payments", description: "Nombre Banco", isPublic: true },
+      { key: "pago_movil_cedula", value: "V-00000000", type: "string", category: "payments", description: "Cédula Pago Móvil", isPublic: true },
+    ];
+
+    for (const setting of defaultSettings) {
+      await db.insert(systemSettings).values(setting).onDuplicateKeyUpdate({ set: { value: setting.value } });
+    }
+
+    res.json({ success: true, message: "Configuraciones inicializadas" });
+  } catch (error: any) {
+    console.error("Initialize settings error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // System health check
 router.get("/health", authenticateToken, requireRole("admin"), async (req, res) => {
   try {

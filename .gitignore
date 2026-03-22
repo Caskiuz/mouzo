@@ -4,6 +4,7 @@
 .env
 .env.*
 !.env.example
+!.env.production.example
 *.pem
 ca.pem
 
@@ -48,6 +49,10 @@ temp/
 *.backup
 backups/
 export_*.sql
+migrate-data.js
+migrate-data.ps1
+migrate.ps1
+migrations/*.sql
 
 # ============================================
 # Documentation (solo README.md)
@@ -191,5 +196,3 @@ SCRIPTS-README.md
 test-wallet-endpoint.txt
 verify-replit-backend.js
 create-available-orders.js
-.env.example
-.env.production.example
