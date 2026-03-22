@@ -10,26 +10,31 @@ export const getApiBaseUrl = (): string => {
   // Check expo config first (from app.config.js) - works in both dev and prod
   const expoBackendUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
   if (expoBackendUrl) {
+    console.log('🔧 Using Expo config URL:', expoBackendUrl);
     return expoBackendUrl;
   }
 
   // Check for environment variable (development)
   const envBackendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
   if (envBackendUrl) {
+    console.log('🔧 Using env URL:', envBackendUrl);
     return envBackendUrl.trim();
   }
 
   // Development mode - use Render backend
   if (__DEV__) {
+    console.log('🔧 Using DEV URL: https://rabbitfood-backend.onrender.com');
     return "https://rabbitfood-backend.onrender.com";
   }
 
   // For web in production, use current origin (same domain)
   if (Platform.OS === "web" && typeof window !== "undefined" && window.location) {
+    console.log('🔧 Using window origin:', window.location.origin);
     return window.location.origin;
   }
 
   // Production fallback
+  console.log('🔧 Using fallback URL: https://rabbitfood-backend.onrender.com');
   return "https://rabbitfood-backend.onrender.com";
 };
 

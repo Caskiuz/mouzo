@@ -66,6 +66,11 @@ export async function apiRequest(
   const baseUrl = getApiUrl();
   const url = new URL(route, baseUrl);
 
+  console.log(`🚀 API Request: ${method} ${url.toString()}`);
+  if (data) {
+    console.log('📦 Request data:', JSON.stringify(data).substring(0, 100));
+  }
+
   const token = await getAuthToken();
 
   const headers: Record<string, string> = {};
@@ -76,15 +81,21 @@ export async function apiRequest(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, {
-    method,
-    headers,
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  try {
+    const res = await fetch(url, {
+      method,
+      headers,
+      body: data ? JSON.stringify(data) : undefined,
+      credentials: "include",
+    });
 
-  await throwIfResNotOk(res);
-  return res;
+    console.log(`✅ Response status: ${res.status}`);
+    await throwIfResNotOk(res);
+    return res;
+  } catch (error) {
+    console.error('❌ API Request failed:', error);
+    throw error;
+  }
 }
 
 // Use when you need to handle non-2xx responses manually
