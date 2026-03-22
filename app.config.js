@@ -1,28 +1,28 @@
 export default {
   expo: {
-    name: "MOUZO",
-    slug: "mouzo",
+    name: "Rabbit Food",
+    slug: "rabbitfood",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "mouzo",
+    scheme: "rabbitfood",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.mouzo.app",
+      bundleIdentifier: "com.rabbitfood.app",
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "Necesitamos tu ubicacion para asignarte pedidos y mostrar tu posicion en tiempo real."
       }
     },
     android: {
       adaptiveIcon: {
-        backgroundColor: "#FF8C00",
+        backgroundColor: "#E8B4A8",
         foregroundImage: "./assets/images/icon.png"
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
-      package: "com.mouzo.app",
+      package: "com.rabbitfood.app",
       config: {
         googleMaps: {
           apiKey: "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
@@ -40,7 +40,7 @@ export default {
           image: "./assets/images/splash-icon.png",
           imageWidth: 200,
           resizeMode: "contain",
-          backgroundColor: "#FF8C00",
+          backgroundColor: "#E8B4A8",
           dark: {
             backgroundColor: "#1A1A1A",
             image: "./assets/images/splash-icon.png"
@@ -64,7 +64,7 @@ export default {
         projectId: "8c58541f-bf02-4e36-bcf9-a2e64b126a5b"
       },
       // CRITICAL: Backend URL for production builds
-      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://mouzo-backend.onrender.com"
+      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://rabbitfood-backend.onrender.com"
     },
     owner: "caskiuzs-organization"
   }
