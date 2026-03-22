@@ -5,7 +5,7 @@
   "scripts": {
     "expo:dev": "npx expo start --localhost",
     "server:dev": "tsx -r dotenv/config server/server.ts dotenv_config_path=.env.local",
-    "server:prod": "set NODE_ENV=production && tsx server/server.ts",
+    "server:prod": "NODE_ENV=production tsx server/server.ts",
     "jobs:dev": "tsx server/jobsRunner.ts",
     "audit:financial": "tsx -r dotenv/config server/testFinancialAudit.ts dotenv_config_path=.env.local",
     "fix:earnings": "tsx -r dotenv/config server/fixOrderEarnings.ts dotenv_config_path=.env.local",
