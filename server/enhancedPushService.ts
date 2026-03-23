@@ -158,6 +158,22 @@ async function sendPushNotification(
   }
 }
 
+export async function notifyPagoMovilStatus(
+  userId: string,
+  status: 'verified' | 'rejected',
+  orderId: string,
+  reason?: string
+): Promise<void> {
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  if (!user || !user.pushToken) return;
+
+  const notification = status === 'verified'
+    ? { title: '✅ Pago verificado', body: 'Tu pago fue confirmado. Tu pedido está siendo procesado.', data: { orderId, screen: 'OrderTracking' } }
+    : { title: '❌ Pago rechazado', body: reason || 'Tu comprobante fue rechazado. Por favor verifica los datos.', data: { orderId, screen: 'PaymentProofUpload' } };
+
+  await sendPushNotification(user.pushToken, notification);
+}
+
 export async function notifyDriverNewOrder(
   driverId: string,
   orderId: string

@@ -1,6 +1,7 @@
 import { db } from './db';
-import { orders, pagoMovilVerifications, transactions, wallets } from '../shared/schema-mysql';
+import { orders, pagoMovilVerifications } from '../shared/schema-mysql';
 import { eq, and } from 'drizzle-orm';
+import { notifyPagoMovilStatus } from './enhancedPushService';
 
 // Datos de la cuenta MOUZO para recibir pagos
 export const MOUZO_PAGO_MOVIL = {
@@ -131,6 +132,8 @@ export async function verifyPagoMovil(verificationId: string, adminId: string) {
     })
     .where(eq(orders.id, verification.orderId));
 
+  await notifyPagoMovilStatus(verification.userId, 'verified', verification.orderId);
+
   return { success: true, orderId: verification.orderId };
 }
 
@@ -150,6 +153,8 @@ export async function rejectPagoMovil(verificationId: string, adminId: string, r
   await db.update(orders)
     .set({ pagoMovilStatus: 'rejected', pagoMovilRejectedReason: reason })
     .where(eq(orders.id, verification.orderId));
+
+  await notifyPagoMovilStatus(verification.userId, 'rejected', verification.orderId, reason);
 
   return { success: true, orderId: verification.orderId };
 }

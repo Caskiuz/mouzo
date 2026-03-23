@@ -28,7 +28,7 @@ import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from "@
 
 type SubstitutionOption = "refund" | "call" | "substitute";
 
-type PaymentMethod = "pago_movil";
+type PaymentMethod = "pago_movil" | "binance_pay" | "paypal" | "zinli" | "zelle";
 
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -53,6 +53,7 @@ export default function CheckoutScreen({ route }: any) {
   const [dynamicDeliveryFee, setDynamicDeliveryFee] = useState<number | null>(null);
   const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pago_movil");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<any>(null);
 
   // Preferencias de sustitución
   const [globalSubstitution, setGlobalSubstitution] =
@@ -104,7 +105,15 @@ export default function CheckoutScreen({ route }: any) {
   useFocusEffect(
     React.useCallback(() => {
       loadAddresses();
-    }, [loadAddresses]),
+      
+      // Manejar selección de método de pago
+      if (route?.params?.selectedPaymentMethod) {
+        setSelectedPaymentMethod(route.params.selectedPaymentMethod);
+        setPaymentMethod(route.params.selectedPaymentMethod.provider);
+        // Limpiar el parámetro
+        navigation.setParams({ selectedPaymentMethod: undefined } as any);
+      }
+    }, [loadAddresses, route?.params?.selectedPaymentMethod]),
   );
 
   useEffect(() => {
@@ -201,7 +210,29 @@ export default function CheckoutScreen({ route }: any) {
 
       const order = await orderResponse.json();
 
-      if (paymentMethod === "pago_movil") {
+      // Navegar según el método de pago seleccionado
+      if (selectedPaymentMethod?.requiresManualVerification) {
+        // Métodos que requieren comprobante manual
+        await clearCart();
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        setIsLoading(false);
+
+        navigation.reset({
+          index: 0,
+          routes: [
+            { name: "Main" },
+            {
+              name: "PaymentProofUpload",
+              params: {
+                orderId: order.orderId || order.id,
+                orderTotal: total,
+                paymentMethod: selectedPaymentMethod,
+              },
+            },
+          ],
+        });
+      } else if (paymentMethod === "pago_movil" || !selectedPaymentMethod) {
+        // Flujo original de Pago Móvil
         const pmResponse = await apiRequest("POST", `/api/pago-movil/init/${order.orderId || order.id}`, {
           amount: totalAmount,
         });
@@ -226,6 +257,10 @@ export default function CheckoutScreen({ route }: any) {
             },
           ],
         });
+      } else if (paymentMethod === "paypal") {
+        // TODO: Integrar PayPal SDK
+        showToast("PayPal próximamente", "info");
+        setIsLoading(false);
       }
     } catch (error: any) {
       console.error("Error placing order:", error);
@@ -561,13 +596,23 @@ export default function CheckoutScreen({ route }: any) {
             <ThemedText type="h4" style={styles.sectionTitle}>
               Método de pago
             </ThemedText>
+            <Pressable
+              onPress={() => {
+                Haptics.selectionAsync();
+                navigation.navigate("DigitalPaymentMethod", {
+                  orderTotal: total,
+                });
+              }}
+              style={styles.inlineLink}
+            >
+              <Feather name="edit-3" size={16} color={RabbitFoodColors.primary} />
+              <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}>
+                Cambiar
+              </ThemedText>
+            </Pressable>
           </View>
           
           <Pressable
-            onPress={() => {
-              setPaymentMethod("pago_movil");
-              Haptics.selectionAsync();
-            }}
             style={[
               styles.paymentOption,
               {
@@ -577,13 +622,21 @@ export default function CheckoutScreen({ route }: any) {
             ]}
           >
             <View style={styles.paymentContent}>
-              <Feather name="smartphone" size={24} color={theme.text} />
+              <Feather 
+                name={selectedPaymentMethod?.provider === "binance_pay" ? "logo-bitcoin" :
+                      selectedPaymentMethod?.provider === "paypal" ? "logo-paypal" :
+                      selectedPaymentMethod?.provider === "zinli" ? "card" :
+                      selectedPaymentMethod?.provider === "zelle" ? "dollar-sign" :
+                      "smartphone"} 
+                size={24} 
+                color={theme.text} 
+              />
               <View style={styles.paymentText}>
                 <ThemedText type="body" style={{ fontWeight: "600" }}>
-                  Pago Móvil
+                  {selectedPaymentMethod?.displayName || "Pago Móvil"}
                 </ThemedText>
                 <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                  Transferencia bancaria instantánea
+                  {selectedPaymentMethod?.instructions || "Transferencia bancaria instantánea"}
                 </ThemedText>
               </View>
             </View>

@@ -25,7 +25,7 @@ export default {
       package: "com.rabbitfood.app",
       config: {
         googleMaps: {
-          apiKey: "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
+          apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
         }
       }
     },
@@ -52,7 +52,7 @@ export default {
       [
         "react-native-maps",
         {
-          googleMapsApiKey: "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
+          googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || "AIzaSyDLejpcrNJNHzQIduWuot5QAoepitVk2zY"
         }
       ]
     ],

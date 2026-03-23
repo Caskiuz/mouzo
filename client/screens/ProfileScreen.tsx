@@ -540,10 +540,10 @@ export default function ProfileScreen() {
           {user?.role === "business_owner" && (
             <SettingsItem
               icon="credit-card"
-              label="Configuración de Pagos"
+              label="Cuentas para recibir pagos"
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                navigation.navigate("BusinessStripeSetup" as any);
+                navigation.navigate("PaymentWalletSetup" as any);
               }}
             />
           )}
@@ -551,26 +551,16 @@ export default function ProfileScreen() {
             <SettingsItem
               icon="credit-card"
               label="Métodos de pago"
-              onPress={() => navigation.navigate("PaymentMethods")}
-            />
-          )}
-          {user?.role === "customer" && (
-            <SettingsItem
-              icon="truck"
-              label="Ser repartidor"
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                navigation.navigate("BecomeDriver");
-              }}
+              onPress={() => navigation.navigate("PaymentWalletSetup" as any)}
             />
           )}
           {user?.role === "delivery_driver" && (
             <SettingsItem
               icon="credit-card"
-              label="Método de Pago"
+              label="Cuentas para recibir pagos"
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                navigation.navigate('PaymentMethods');
+                navigation.navigate("PaymentWalletSetup" as any);
               }}
             />
           )}

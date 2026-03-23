@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView, Pressable, ActivityIndicator, Image, TextInput, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -30,8 +30,23 @@ export default function PagoMovilPaymentScreen({ route }: any) {
 
   const [clientPhone, setClientPhone] = useState("");
   const [clientBank, setClientBank] = useState("banesco");
+  const [pagoMovilCedula, setPagoMovilCedula] = useState("");
   const [proofImage, setProofImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOcrLoading, setIsOcrLoading] = useState(false);
+
+  // Pre-llenar con cuenta guardada del cliente
+  useEffect(() => {
+    apiRequest("GET", "/api/payouts/accounts").then(async res => {
+      const data = await res.json();
+      const acc = data.accounts?.find((a: any) => a.method === "pago_movil");
+      if (acc) {
+        if (acc.pagoMovilPhone) setClientPhone(acc.pagoMovilPhone);
+        if (acc.pagoMovilBank) setClientBank(acc.pagoMovilBank);
+        if (acc.pagoMovilCedula) setPagoMovilCedula(acc.pagoMovilCedula);
+      }
+    }).catch(() => {});
+  }, []);
 
   const handlePickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -41,8 +56,41 @@ export default function PagoMovilPaymentScreen({ route }: any) {
     });
 
     if (!result.canceled) {
-      setProofImage(result.assets[0].uri);
+      const uri = result.assets[0].uri;
+      setProofImage(uri);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+      setIsOcrLoading(true);
+      try {
+        const formData = new FormData();
+        const filename = uri.split("/").pop();
+        const match = /\.(\w+)$/.exec(filename || "");
+        const type = match ? `image/${match[1]}` : "image/jpeg";
+        formData.append("proof", { uri, name: filename, type } as any);
+        const res = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL}/api/digital-payments/ocr`, {
+          method: "POST",
+          body: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const data = await res.json();
+        if (data.success && data.extracted) {
+          if (data.extracted.phone) setClientPhone(data.extracted.phone);
+          if (data.extracted.bank) {
+            const bankMatch = BANCOS.find(b =>
+              data.extracted.bank.toLowerCase().includes(b.id) ||
+              b.name.toLowerCase().includes(data.extracted.bank.toLowerCase())
+            );
+            if (bankMatch) setClientBank(bankMatch.id);
+          }
+          if (data.extracted.phone || data.extracted.bank) {
+            showToast("Datos extraídos del comprobante ✨", "success");
+          }
+        }
+      } catch {
+        // OCR falla silenciosamente
+      } finally {
+        setIsOcrLoading(false);
+      }
     }
   };
 
@@ -60,6 +108,7 @@ export default function PagoMovilPaymentScreen({ route }: any) {
       formData.append("reference", reference);
       formData.append("clientPhone", clientPhone);
       formData.append("clientBank", clientBank);
+      formData.append("amount", String(amount));
 
       if (proofImage) {
         const filename = proofImage.split("/").pop();
@@ -196,6 +245,12 @@ export default function PagoMovilPaymentScreen({ route }: any) {
           {proofImage ? (
             <View style={styles.imagePreview}>
               <Image source={{ uri: proofImage }} style={styles.image} />
+              {isOcrLoading && (
+                <View style={styles.ocrOverlay}>
+                  <ActivityIndicator color="#FFF" />
+                  <ThemedText type="small" style={{ color: "#FFF", marginTop: 4 }}>Leyendo comprobante...</ThemedText>
+                </View>
+              )}
               <Pressable onPress={() => setProofImage(null)} style={styles.removeImageButton}>
                 <Feather name="x" size={20} color="#FFF" />
               </Pressable>
@@ -265,6 +320,13 @@ const styles = StyleSheet.create({
   },
   imagePreview: { position: "relative", height: 200, borderRadius: BorderRadius.md, overflow: "hidden" },
   image: { width: "100%", height: "100%", resizeMode: "cover" },
+  ocrOverlay: {
+    position: "absolute",
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   removeImageButton: {
     position: "absolute",
     top: Spacing.sm,

@@ -17,6 +17,7 @@ import CarnivalScreen from "@/screens/CarnivalScreen";
 import MarketsScreen from "@/screens/MarketsScreen";
 import BusinessListScreen from "@/screens/BusinessListScreen";
 import PaymentMethodsScreen from "@/screens/PaymentMethodsScreen";
+import PaymentWalletSetupScreen from "@/screens/PaymentWalletSetupScreen";
 import SupportScreen from "@/screens/SupportScreen";
 import ReviewScreen from "@/screens/ReviewScreen";
 import LegalScreen from "@/screens/LegalScreen";
@@ -43,6 +44,11 @@ import BusinessMapScreen from "@/screens/BusinessMapScreen";
 import BecomeDriverScreen from "@/screens/BecomeDriverScreen";
 import TermsScreen from "@/screens/TermsScreen";
 import PrivacyScreen from "@/screens/PrivacyScreen";
+import DigitalPaymentMethodScreen from "@/screens/DigitalPaymentMethodScreen";
+import PaymentProofUploadScreen from "@/screens/PaymentProofUploadScreen";
+import PaymentVerificationTrackingScreen from "@/screens/PaymentVerificationTrackingScreen";
+import DeliveryConfirmationScreen from "@/screens/DeliveryConfirmationScreen";
+import AdminPaymentVerificationScreen from "@/screens/AdminPaymentVerificationScreen";
 import { useScreenOptions } from "@/hooks/useScreenOptions";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -70,12 +76,14 @@ export type RootStackParamList = {
     calculatedDeliveryFee?: number;
     addressRefreshToken?: number;
     selectedAddressId?: string;
+    selectedPaymentMethod?: any;
   } | undefined;
   OrderTracking: { orderId: string };
   Carnival: undefined;
   Markets: undefined;
   BusinessList: undefined;
   PaymentMethods: undefined;
+  PaymentWalletSetup: undefined;
   Support: undefined;
   Review: {
     orderId: string;
@@ -105,6 +113,11 @@ export type RootStackParamList = {
   ReportIssue: { orderId: string; orderNumber?: string };
   OrderConfirmation: { orderId: string; regretPeriodEndsAt: string };
   PagoMovilPayment: { orderId: string; reference: string; amount: number; rabbitfood: { phone: string; bank: string; cedula: string; bankName: string } };
+  DigitalPaymentMethod: { orderTotal: number };
+  PaymentProofUpload: { orderId: string; orderTotal: number; paymentMethod: any };
+  PaymentVerificationTracking: { orderId: string };
+  DeliveryConfirmation: { orderId: string; orderDetails: any };
+  AdminPaymentVerification: undefined;
   BusinessMap: undefined;
   BecomeDriver: undefined;
   BusinessHours: undefined;
@@ -190,6 +203,11 @@ export default function RootStackNavigator() {
             name="PaymentMethods"
             component={PaymentMethodsScreen}
             options={{ headerTitle: "Métodos de pago" }}
+          />
+          <Stack.Screen
+            name="PaymentWalletSetup"
+            component={PaymentWalletSetupScreen}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Support"
@@ -329,6 +347,34 @@ export default function RootStackNavigator() {
           <Stack.Screen
             name="Privacy"
             component={PrivacyScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DigitalPaymentMethod"
+            component={DigitalPaymentMethodScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PaymentProofUpload"
+            component={PaymentProofUploadScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="PaymentVerificationTracking"
+            component={PaymentVerificationTrackingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DeliveryConfirmation"
+            component={DeliveryConfirmationScreen}
+            options={{ 
+              presentation: "modal",
+              headerShown: false 
+            }}
+          />
+          <Stack.Screen
+            name="AdminPaymentVerification"
+            component={AdminPaymentVerificationScreen}
             options={{ headerShown: false }}
           />
         </>

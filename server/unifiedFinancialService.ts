@@ -190,7 +190,8 @@ export class UnifiedFinancialService {
     amount: number,
     type: string,
     orderId?: string,
-    description?: string
+    description?: string,
+    usePendingBalance: boolean = false // NEW: Use pending balance instead of available
   ): Promise<void> {
     return await db.transaction(async (tx) => {
       // First, verify user exists
@@ -233,22 +234,35 @@ export class UnifiedFinancialService {
         throw new Error(`Failed to create wallet for user ${userId}`);
       }
 
-      const newBalance = wallet.balance + amount;
+      // Determine which balance to update
+      const targetBalance = usePendingBalance ? wallet.pendingBalance : wallet.balance;
+      const newBalance = targetBalance + amount;
       
       // Validate balance won't go negative
       if (newBalance < 0) {
-        throw new Error(`Insufficient balance. Current: ${wallet.balance}, Requested: ${amount}`);
+        throw new Error(`Insufficient balance. Current: ${targetBalance}, Requested: ${amount}`);
       }
 
       // Update wallet
-      await tx
-        .update(wallets)
-        .set({
-          balance: newBalance,
-          totalEarned: amount > 0 ? wallet.totalEarned + amount : wallet.totalEarned,
-          updatedAt: new Date(),
-        })
-        .where(eq(wallets.userId, userId));
+      if (usePendingBalance) {
+        await tx
+          .update(wallets)
+          .set({
+            pendingBalance: newBalance,
+            totalEarned: amount > 0 ? wallet.totalEarned + amount : wallet.totalEarned,
+            updatedAt: new Date(),
+          })
+          .where(eq(wallets.userId, userId));
+      } else {
+        await tx
+          .update(wallets)
+          .set({
+            balance: newBalance,
+            totalEarned: amount > 0 ? wallet.totalEarned + amount : wallet.totalEarned,
+            updatedAt: new Date(),
+          })
+          .where(eq(wallets.userId, userId));
+      }
 
       // Record transaction with COMPLETE DETAILS for audit
       await tx.insert(transactions).values({
@@ -257,7 +271,7 @@ export class UnifiedFinancialService {
         orderId,
         type,
         amount,
-        balanceBefore: wallet.balance,
+        balanceBefore: targetBalance,
         balanceAfter: newBalance,
         description: description || `${type} transaction`,
         status: "completed",
@@ -266,18 +280,21 @@ export class UnifiedFinancialService {
           userType: user.role,
           userName: user.name,
           timestamp: new Date().toISOString(),
-          source: 'unified_financial_service'
+          source: 'unified_financial_service',
+          isPending: usePendingBalance
         })
       });
 
       // Log for audit trail
-      logger.info(`💰 Wallet updated: ${user.name} (${userId}) - ${type} - $${(amount/100).toFixed(2)}`, {
+      const balanceType = usePendingBalance ? "pending" : "available";
+      logger.info(`💰 Wallet updated (${balanceType}): ${user.name} (${userId}) - ${type} - $${(amount/100).toFixed(2)}`, {
         userId,
         type,
         amount,
         orderId,
-        balanceBefore: wallet.balance,
-        balanceAfter: newBalance
+        balanceBefore: targetBalance,
+        balanceAfter: newBalance,
+        isPending: usePendingBalance
       });
     });
   }

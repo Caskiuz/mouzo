@@ -1,10 +1,36 @@
 import express from "express";
 import { authenticateToken, requireRole } from "../authMiddleware";
 import { eq, and, desc } from "drizzle-orm";
+import { getPartnerStatus, updatePartnerLevel } from "../partnerLevelService";
 
 const router = express.Router();
 
 // ─── RUTAS ESPECÍFICAS (deben ir ANTES de /:id) ───────────────────────────────
+
+// GET /api/business/partner-level — nivel del partner actual
+router.get("/partner-level", authenticateToken, requireRole("business_owner", "admin", "super_admin"), async (req, res) => {
+  try {
+    const { businesses } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    const [business] = await db.select().from(businesses).where(eq(businesses.ownerId, req.user!.id)).limit(1);
+    if (!business) return res.status(404).json({ error: "Negocio no encontrado" });
+    const status = await getPartnerStatus(business.id);
+    res.json({ success: true, ...status });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/business/partner-level/recalculate — recalcular nivel (admin o cron)
+router.post("/partner-level/recalculate", authenticateToken, requireRole("admin", "super_admin"), async (req, res) => {
+  try {
+    const { businessId } = req.body;
+    const newLevel = await updatePartnerLevel(businessId);
+    res.json({ success: true, level: newLevel });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // GET /api/business/featured
 router.get("/featured", async (req, res) => {

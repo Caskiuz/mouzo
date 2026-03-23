@@ -165,87 +165,42 @@ export class WeeklySettlementService {
   }
   
   /**
-   * Admin aprueba liquidación y TRANSFIERE COMISIONES VÍA STRIPE
-   * Integración con Stripe Connect para transferencias automáticas
+   * Admin aprueba liquidación - marca payout como pagado y desbloquea driver
    */
   static async approveSettlement(settlementId: string, adminId: string) {
-    // Obtener la liquidación
     const result = await db.execute(sql`
-      SELECT ws.driver_id, ws.amount_owed, u.name, u.stripe_account_id
+      SELECT ws.driver_id, ws.amount_owed, u.name
       FROM weekly_settlements ws
       JOIN users u ON ws.driver_id = u.id
       WHERE ws.id = ${settlementId}
     `);
-    
-      const rows = this.getRows(result);
-      const settlement = rows[0] as any;
-    
-    if (!settlement) {
-      throw new Error("Liquidación no encontrada");
-    }
-    
-    // Marcar como aprobada
+
+    const rows = this.getRows(result);
+    const settlement = rows[0] as any;
+
+    if (!settlement) throw new Error("Liquidación no encontrada");
+
     await db.execute(sql`
       UPDATE weekly_settlements 
-      SET status = 'approved', 
-          approved_at = NOW(),
-          approved_by = ${adminId}
+      SET status = 'approved', approved_at = NOW(), approved_by = ${adminId}
       WHERE id = ${settlementId}
     `);
-    
-    // Reducir deuda del driver
+
     await db.execute(sql`
       UPDATE wallets 
       SET cash_owed = GREATEST(0, cash_owed - ${settlement.amount_owed})
       WHERE user_id = ${settlement.driver_id}
     `);
-    
-    // TRANSFERENCIA STRIPE: Enviar comisiones semanales al driver
-    if (settlement.stripe_account_id) {
-      try {
-        const { createTransfer } = await import('./stripeConnectService');
-        
-        // Calcular comisión semanal del driver (15% de sus entregas)
-        const weeklyEarnings = await this.calculateDriverWeeklyEarnings(settlement.driver_id);
-        
-        if (weeklyEarnings > 0) {
-          const transfer = await createTransfer(
-            settlement.stripe_account_id,
-            weeklyEarnings,
-            `weekly-settlement-${settlementId}`
-          );
-          
-          // Registrar transferencia
-          await db.execute(sql`
-            INSERT INTO stripe_transfers (settlement_id, driver_id, stripe_transfer_id, amount, status, created_at)
-            VALUES (${settlementId}, ${settlement.driver_id}, ${transfer.id}, ${weeklyEarnings}, 'completed', NOW())
-          `);
-          
-          logger.info(`💰 Transferencia Stripe: $${(weeklyEarnings / 100).toFixed(2)} a ${settlement.name}`);
-        }
-      } catch (error) {
-        logger.error(`❌ Error en transferencia Stripe para ${settlement.name}:`, error);
-      }
-    }
-    
+
     // Desbloquear driver
     await db.execute(sql`
-      UPDATE users 
-      SET is_active = 1, 
-          blocked_reason = NULL,
-          blocked_at = NULL
-      WHERE id = ${settlement.driver_id}
+      UPDATE users SET is_active = 1, blocked_reason = NULL WHERE id = ${settlement.driver_id}
     `);
-    
     await db.execute(sql`
-      UPDATE delivery_drivers 
-      SET is_available = 1, 
-          blocked_reason = NULL
-      WHERE user_id = ${settlement.driver_id}
+      UPDATE delivery_drivers SET is_available = 1, blocked_reason = NULL WHERE user_id = ${settlement.driver_id}
     `);
-    
+
     logger.info(`✅ Liquidación aprobada: ${settlement.name} - $${(settlement.amount_owed / 100).toFixed(2)}`);
-    
     return { success: true };
   }
   

@@ -658,15 +658,18 @@ export default function OrderTrackingScreen() {
             onPress={async () => {
               try {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                const response = await apiRequest("POST", `/api/orders/${order.id}/confirm-receipt`);
-                const data = await response.json();
-                if (data.success) {
+                const response = await apiRequest("POST", `/api/fund-release/confirm-delivery`, {
+                  orderId: order.id
+                });
+                if (response.success) {
                   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
                   Alert.alert(
                     "¡Entrega confirmada!",
                     "Los fondos han sido liberados al negocio y repartidor.",
                     [{ text: "OK", onPress: () => navigation.goBack() }]
                   );
+                } else {
+                  throw new Error(response.message || "Error al confirmar");
                 }
               } catch (error: any) {
                 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);

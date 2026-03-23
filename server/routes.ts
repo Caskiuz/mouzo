@@ -24,6 +24,9 @@ import favoritesRoutes from "./favoritesRoutes";
 import deliveryRoutesLegacy from "./deliveryRoutes";
 import gpsRoutes from "./gpsRoutes";
 import pagoMovilRoutes from "./pagoMovilRoutes";
+import digitalPaymentRoutes from "./routes/digitalPayments";
+import fundReleaseRoutes from "./routes/fundRelease";
+import payoutRoutes from "./payoutRoutes";
 
 const router = express.Router();
 
@@ -89,6 +92,9 @@ router.use("/delivery",              deliveryRoutesLegacy);
 router.use("/delivery",              deliveryConfigRoutes);
 router.use("/payments",              paymentRoutes);
 router.use("/pago-movil",            pagoMovilRoutes);
+router.use("/digital-payments",      digitalPaymentRoutes);
+router.use("/fund-release",          fundReleaseRoutes);
+router.use("/payouts",               payoutRoutes);
 router.use("/wallet",                walletRoutes);
 router.use("/wallet",                walletRoutesV2);
 router.use("/bank-account",          bankAccountRoutes);

@@ -68,6 +68,7 @@ export const orders = mysqlTable("orders", {
   deliveryFee: int("delivery_fee").notNull(),
   total: int("total").notNull(),
   paymentMethod: text("payment_method").notNull(),
+  paymentProvider: varchar("payment_provider", { length: 50 }).default("pago_movil"),
   pagoMovilReference: text("pago_movil_reference"),
   pagoMovilProofUrl: text("pago_movil_proof_url"),
   pagoMovilPhone: text("pago_movil_phone"),
@@ -193,6 +194,11 @@ export const businesses = mysqlTable("businesses", {
   pagoMovilCedula: text("pago_movil_cedula"),
   verificationCode: text("verification_code"),
   verificationExpires: timestamp("verification_expires"),
+  // Niveles de partner
+  partnerLevel: varchar("partner_level", { length: 20 }).default("bronze"), // bronze, silver, gold, platinum
+  partnerLevelUpdatedAt: timestamp("partner_level_updated_at"),
+  totalOrdersCompleted: int("total_orders_completed").default(0),
+  totalRevenueGenerated: int("total_revenue_generated").default(0), // en centavos
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 });
 
@@ -361,42 +367,52 @@ export const pagoMovilVerifications = mysqlTable("pago_movil_verifications", {
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 });
 
-// Withdrawals - Retiros de fondos
-export const withdrawals = mysqlTable("withdrawals", {
-  id: varchar("id", { length: 255 })
-    .primaryKey()
-    .default(sql`(UUID())`),
-  walletId: varchar("wallet_id", { length: 255 }).notNull(),
+// Payment Accounts - Cuentas de pago configuradas por cada usuario/negocio
+// Negocio/Driver: donde RECIBEN sus pagos del admin
+// Cliente: cuenta ORIGEN para pre-llenar checkout
+export const paymentAccounts = mysqlTable("payment_accounts", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
   userId: varchar("user_id", { length: 255 }).notNull(),
-  amount: int("amount").notNull(), // en centavos
-  status: varchar("status", { length: 50 }).notNull().default("pending"), // pending, processing, completed, failed, cancelled
-  method: varchar("method", { length: 50 }).notNull().default("pago_movil"),
-  bankAccount: text("bank_account"), // JSON con datos bancarios
-  failureReason: text("failure_reason"),
-  processedAt: timestamp("processed_at"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
-});
-
-// Withdrawal Requests - Solicitudes de retiro con detalles bancarios
-export const withdrawalRequests = mysqlTable("withdrawal_requests", {
-  id: varchar("id", { length: 255 })
-    .primaryKey()
-    .default(sql`(UUID())`),
-  userId: varchar("user_id", { length: 255 }).notNull(),
-  walletId: varchar("wallet_id", { length: 255 }).notNull(),
-  amount: int("amount").notNull(), // en centavos
-  method: varchar("method", { length: 50 }).notNull(), // stripe, bank_transfer
-  status: varchar("status", { length: 50 }).notNull().default("pending"), // pending, completed, failed, cancelled
+  method: varchar("method", { length: 50 }).notNull(), // pago_movil, binance, zinli, zelle, cash
+  isDefault: boolean("is_default").notNull().default(false),
+  // Pago Móvil
   pagoMovilPhone: varchar("pago_movil_phone", { length: 20 }),
   pagoMovilBank: varchar("pago_movil_bank", { length: 50 }),
   pagoMovilCedula: varchar("pago_movil_cedula", { length: 20 }),
-  accountHolder: text("account_holder"),
-  // Admin
-  approvedBy: varchar("approved_by", { length: 255 }),
-  errorMessage: text("error_message"),
-  requestedAt: timestamp("requested_at").default(sql`CURRENT_TIMESTAMP`),
-  completedAt: timestamp("completed_at"),
+  // Binance
+  binanceId: varchar("binance_id", { length: 100 }),
+  binanceEmail: varchar("binance_email", { length: 255 }),
+  // Zinli / Zelle
+  zinliEmail: varchar("zinli_email", { length: 255 }),
+  zelleEmail: varchar("zelle_email", { length: 255 }),
+  zellePhone: varchar("zelle_phone", { length: 20 }),
+  // Metadata
+  label: varchar("label", { length: 100 }), // ej: "Mi Banesco principal"
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
 });
+
+// Payouts - Lo que el admin debe pagar a negocio/driver por cada pedido entregado
+// Reemplaza withdrawals + withdrawalRequests con algo simple y sin bugs
+export const payouts = mysqlTable("payouts", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  orderId: varchar("order_id", { length: 255 }).notNull(),
+  recipientId: varchar("recipient_id", { length: 255 }).notNull(), // negocio o driver
+  recipientType: varchar("recipient_type", { length: 20 }).notNull(), // business, driver
+  amount: int("amount").notNull(), // en centavos
+  method: varchar("method", { length: 50 }), // pago_movil, binance, zinli, zelle, cash
+  // Snapshot de la cuenta destino al momento del pago
+  accountSnapshot: text("account_snapshot"), // JSON con datos de la cuenta usada
+  status: varchar("status", { length: 20 }).notNull().default("pending"), // pending, paid
+  paidBy: varchar("paid_by", { length: 255 }), // admin que marcó como pagado
+  paidAt: timestamp("paid_at"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Mantener withdrawals/withdrawalRequests como alias vacíos para no romper imports existentes
+export const withdrawals = payouts;
+export const withdrawalRequests = payouts;
 
 // Delivery Drivers - Repartidores
 export const deliveryDrivers = mysqlTable("delivery_drivers", {
@@ -665,3 +681,42 @@ export const deliveryProofs = mysqlTable("delivery_proofs", {
 });
 
 export type DeliveryProof = typeof deliveryProofs.$inferSelect;
+
+// Payment Methods - Métodos de pago disponibles
+export const paymentMethods = mysqlTable("payment_methods", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  name: varchar("name", { length: 100 }).notNull(),
+  provider: varchar("provider", { length: 50 }).notNull().unique(),
+  displayName: varchar("display_name", { length: 100 }).notNull(),
+  isActive: boolean("is_active").default(true),
+  requiresManualVerification: boolean("requires_manual_verification").default(false),
+  commissionPercentage: decimal("commission_percentage", { precision: 5, scale: 2 }).default("0.00"),
+  iconUrl: varchar("icon_url", { length: 255 }),
+  instructions: text("instructions"),
+  config: text("config"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// Payment Proofs - Comprobantes de pago
+export const paymentProofs = mysqlTable("payment_proofs", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  orderId: varchar("order_id", { length: 255 }).notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  paymentProvider: varchar("payment_provider", { length: 50 }).notNull(),
+  proofImageUrl: varchar("proof_image_url", { length: 500 }),
+  referenceNumber: varchar("reference_number", { length: 100 }),
+  amount: int("amount").notNull(),
+  status: varchar("status", { length: 20 }).default("pending"),
+  verifiedBy: varchar("verified_by", { length: 255 }),
+  verifiedAt: timestamp("verified_at"),
+  verificationNotes: text("verification_notes"),
+  submittedAt: timestamp("submitted_at").default(sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+export type PaymentMethod = typeof paymentMethods.$inferSelect;
+export type PaymentProof = typeof paymentProofs.$inferSelect;
+export type PaymentAccount = typeof paymentAccounts.$inferSelect;
+export type Payout = typeof payouts.$inferSelect;
