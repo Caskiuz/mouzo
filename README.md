@@ -1,4 +1,4 @@
-# MOUZO - Plataforma de Delivery
+# Rabbit Food - Plataforma de Delivery
 
 > Conectando negocios locales con la comunidad de San Cristóbal, Venezuela
 
@@ -73,7 +73,7 @@ TWILIO_AUTH_TOKEN=
 TWILIO_PHONE_NUMBER=
 TWILIO_VERIFY_SERVICE_SID=
 
-# Pago Móvil MOUZO (cuenta receptora)
+# Pago Móvil Rabbit Food (cuenta receptora)
 MOUZO_PAGO_MOVIL_PHONE=
 MOUZO_PAGO_MOVIL_BANK=
 MOUZO_PAGO_MOVIL_CEDULA=
@@ -141,7 +141,7 @@ MOUZO/
 
 ## 💳 Sistema de Pagos
 
-MOUZO opera en Venezuela donde Stripe no está disponible. El sistema de pagos es 100% manual coordinado por el admin.
+Rabbit Food opera en Venezuela donde Stripe no está disponible. El sistema de pagos es 100% manual coordinado por el admin.
 
 ### Métodos soportados
 - **Pago Móvil** (método principal)
@@ -151,7 +151,7 @@ MOUZO opera en Venezuela donde Stripe no está disponible. El sistema de pagos e
 - **Efectivo** (contra entrega)
 
 ### Comisiones
-- MOUZO: 15% de markup sobre precio base de productos
+- Rabbit Food: 15% de markup sobre precio base de productos
 - Negocio: 100% del precio base
 - Repartidor: 100% de la tarifa de entrega
 
@@ -236,7 +236,7 @@ npm run check:types
 
 ## 📄 Licencia
 
-Propietario — MOUZO © 2026
+Propietario — Rabbit Food © 2026
 
 ---
 
