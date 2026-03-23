@@ -28,7 +28,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 // San Cristóbal, Táchira, Venezuela
 const DEFAULT_REGION = {
   latitude: 7.7708,
-  longitude: -104.3636,
+  longitude: -72.2251,
   latitudeDelta: 0.04,
   longitudeDelta: 0.04,
 };
@@ -71,14 +71,17 @@ export default function BusinessMapScreen() {
     }
   }, []);
 
-  // Pedir permiso de ubicación
+  // Pedir permiso de ubicación y centrar mapa cuando llegue
   useEffect(() => {
     (async () => {
       if (Platform.OS === "web") return;
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
         const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-        setUserLocation({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+        const coords = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
+        setUserLocation(coords);
+        // Centrar el mapa en el usuario apenas llegue el GPS
+        mapRef.current?.animateToRegion({ ...coords, latitudeDelta: 0.04, longitudeDelta: 0.04 }, 600);
       }
     })();
   }, []);

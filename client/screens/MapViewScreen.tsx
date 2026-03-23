@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, Linking, Platform, Animated, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, Linking, Platform, Alert } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import { Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import * as Haptics from "expo-haptics";
+import * as Location from "expo-location";
 import { useTheme } from "@/hooks/useTheme";
 import { RabbitFoodColors } from "@/constants/theme";
 import { apiRequest } from "@/lib/query-client";
@@ -72,28 +73,24 @@ export default function MapViewScreen({ navigation }: any) {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [previousOrdersCount, setPreviousOrdersCount] = useState(0);
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const sound = useRef<Audio.Sound | null>(null);
 
   useEffect(() => {
     fetchData();
     loadSound();
     const interval = setInterval(fetchData, 5000);
-    
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.3,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+
+    // Obtener ubicación del usuario para centrar el mapa
+    if (Platform.OS !== "web") {
+      Location.requestForegroundPermissionsAsync().then(({ status }) => {
+        if (status === "granted") {
+          Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }).then((loc) => {
+            setUserLocation({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+          }).catch(() => {});
+        }
+      });
+    }
 
     return () => {
       clearInterval(interval);
@@ -281,22 +278,19 @@ export default function MapViewScreen({ navigation }: any) {
         break;
     }
 
-    const isSelected = selectedOrder?.id === order.id;
-    const isPulsing = type === "customer" && order.status === "pending";
-
     return (
       <Marker
         key={`${order.id}-${type}`}
         coordinate={coordinate}
         onPress={() => centerOnOrder(order)}
       >
-        <Animated.View
+        <View
           style={[
             styles.markerContainer,
             {
               backgroundColor: order.color,
               borderColor: "#fff",
-              transform: isPulsing ? [{ scale: pulseAnim }] : [{ scale: isSelected ? 1.2 : 1 }],
+              transform: [{ scale: isSelected ? 1.2 : 1 }],
             },
           ]}
         >
@@ -304,7 +298,7 @@ export default function MapViewScreen({ navigation }: any) {
           <View style={[styles.markerBadge, { backgroundColor: order.color }]}>
             <Text style={styles.markerBadgeText}>{order.shortId}</Text>
           </View>
-        </Animated.View>
+        </View>
       </Marker>
     );
   };
@@ -364,19 +358,17 @@ export default function MapViewScreen({ navigation }: any) {
     );
   }
 
-  const initialRegion = activeOrders.length > 0
-    ? {
-        latitude: activeOrders[0].business.latitude,
-        longitude: activeOrders[0].business.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      }
-    : {
-        latitude: 20.6736,
-        longitude: -104.3647,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      };
+  const initialRegion = (() => {
+    // Prioridad: GPS usuario > primer negocio con coords válidas > San Cristóbal Venezuela
+    if (userLocation) {
+      return { ...userLocation, latitudeDelta: 0.05, longitudeDelta: 0.05 };
+    }
+    const firstValid = activeOrders.find(o => o.business.latitude !== 0 && o.business.longitude !== 0);
+    if (firstValid) {
+      return { latitude: firstValid.business.latitude, longitude: firstValid.business.longitude, latitudeDelta: 0.05, longitudeDelta: 0.05 };
+    }
+    return { latitude: 7.7708, longitude: -72.2251, latitudeDelta: 0.1, longitudeDelta: 0.1 };
+  })();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>

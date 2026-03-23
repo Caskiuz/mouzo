@@ -101,8 +101,11 @@ export function CollapsibleMap({
 
   const getInitialRegion = () => {
     const locations = [businessLocation, deliveryPersonLocation, customerLocation].filter(isValidLocation);
+    // Si no hay ninguna ubicación todavía, usar la del cliente si existe, si no San Cristóbal
     if (locations.length === 0) {
-      return { latitude: 7.7708, longitude: -72.2251, latitudeDelta: 0.05, longitudeDelta: 0.05 };
+      return customerLocation && isValidLocation(customerLocation)
+        ? { latitude: customerLocation.latitude, longitude: customerLocation.longitude, latitudeDelta: 0.02, longitudeDelta: 0.02 }
+        : { latitude: 7.7708, longitude: -72.2251, latitudeDelta: 0.05, longitudeDelta: 0.05 };
     }
     const lats = locations.map((l) => l.latitude);
     const lngs = locations.map((l) => l.longitude);

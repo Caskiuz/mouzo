@@ -59,16 +59,9 @@ export default function OrderTrackingScreen() {
 
   const { orderId } = route.params;
   const [order, setOrder] = useState<Order | null>(null);
-  const [locationPermission, setLocationPermission] =
-    useState<Location.PermissionStatus | null>(null);
-  const [userLocation, setUserLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-  const [deliveryLocation, setDeliveryLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [deliveryLocation, setDeliveryLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [businessLocation, setBusinessLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [tipSent, setTipSent] = useState(false);
   const [sendingTip, setSendingTip] = useState(false);
@@ -90,13 +83,6 @@ export default function OrderTrackingScreen() {
     } finally {
       setSendingTip(false);
     }
-  };
-
-  // Business location (Autlan, Venezuela center)
-  const businessLocation = {
-    latitude: 7.7708,
-    longitude: -104.3636,
-    title: "Negocio",
   };
 
   // Poll for delivery person location every 10 seconds
@@ -127,30 +113,25 @@ export default function OrderTrackingScreen() {
     return () => clearInterval(interval);
   }, [orderId]);
 
-  // Request location permission
+  // Request location permission + watch position
   useEffect(() => {
-    const requestLocationPermission = async () => {
-      if (Platform.OS === "web") return;
+    if (Platform.OS === "web") return;
+    let sub: Location.LocationSubscription | null = null;
 
+    (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      setLocationPermission(status);
+      if (status !== "granted") return;
+      // Get immediate fix
+      const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      setUserLocation({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
+      // Watch for updates
+      sub = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.Balanced, distanceInterval: 20 },
+        (l) => setUserLocation({ latitude: l.coords.latitude, longitude: l.coords.longitude })
+      );
+    })();
 
-      if (status === "granted") {
-        try {
-          const location = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Balanced,
-          });
-          setUserLocation({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          });
-        } catch (error) {
-          console.error("Error getting location:", error);
-        }
-      }
-    };
-
-    requestLocationPermission();
+    return () => { sub?.remove(); };
   }, []);
 
   useEffect(() => {
@@ -185,6 +166,21 @@ export default function OrderTrackingScreen() {
             deliveryPersonPhone: apiOrder.deliveryPersonPhone,
           };
           setOrder(transformedOrder);
+
+          // Cargar ubicación real del negocio
+          if (apiOrder.businessId) {
+            try {
+              const bizRes = await apiRequest("GET", `/api/business/${apiOrder.businessId}`);
+              const bizData = await bizRes.json();
+              const biz = bizData.business;
+              if (biz?.latitude && biz?.longitude) {
+                setBusinessLocation({
+                  latitude: parseFloat(biz.latitude),
+                  longitude: parseFloat(biz.longitude),
+                });
+              }
+            } catch { /* sin ubicación del negocio */ }
+          }
           return;
         }
       } catch (error: any) {
@@ -413,7 +409,7 @@ export default function OrderTrackingScreen() {
         </View>
 
         <CollapsibleMap
-          businessLocation={businessLocation}
+          businessLocation={businessLocation || undefined}
           deliveryPersonLocation={deliveryLocation || undefined}
           customerLocation={userLocation || undefined}
           driverName={order.deliveryPersonName}
