@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-// MapView se carga de forma diferida para evitar crash si react-native-maps no está disponible en el dispositivo
+
 let MapView: any = null;
 let Marker: any = null;
 let Polyline: any = null;
@@ -31,35 +31,77 @@ interface CollapsibleMapProps {
   deliveryPersonLocation?: Location;
   customerLocation?: Location;
   isLoading?: boolean;
+  driverName?: string;
+  eta?: string;
+  status?: string;
+  onCallDriver?: () => void;
+  onChatDriver?: () => void;
 }
 
 const { width } = Dimensions.get("window");
-const COLLAPSED_HEIGHT = 60;
-const EXPANDED_HEIGHT = 300;
+const MAP_HEIGHT = 300;
 
 const isValidLocation = (location?: Location): location is Location => {
   if (!location) return false;
   return Number.isFinite(location.latitude) && Number.isFinite(location.longitude);
 };
 
+const STATUS_LABELS: Record<string, { label: string; color: string; icon: string }> = {
+  pending:       { label: "Esperando confirmación", color: "#F59E0B", icon: "clock" },
+  accepted:      { label: "Pedido aceptado",        color: "#3B82F6", icon: "check" },
+  preparing:     { label: "Preparando tu pedido",   color: "#8B5CF6", icon: "package" },
+  ready:         { label: "Listo para recoger",     color: "#10B981", icon: "check-circle" },
+  on_the_way:    { label: "En camino",              color: "#10B981", icon: "navigation" },
+  in_transit:    { label: "En camino",              color: "#10B981", icon: "navigation" },
+  arriving:      { label: "Llegando",               color: "#10B981", icon: "map-pin" },
+  delivered:     { label: "Entregado",              color: "#10B981", icon: "check-circle" },
+  cancelled:     { label: "Cancelado",              color: "#EF4444", icon: "x-circle" },
+};
+
+// Animated pulsing dot for driver marker
+function PulsingMarker({ color }: { color: string }) {
+  const pulse = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1.4, duration: 800, useNativeDriver: true, easing: Easing.out(Easing.ease) }),
+        Animated.timing(pulse, { toValue: 1,   duration: 800, useNativeDriver: true, easing: Easing.in(Easing.ease) }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <View style={styles.pulsingWrapper}>
+      <Animated.View style={[styles.pulsingRing, { borderColor: color, transform: [{ scale: pulse }] }]} />
+      <View style={[styles.markerOuter, { backgroundColor: "#FFFFFF" }]}>
+        <View style={[styles.markerInner, { backgroundColor: color }]}>
+          <Feather name="navigation" size={14} color="#FFFFFF" />
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export function CollapsibleMap({
   businessLocation,
   deliveryPersonLocation,
   customerLocation,
   isLoading = false,
+  driverName,
+  eta,
+  status = "preparing",
+  onCallDriver,
+  onChatDriver,
 }: CollapsibleMapProps) {
   const { theme, isDark } = useTheme();
-  const [isExpanded, setIsExpanded] = useState(false);
   const [mapAvailable, setMapAvailable] = useState(false);
-  const height = useRef(new Animated.Value(COLLAPSED_HEIGHT)).current;
+
+  const statusInfo = STATUS_LABELS[status] ?? STATUS_LABELS.preparing;
+  const hasDriver = !!deliveryPersonLocation || !!driverName;
 
   useEffect(() => {
-    if (!isExpanded) return;
-    if (Platform.OS === "web") {
-      setMapAvailable(false);
-      return;
-    }
-
+    if (Platform.OS === "web") return;
     try {
       const maps = require("react-native-maps");
       MapView = maps.default;
@@ -67,114 +109,35 @@ export function CollapsibleMap({
       Polyline = maps.Polyline;
       PROVIDER_GOOGLE = maps.PROVIDER_GOOGLE;
       setMapAvailable(true);
-    } catch (error) {
-      console.warn("react-native-maps no disponible en este dispositivo", error);
+    } catch {
       setMapAvailable(false);
     }
-  }, [isExpanded]);
-
-  const toggleExpand = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setIsExpanded((prev) => {
-      const next = !prev;
-      Animated.timing(height, {
-        toValue: next ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT,
-        duration: 220,
-        easing: Easing.out(Easing.quad),
-        useNativeDriver: false,
-      }).start();
-      return next;
-    });
-  };
+  }, []);
 
   const getInitialRegion = () => {
-    const locations = [
-      businessLocation,
-      deliveryPersonLocation,
-      customerLocation,
-    ].filter(isValidLocation);
+    const locations = [businessLocation, deliveryPersonLocation, customerLocation].filter(isValidLocation);
     if (locations.length === 0) {
-      return {
-        latitude: 7.7708,
-        longitude: -104.3636,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      };
+      return { latitude: 7.7708, longitude: -72.2251, latitudeDelta: 0.05, longitudeDelta: 0.05 };
     }
-
     const lats = locations.map((l) => l.latitude);
     const lngs = locations.map((l) => l.longitude);
-    const minLat = Math.min(...lats);
-    const maxLat = Math.max(...lats);
-    const minLng = Math.min(...lngs);
-    const maxLng = Math.max(...lngs);
-
+    const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+    const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
     return {
       latitude: (minLat + maxLat) / 2,
       longitude: (minLng + maxLng) / 2,
-      latitudeDelta: Math.max(0.01, (maxLat - minLat) * 1.5),
-      longitudeDelta: Math.max(0.01, (maxLng - minLng) * 1.5),
+      latitudeDelta: Math.max(0.015, (maxLat - minLat) * 1.6),
+      longitudeDelta: Math.max(0.015, (maxLng - minLng) * 1.6),
     };
   };
 
-  const getRouteCoordinates = () => {
-    const coords: Location[] = [];
-    if (isValidLocation(businessLocation)) coords.push(businessLocation);
-    if (isValidLocation(deliveryPersonLocation)) coords.push(deliveryPersonLocation);
-    if (isValidLocation(customerLocation)) coords.push(customerLocation);
-    return coords;
-  };
+  const routeCoords = [businessLocation, deliveryPersonLocation, customerLocation].filter(isValidLocation);
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        { backgroundColor: theme.card },
-        Shadows.md,
-        { height },
-      ]}
-    >
-      <Pressable onPress={toggleExpand} style={styles.header}>
-        <View style={styles.headerContent}>
-          <View
-            style={[
-              styles.iconContainer,
-              { backgroundColor: RabbitFoodColors.primary + "20" },
-            ]}
-          >
-            <Feather name="map" size={20} color={RabbitFoodColors.primary} />
-          </View>
-          <View style={styles.headerText}>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>
-              Seguimiento en tiempo real
-            </ThemedText>
-            {deliveryPersonLocation ? (
-              <ThemedText type="caption" style={{ color: RabbitFoodColors.success }}>
-                Repartidor en movimiento
-              </ThemedText>
-            ) : (
-              <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-                Esperando repartidor
-              </ThemedText>
-            )}
-          </View>
-        </View>
-        <View
-          style={[
-            styles.expandButton,
-            { backgroundColor: theme.backgroundSecondary },
-          ]}
-        >
-          <Feather
-            name={isExpanded ? "chevron-up" : "chevron-down"}
-            size={20}
-            color={theme.text}
-          />
-        </View>
-      </Pressable>
-
-      {isExpanded && mapAvailable ? (
-        <View style={styles.mapContainer}>
+    <View style={styles.wrapper}>
+      {/* MAP */}
+      <View style={styles.mapContainer}>
+        {mapAvailable ? (
           <MapView
             style={styles.map}
             initialRegion={getInitialRegion()}
@@ -182,179 +145,255 @@ export function CollapsibleMap({
             showsUserLocation={false}
             showsMyLocationButton={false}
             showsCompass={false}
+            showsTraffic={false}
             mapType="standard"
+            customMapStyle={isDark ? darkMapStyle : []}
           >
-            {isValidLocation(businessLocation) ? (
-              <Marker
-                coordinate={businessLocation}
-                title="Negocio"
-                pinColor={RabbitFoodColors.primary}
-              >
-                <View
-                  style={[
-                    styles.markerContainer,
-                    { backgroundColor: RabbitFoodColors.primary },
-                  ]}
-                >
-                  <Feather name="shopping-bag" size={16} color="#FFFFFF" />
+            {/* Business marker */}
+            {isValidLocation(businessLocation) && (
+              <Marker coordinate={businessLocation} title="Negocio" anchor={{ x: 0.5, y: 0.5 }}>
+                <View style={[styles.markerOuter, { backgroundColor: "#FFFFFF" }]}>
+                  <View style={[styles.markerInner, { backgroundColor: RabbitFoodColors.primary }]}>
+                    <Feather name="shopping-bag" size={14} color="#FFFFFF" />
+                  </View>
                 </View>
               </Marker>
-            ) : null}
+            )}
 
-            {isValidLocation(deliveryPersonLocation) ? (
-              <Marker
-                coordinate={deliveryPersonLocation}
-                title="Repartidor"
-                pinColor={RabbitFoodColors.success}
-              >
-                <View
-                  style={[
-                    styles.markerContainer,
-                    { backgroundColor: RabbitFoodColors.success },
-                  ]}
-                >
-                  <Feather name="navigation" size={16} color="#FFFFFF" />
+            {/* Driver marker — pulsing */}
+            {isValidLocation(deliveryPersonLocation) && (
+              <Marker coordinate={deliveryPersonLocation} title="Repartidor" anchor={{ x: 0.5, y: 0.5 }}>
+                <PulsingMarker color={RabbitFoodColors.success} />
+              </Marker>
+            )}
+
+            {/* Customer marker */}
+            {isValidLocation(customerLocation) && (
+              <Marker coordinate={customerLocation} title="Tu ubicación" anchor={{ x: 0.5, y: 0.5 }}>
+                <View style={[styles.markerOuter, { backgroundColor: "#FFFFFF" }]}>
+                  <View style={[styles.markerInner, { backgroundColor: "#3B82F6" }]}>
+                    <Feather name="home" size={14} color="#FFFFFF" />
+                  </View>
                 </View>
               </Marker>
-            ) : null}
+            )}
 
-            {isValidLocation(customerLocation) ? (
-              <Marker
-                coordinate={customerLocation}
-                title="Tu ubicacion"
-                pinColor="#2196F3"
-              >
-                <View
-                  style={[
-                    styles.markerContainer,
-                    { backgroundColor: "#2196F3" },
-                  ]}
-                >
-                  <Feather name="home" size={16} color="#FFFFFF" />
-                </View>
-              </Marker>
-            ) : null}
-
-            {getRouteCoordinates().length >= 2 ? (
+            {/* Route line */}
+            {routeCoords.length >= 2 && (
               <Polyline
-                coordinates={getRouteCoordinates()}
+                coordinates={routeCoords}
                 strokeColor={RabbitFoodColors.primary}
-                strokeWidth={3}
-                lineDashPattern={[5, 5]}
+                strokeWidth={4}
               />
-            ) : null}
+            )}
           </MapView>
-
-          <View style={styles.legend}>
-            <View style={styles.legendItem}>
-              <View
-                style={[
-                  styles.legendDot,
-                  { backgroundColor: RabbitFoodColors.primary },
-                ]}
-              />
-              <ThemedText type="caption">Negocio</ThemedText>
-            </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[
-                  styles.legendDot,
-                  { backgroundColor: RabbitFoodColors.success },
-                ]}
-              />
-              <ThemedText type="caption">Repartidor</ThemedText>
-            </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendDot, { backgroundColor: "#2196F3" }]}
-              />
-              <ThemedText type="caption">Tu casa</ThemedText>
-            </View>
+        ) : (
+          <View style={[styles.mapFallback, { backgroundColor: theme.backgroundSecondary }]}>
+            <Feather name="map" size={40} color={theme.textSecondary} />
+            <ThemedText type="caption" style={{ color: theme.textSecondary, marginTop: Spacing.sm }}>
+              Mapa no disponible
+            </ThemedText>
           </View>
-        </View>
-      ) : isExpanded ? (
-        <View style={styles.mapContainer}>
-          <ThemedText type="body" style={{ color: theme.textSecondary }}>
-            Mapa no disponible en este dispositivo.
+        )}
+
+        {/* Status pill — top overlay */}
+        <View style={[styles.statusPill, { backgroundColor: statusInfo.color }]}>
+          <Feather name={statusInfo.icon as any} size={13} color="#FFFFFF" />
+          <ThemedText type="caption" style={styles.statusPillText}>
+            {statusInfo.label}
           </ThemedText>
         </View>
-      ) : null}
-    </Animated.View>
+
+        {/* ETA pill — top right */}
+        {eta && (
+          <View style={[styles.etaPill, { backgroundColor: theme.card }]}>
+            <Feather name="clock" size={13} color={RabbitFoodColors.primary} />
+            <ThemedText type="caption" style={[styles.etaPillText, { color: RabbitFoodColors.primary }]}>
+              {eta}
+            </ThemedText>
+          </View>
+        )}
+      </View>
+
+      {/* Driver card — bottom overlay */}
+      {hasDriver && (
+        <View style={[styles.driverCard, { backgroundColor: theme.card }, Shadows.lg]}>
+          <View style={styles.driverLeft}>
+            <View style={[styles.driverAvatar, { backgroundColor: RabbitFoodColors.primary + "20" }]}>
+              <Feather name="user" size={22} color={RabbitFoodColors.primary} />
+            </View>
+            <View style={styles.driverInfo}>
+              <ThemedText type="h4" numberOfLines={1}>{driverName ?? "Repartidor"}</ThemedText>
+              <View style={styles.driverBadge}>
+                <View style={[styles.onlineDot, { backgroundColor: RabbitFoodColors.success }]} />
+                <ThemedText type="caption" style={{ color: RabbitFoodColors.success }}>
+                  En camino
+                </ThemedText>
+              </View>
+            </View>
+          </View>
+          <View style={styles.driverActions}>
+            {onCallDriver && (
+              <Pressable
+                onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onCallDriver(); }}
+                style={[styles.actionBtn, { backgroundColor: theme.backgroundSecondary }]}
+              >
+                <Feather name="phone" size={18} color={RabbitFoodColors.primary} />
+              </Pressable>
+            )}
+            {onChatDriver && (
+              <Pressable
+                onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onChatDriver(); }}
+                style={[styles.actionBtn, { backgroundColor: RabbitFoodColors.primary }]}
+              >
+                <Feather name="message-circle" size={18} color="#FFFFFF" />
+              </Pressable>
+            )}
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 
+const darkMapStyle = [
+  { elementType: "geometry", stylers: [{ color: "#212121" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#373737" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#3c3c3c" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+];
+
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: BorderRadius.lg,
+  wrapper: {
+    marginBottom: Spacing.lg,
+    borderRadius: BorderRadius.xl,
     overflow: "hidden",
-    marginBottom: Spacing.md,
+    ...Shadows.lg,
   },
-  header: {
+  mapContainer: {
+    height: MAP_HEIGHT,
+    position: "relative",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  mapFallback: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  // Status pill
+  statusPill: {
+    position: "absolute",
+    top: Spacing.md,
+    left: Spacing.md,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: Spacing.sm + 2,
+    paddingVertical: 6,
+    borderRadius: BorderRadius.full,
+    gap: 5,
+  },
+  statusPillText: {
+    color: "#FFFFFF",
+    fontWeight: "600",
+  },
+  // ETA pill
+  etaPill: {
+    position: "absolute",
+    top: Spacing.md,
+    right: Spacing.md,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: Spacing.sm + 2,
+    paddingVertical: 6,
+    borderRadius: BorderRadius.full,
+    gap: 5,
+    ...Shadows.sm,
+  },
+  etaPillText: {
+    fontWeight: "700",
+  },
+  // Driver card
+  driverCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     padding: Spacing.md,
-    height: COLLAPSED_HEIGHT,
+    paddingHorizontal: Spacing.lg,
   },
-  headerContent: {
+  driverLeft: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: BorderRadius.md,
+  driverAvatar: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     justifyContent: "center",
     alignItems: "center",
   },
-  headerText: {
-    marginLeft: Spacing.md,
+  driverInfo: {
+    marginLeft: Spacing.sm,
     flex: 1,
   },
-  expandButton: {
+  driverBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    marginTop: 2,
+  },
+  onlineDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+  },
+  driverActions: {
+    flexDirection: "row",
+    gap: Spacing.sm,
+  },
+  actionBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  // Markers
+  pulsingWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+  },
+  pulsingRing: {
+    position: "absolute",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 2,
+    opacity: 0.4,
+  },
+  markerOuter: {
     width: 36,
     height: 36,
-    borderRadius: BorderRadius.full,
+    borderRadius: 18,
     justifyContent: "center",
     alignItems: "center",
-  },
-  mapContainer: {
-    flex: 1,
-    position: "relative",
-  },
-  map: {
-    flex: 1,
-    minHeight: 200,
-  },
-  markerContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: BorderRadius.full,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
+    borderWidth: 2.5,
     borderColor: "#FFFFFF",
+    ...Shadows.md,
   },
-  legend: {
-    position: "absolute",
-    bottom: Spacing.sm,
-    left: Spacing.sm,
-    right: Spacing.sm,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "rgba(255,255,255,0.9)",
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.sm,
-  },
-  legendItem: {
-    flexDirection: "row",
+  markerInner: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    justifyContent: "center",
     alignItems: "center",
-  },
-  legendDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: Spacing.xs,
   },
 });

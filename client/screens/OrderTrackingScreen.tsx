@@ -412,78 +412,20 @@ export default function OrderTrackingScreen() {
           </View>
         </View>
 
-        {/* Mapa funcional en APK */}
         <CollapsibleMap
           businessLocation={businessLocation}
           deliveryPersonLocation={deliveryLocation || undefined}
           customerLocation={userLocation || undefined}
+          driverName={order.deliveryPersonName}
+          eta={dynamicEta ?? undefined}
+          status={order.status}
+          onCallDriver={order.deliveryPersonPhone ? () => handleCall(order.deliveryPersonPhone!) : undefined}
+          onChatDriver={order.deliveryPersonId ? () => navigation.navigate("OrderChat", {
+            orderId: order.id,
+            receiverId: order.deliveryPersonId!,
+            receiverName: order.deliveryPersonName ?? "Repartidor",
+          }) : undefined}
         />
-
-        {order.deliveryPersonName ? (
-          <View
-            style={[
-              styles.deliveryCard,
-              { backgroundColor: theme.card },
-              Shadows.sm,
-            ]}
-          >
-            <View style={styles.deliveryHeader}>
-              <View style={styles.deliveryAvatar}>
-                <Feather name="user" size={24} color={theme.text} />
-              </View>
-              <View style={styles.deliveryInfo}>
-                <ThemedText type="h4">{order.deliveryPersonName}</ThemedText>
-                <ThemedText
-                  type="caption"
-                  style={{ color: theme.textSecondary }}
-                >
-                  Tu repartidor
-                </ThemedText>
-              </View>
-            </View>
-            <View style={styles.contactButtons}>
-              <Pressable
-                onPress={() =>
-                  order.deliveryPersonPhone &&
-                  handleCall(order.deliveryPersonPhone)
-                }
-                style={[
-                  styles.contactBtn,
-                  { backgroundColor: theme.backgroundSecondary },
-                ]}
-              >
-                <Feather name="phone" size={20} color={RabbitFoodColors.primary} />
-                <ThemedText
-                  type="small"
-                  style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
-                >
-                  Llamar
-                </ThemedText>
-              </Pressable>
-              <Pressable
-                onPress={() =>
-                  navigation.navigate("OrderChat", {
-                    orderId: order.id,
-                    receiverId: order.deliveryPersonId || "",
-                    receiverName: order.deliveryPersonName || "Repartidor",
-                  })
-                }
-                style={[
-                  styles.contactBtn,
-                  { backgroundColor: RabbitFoodColors.primary },
-                ]}
-              >
-                <Feather name="message-square" size={20} color="#FFFFFF" />
-                <ThemedText
-                  type="small"
-                  style={{ color: "#FFFFFF", marginLeft: Spacing.xs }}
-                >
-                  Chat
-                </ThemedText>
-              </Pressable>
-            </View>
-          </View>
-        ) : null}
 
         <View
           style={[
@@ -808,39 +750,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  deliveryCard: {
-    padding: Spacing.lg,
-    borderRadius: BorderRadius.lg,
-    marginBottom: Spacing.lg,
-  },
-  deliveryHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: Spacing.md,
-  },
-  deliveryAvatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#E0E0E0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  deliveryInfo: {
-    marginLeft: Spacing.md,
-  },
-  contactButtons: {
-    flexDirection: "row",
-    gap: Spacing.md,
-  },
-  contactBtn: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: Spacing.md,
-    borderRadius: BorderRadius.md,
-  },
+
   addressCard: {
     padding: Spacing.lg,
     borderRadius: BorderRadius.lg,
