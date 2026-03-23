@@ -1,4 +1,4 @@
-# Rabbit Food - Plataforma de Delivery
+# MOUZO - Plataforma de Delivery
 
 > Conectando negocios locales con la comunidad de San Cristóbal, Venezuela
 
@@ -6,95 +6,82 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue.svg)](https://www.mysql.com/)
 
-## 🎨 Diseño
-
-- **Logo**: SVG vectorial con conejo, comida y delivery
-- **Colores**: Paleta crema (#D4A574, #E8C9A0, #F5F1EB)
-- **Modo Oscuro**: Automático con soporte completo
-- **Tema**: Cálido y acogedor, inspirado en comida casera
-
-### Generar Assets del Logo
-```bash
-npm run generate:logo
-```
-
 ## 🚀 Stack Tecnológico
 
-- **Frontend**: React Native + Expo (PWA)
-- **Backend**: Express.js + TypeScript
-- **Base de Datos**: MySQL + Drizzle ORM
-- **Pagos**: Stripe + Stripe Connect
-- **SMS**: Twilio Verify
+- **Frontend**: React Native + Expo SDK 54
+- **Backend**: Express.js + TypeScript (Node 18+)
+- **Base de Datos**: MySQL (Aiven Cloud) + Drizzle ORM
+- **SMS / Auth**: Twilio Verify
 - **Emails**: Resend
-- **IA**: Google Gemini
+- **IA / OCR**: Google Gemini 1.5 Flash
+- **Push Notifications**: Expo Notifications
+- **Mapas**: Google Maps (react-native-maps)
+
+## 🎨 Diseño
+
+- **Colores**: Paleta crema cálida (#E8B4A8, #D4A89C, #F5F1EB)
+- **Modo Oscuro**: Automático con soporte completo
+- **Tema**: Cálido y acogedor, inspirado en comida casera venezolana
 
 ## 📋 Requisitos
 
 - Node.js 18+
-- MySQL 8.0+
-- npm o yarn
+- MySQL 8.0+ (o cuenta Aiven)
+- npm
+- Android Studio + SDK (para builds Android)
 
 ## 🛠️ Instalación
 
 ```bash
-# Clonar repositorio
-git clone https://github.com/tu-usuario/rabbitfood.git
-cd rabbitfood
-
-# Instalar dependencias
+git clone https://github.com/Caskiuz/mouzo.git
+cd mouzo
 npm install
-
-# Configurar variables de entorno
 cp .env.example .env.local
-
-# Configurar base de datos
-mysql -u root -p
-CREATE DATABASE rabbitfood_db_local;
-exit
-
-# Aplicar schema
+# Editar .env.local con tus credenciales
 npm run db:push
 ```
 
-## 🔧 Configuración
-
-### Variables de Entorno
-
-Crea un archivo `.env.local` con las siguientes variables:
+## 🔧 Variables de Entorno
 
 ```env
-# Base de Datos
-DATABASE_URL=mysql://root:password@localhost:3306/rabbitfood_db_local
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=rabbitfood_db_local
+# Base de Datos (Aiven)
+DATABASE_URL=mysql://user:password@host:port/defaultdb?ssl-mode=REQUIRED
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=defaultdb
 
 # JWT
-JWT_SECRET=your_jwt_secret
-REFRESH_SECRET=your_refresh_secret
+JWT_SECRET=
+REFRESH_SECRET=
 
-# Aplicación
+# App
 NODE_ENV=development
 PORT=5000
 FRONTEND_URL=http://localhost:8081
 BACKEND_URL=http://localhost:5000
+EXPO_PUBLIC_BACKEND_URL=https://tu-backend.onrender.com
 
-# Stripe
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_CONNECT_CLIENT_ID=ca_...
+# Google Maps + Gemini
+EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=
+GEMINI_API_KEY=
 
-# Twilio (Opcional)
+# Twilio
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=
 TWILIO_PHONE_NUMBER=
 TWILIO_VERIFY_SERVICE_SID=
 
-# Google Gemini AI (Opcional)
-GEMINI_API_KEY=
+# Pago Móvil MOUZO (cuenta receptora)
+MOUZO_PAGO_MOVIL_PHONE=
+MOUZO_PAGO_MOVIL_BANK=
+MOUZO_PAGO_MOVIL_CEDULA=
+
+# Comisiones (%)
+NEMY_COMMISSION=15
+BUSINESS_COMMISSION=100
+DRIVER_COMMISSION=100
 
 # Resend (Opcional)
 RESEND_API_KEY=
@@ -102,145 +89,154 @@ RESEND_API_KEY=
 
 ## 🚀 Desarrollo
 
-### Iniciar Backend
 ```bash
-npm run server:start
-```
+# Backend
+npm run server:dev
 
-### Iniciar Frontend
-```bash
+# Frontend
 npm run expo:dev
-```
-
-### Iniciar Ambos
-```bash
-npm run dev
 ```
 
 ## 📊 Base de Datos
 
-### Schema
 El schema completo está en `shared/schema-mysql.ts`
 
-### Migraciones
 ```bash
 # Aplicar cambios al schema
 npm run db:push
 
 # Backup
-mysqldump -u root -p mouzo_db_local > backup.sql
+mysqldump -u root -p defaultdb > backup.sql
+```
 
-# Restore
-mysql -u root -p mouzo_db_local < backup.sql
+### Migraciones manuales
+```bash
+# Ejecutar contra Aiven
+mysql --host=<host> --port=<port> --user=avnadmin --password=<pass> --ssl-mode=REQUIRED defaultdb < migrations/<archivo>.sql
 ```
 
 ## 🏗️ Estructura del Proyecto
 
 ```
-Rabbit Food/
-├── client/              # Frontend React Native
-│   ├── components/      # Componentes reutilizables
-│   ├── screens/         # Pantallas de la app
-│   ├── contexts/        # Context API
-│   ├── navigation/      # Navegación
-│   └── constants/       # Configuración
-├── server/              # Backend Express
-│   ├── routes/          # Rutas API
-│   ├── services/        # Servicios de negocio
-│   ├── db.ts           # Conexión MySQL
-│   └── server.ts       # Servidor principal
-├── shared/              # Código compartido
-│   └── schema-mysql.ts # Schema Drizzle
-└── scripts/            # Scripts de utilidad
+MOUZO/
+├── client/                        # Frontend React Native
+│   ├── components/                # Componentes reutilizables
+│   ├── screens/                   # Pantallas de la app
+│   ├── contexts/                  # Context API
+│   ├── navigation/                # RootStackNavigator
+│   ├── constants/theme.ts         # Design system
+│   └── lib/query-client.ts        # API client
+├── server/                        # Backend Express
+│   ├── routes/                    # Rutas API
+│   ├── digitalPaymentService.ts   # Pagos digitales + OCR
+│   ├── autoVerificationService.ts # Anti-fraude
+│   ├── payoutService.ts           # Sistema de payouts
+│   ├── partnerLevelService.ts     # Niveles de partner
+│   ├── fundReleaseService.ts      # Liberación de fondos
+│   └── server.ts                  # Servidor principal
+├── shared/
+│   └── schema-mysql.ts            # Schema Drizzle ORM
+└── migrations/                    # SQL migrations manuales
 ```
 
 ## 💳 Sistema de Pagos
 
+MOUZO opera en Venezuela donde Stripe no está disponible. El sistema de pagos es 100% manual coordinado por el admin.
+
+### Métodos soportados
+- **Pago Móvil** (método principal)
+- **Binance Pay**
+- **Zinli**
+- **Zelle**
+- **Efectivo** (contra entrega)
+
 ### Comisiones
-- Plataforma Rabbit Food: 15% de markup sobre productos
-- Negocio: 100% del precio base de productos
+- MOUZO: 15% de markup sobre precio base de productos
+- Negocio: 100% del precio base
 - Repartidor: 100% de la tarifa de entrega
 
 ### Flujo de Pago
-1. Cliente realiza pedido
-2. Pago capturado con Stripe
-3. Fondos retenidos hasta entrega
-4. Distribución automática de comisiones
-5. Liberación a wallets
+1. Cliente realiza pedido y paga vía Pago Móvil (u otro método)
+2. Cliente sube comprobante → OCR con Gemini extrae datos automáticamente
+3. Admin verifica el comprobante (anti-fraude automático)
+4. Negocio prepara y repartidor recoge
+5. Repartidor marca entregado → Cliente confirma recepción
+6. Al confirmar el cliente se crean los **payouts** (negocio + repartidor)
+7. Admin transfiere manualmente y marca payout como pagado
+
+### Cuentas de Pago (`payment_accounts`)
+Cada usuario (negocio/repartidor) registra sus cuentas destino en `PaymentWalletSetupScreen`. El admin las usa para saber a dónde transferir.
+
+### Anti-fraude
+- Deduplicación de comprobantes por referencia
+- Bloqueo automático tras 3 intentos fraudulentos en 7 días
+- Log en `audit_logs`
 
 ## 📱 Funcionalidades
 
-### Para Clientes
+### Clientes
 - Explorar negocios y productos
-- Realizar pedidos
-- Seguimiento en tiempo real
-- Pagos con tarjeta o efectivo
-- Sistema de reseñas
+- Realizar pedidos con múltiples métodos de pago
+- Seguimiento en tiempo real con mapa (estilo Uber)
+- Confirmar entrega para liberar fondos
+- Chat con repartidor
+- Sistema de propinas
 
-### Para Negocios
-- Panel de gestión
-- Control de productos
+### Negocios
+- Panel de gestión de pedidos
+- Control de productos y categorías
 - Modo saturado / Menú 86
+- Niveles de partner (Bronze → Silver → Gold → Platinum)
 - Estadísticas de ventas
-- Gestión de pedidos
 
-### Para Repartidores
-- Asignación automática
+### Repartidores
+- Asignación automática de pedidos
 - Navegación integrada
-- Historial de entregas
-- Sistema de ganancias
+- Historial de entregas y ganancias
+- Cuentas de cobro registradas
 
-### Para Administradores
+### Administradores
 - Panel de control completo
-- Métricas en tiempo real
-- Gestión de usuarios
-- Resolución de disputas
-- Configuración de comisiones
+- Verificación de comprobantes de pago
+- Gestión de payouts pendientes
+- Métricas de pagos digitales
+- Gestión de usuarios y disputas
 
 ## 🔐 Seguridad
 
-- Autenticación por teléfono (Twilio Verify)
+- Autenticación por teléfono (Twilio Verify OTP)
 - JWT con refresh tokens
 - Rate limiting
-- Validación de roles (RBAC)
-- Auditoría de acciones críticas
-- Cumplimiento PCI (Stripe)
-- Sistema de auditoría financiera
+- RBAC (customer / business_owner / delivery_driver / admin / super_admin)
+- Anti-fraude con bloqueo automático
+- Auditoría de acciones críticas en `audit_logs`
 
-## 📦 Producción
+## 📦 Build Android
 
-### Build Backend
 ```bash
-npm run server:build
+# Prebuild (regenera carpeta android/)
+npx expo prebuild --platform android --clean
+
+# Compilar APK release (solo arm64-v8a para evitar límite de rutas en Windows)
+cd android
+gradlew assembleRelease
+
+# APK generado en:
+# android/app/build/outputs/apk/release/app-release.apk
 ```
 
-### Build Frontend (APK Android)
-```bash
-npm run build:android
-```
-
-### Iniciar Producción
-```bash
-npm run production:start
-```
+> **Nota Windows**: `gradle.properties` tiene `reactNativeArchitectures=arm64-v8a` para evitar el error de rutas >260 caracteres.
 
 ## 🧪 Testing
 
 ```bash
-# Linting
 npm run lint
-
-# Type checking
 npm run check:types
 ```
 
 ## 📄 Licencia
 
-Propietario - Rabbit Food © 2026
-
-## 🆘 Soporte
-
-Para soporte técnico, contacta al equipo de desarrollo.
+Propietario — MOUZO © 2026
 
 ---
 
