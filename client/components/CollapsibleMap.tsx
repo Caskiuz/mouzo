@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   Pressable,
   Dimensions,
   Platform,
-  Animated,
-  Easing,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
@@ -58,22 +56,9 @@ const STATUS_LABELS: Record<string, { label: string; color: string; icon: string
   cancelled:     { label: "Cancelado",              color: "#EF4444", icon: "x-circle" },
 };
 
-// Animated pulsing dot for driver marker
-function PulsingMarker({ color }: { color: string }) {
-  const pulse = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, { toValue: 1.4, duration: 800, useNativeDriver: true, easing: Easing.out(Easing.ease) }),
-        Animated.timing(pulse, { toValue: 1,   duration: 800, useNativeDriver: true, easing: Easing.in(Easing.ease) }),
-      ])
-    ).start();
-  }, []);
-
+function DriverMarker({ color }: { color: string }) {
   return (
     <View style={styles.pulsingWrapper}>
-      <Animated.View style={[styles.pulsingRing, { borderColor: color, transform: [{ scale: pulse }] }]} />
       <View style={[styles.markerOuter, { backgroundColor: "#FFFFFF" }]}>
         <View style={[styles.markerInner, { backgroundColor: color }]}>
           <Feather name="navigation" size={14} color="#FFFFFF" />
@@ -163,7 +148,7 @@ export function CollapsibleMap({
             {/* Driver marker — pulsing */}
             {isValidLocation(deliveryPersonLocation) && (
               <Marker coordinate={deliveryPersonLocation} title="Repartidor" anchor={{ x: 0.5, y: 0.5 }}>
-                <PulsingMarker color={RabbitFoodColors.success} />
+                <DriverMarker color={RabbitFoodColors.success} />
               </Marker>
             )}
 
@@ -368,8 +353,8 @@ const styles = StyleSheet.create({
   pulsingWrapper: {
     alignItems: "center",
     justifyContent: "center",
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
   pulsingRing: {
     position: "absolute",
