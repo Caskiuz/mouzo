@@ -30,6 +30,10 @@ import payoutRoutes from "./payoutRoutes";
 import searchRoutes from "./routes/search";
 import couponRoutes from "./routes/coupons";
 import loyaltyRoutes from "./routes/loyalty";
+import favoritesRoutesV2 from "./routes/favorites";
+import scheduledOrdersRoutes from "./routes/scheduledOrders";
+import aiRecommendationsRoutes from "./routes/aiRecommendations";
+import supportRoutesV2 from "./routes/support";
 
 const router = express.Router();
 
@@ -114,5 +118,9 @@ router.use("/gps",                   gpsRoutes);
 router.use("/search",                searchRoutes);
 router.use("/coupons",               couponRoutes);
 router.use("/loyalty",               loyaltyRoutes);
+router.use("/favorites",             favoritesRoutesV2);
+router.use("/scheduled-orders",      scheduledOrdersRoutes);
+router.use("/ai",                    aiRecommendationsRoutes);
+router.use("/support",               supportRoutesV2);
 
 export default router;

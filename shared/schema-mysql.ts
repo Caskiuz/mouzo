@@ -850,3 +850,62 @@ export type LoyaltyChallenge = typeof loyaltyChallenges.$inferSelect;
 export type LoyaltyChallengeProgress = typeof loyaltyChallengeProgress.$inferSelect;
 export type Achievement = typeof achievements.$inferSelect;
 export type UserAchievement = typeof userAchievements.$inferSelect;
+
+// User Favorites - Favoritos de usuarios
+export const userFavorites = mysqlTable("user_favorites", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  itemType: varchar("item_type", { length: 50 }).notNull(),
+  itemId: varchar("item_id", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// User Preferences - Preferencias de usuario para IA
+export const userPreferences = mysqlTable("user_preferences", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull().unique(),
+  cuisineTypes: text("cuisine_types"),
+  priceRange: varchar("price_range", { length: 20 }).default("mid"),
+  dietaryRestrictions: text("dietary_restrictions"),
+  preferredOrderTimes: text("preferred_order_times"),
+  favoriteCategories: text("favorite_categories"),
+  spiceLevel: int("spice_level").default(3),
+  healthScore: int("health_score").default(5),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// AI Recommendations - Recomendaciones generadas por IA
+export const aiRecommendations = mysqlTable("ai_recommendations", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  recommendationType: varchar("recommendation_type", { length: 50 }).notNull(),
+  itemType: varchar("item_type", { length: 50 }).notNull(),
+  itemId: varchar("item_id", { length: 255 }).notNull(),
+  confidenceScore: int("confidence_score").notNull(),
+  reason: text("reason"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  expiresAt: timestamp("expires_at"),
+  clicked: boolean("clicked").default(false),
+  ordered: boolean("ordered").default(false),
+});
+
+// Support Tickets - Tickets de soporte
+export const supportTickets = mysqlTable("support_tickets", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  orderId: varchar("order_id", { length: 255 }),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  category: varchar("category", { length: 50 }),
+  priority: varchar("priority", { length: 20 }).default("medium"),
+  status: varchar("status", { length: 50 }).default("open"),
+  assignedTo: varchar("assigned_to", { length: 255 }),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+  resolvedAt: timestamp("resolved_at"),
+});
+
+export type UserFavorite = typeof userFavorites.$inferSelect;
+export type UserPreference = typeof userPreferences.$inferSelect;
+export type AIRecommendation = typeof aiRecommendations.$inferSelect;
+export type SupportTicket = typeof supportTickets.$inferSelect;

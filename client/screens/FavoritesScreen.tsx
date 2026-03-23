@@ -124,67 +124,61 @@ export default function FavoritesScreen() {
   const queryClient = useQueryClient();
   const [testData, setTestData] = React.useState<any>(null);
 
-  // TEST DIRECTO
-  React.useEffect(() => {
-    if (user?.id) {
-      console.log('🧪 TEST: Haciendo petición directa a /api/favorites/' + user.id);
-      fetch(`http://localhost:5000/api/favorites/${user.id}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
-        }
-      })
-        .then(r => r.json())
-        .then(data => {
-          console.log('🧪 TEST: Respuesta recibida:', data);
-          setTestData(data);
-        })
-        .catch(err => console.error('🧪 TEST: Error:', err));
-    }
-  }, [user?.id]);
-
-  console.log('FavoritesScreen - user:', user?.id);
-  console.log('FavoritesScreen - user exists:', !!user?.id);
-  console.log('🧪 TEST DATA:', testData);
-
   const {
-    data: favoritesResponse,
+    data: favoritesData,
     isLoading,
     refetch,
     isRefetching,
-    error,
-  } = useQuery<Favorite[]>({
-    queryKey: ["/api/favorites", user?.id],
+  } = useQuery({
+    queryKey: ["favorites", user?.id],
     queryFn: async () => {
-      if (!user?.id) {
-        console.log('❌ No user ID, returning empty array');
-        return [];
-      }
-      console.log('🔍 Fetching favorites for user:', user?.id);
-      const response = await apiRequest("GET", `/api/favorites/${user?.id}`);
-      if (!response.ok) {
-        console.error('❌ Favorites request failed:', response.status);
-        throw new Error('Failed to fetch favorites');
-      }
+      if (!user?.id) return { businesses: [], products: [], total: 0 };
+      const response = await apiRequest("GET", `/api/favorites`);
       const data = await response.json();
-      console.log('✅ Favorites data received:', data);
-      return Array.isArray(data) ? data : [];
+      return data.success ? data.favorites : { businesses: [], products: [], total: 0 };
     },
     enabled: !!user?.id,
-    refetchOnMount: 'always',
-    refetchOnWindowFocus: true,
-    staleTime: 0,
   });
 
-  const favorites = favoritesResponse || [];
-
-  console.log('Favorites:', favorites, 'isLoading:', isLoading, 'error:', error);
+  const favorites = [
+    ...(favoritesData?.businesses || []).map((b: any) => ({
+      id: `business-${b.id}`,
+      userId: user?.id,
+      businessId: b.id,
+      productId: null,
+      createdAt: new Date().toISOString(),
+      business: {
+        id: b.id,
+        name: b.name,
+        image: b.image || b.profileImage,
+        type: b.type,
+        rating: (b.rating / 10).toString(),
+      },
+    })),
+    ...(favoritesData?.products || []).map((p: any) => ({
+      id: `product-${p.id}`,
+      userId: user?.id,
+      businessId: null,
+      productId: p.id,
+      createdAt: new Date().toISOString(),
+      product: {
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        image: p.image,
+        businessId: p.businessId,
+      },
+    })),
+  ];
 
   const removeFavoriteMutation = useMutation({
-    mutationFn: async (favoriteId: string) => {
-      await apiRequest("DELETE", `/api/favorites/${favoriteId}`);
+    mutationFn: async (favorite: Favorite) => {
+      const itemType = favorite.businessId ? 'business' : 'product';
+      const itemId = favorite.businessId || favorite.productId;
+      await apiRequest("DELETE", `/api/favorites/${itemType}/${itemId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/favorites", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["favorites", user?.id] });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     },
   });
@@ -219,8 +213,8 @@ export default function FavoritesScreen() {
       >
         <EmptyState
           image={require("../../assets/images/market-basket.png")}
-          title="🔴 PRUEBA - Sin favoritos aún"
-          description="SI VES ESTO EL ARCHIVO ES CORRECTO - Guarda tus negocios y productos favoritos para acceder rápidamente"
+          title="Sin favoritos aún"
+          description="Guarda tus negocios y productos favoritos para acceder rápidamente"
         />
       </LinearGradient>
     );
@@ -239,7 +233,7 @@ export default function FavoritesScreen() {
         renderItem={({ item }) => (
           <FavoriteCard
             favorite={item}
-            onRemove={() => removeFavoriteMutation.mutate(item.id)}
+            onRemove={() => removeFavoriteMutation.mutate(item)}
             onPress={() => handlePress(item)}
           />
         )}
