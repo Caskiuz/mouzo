@@ -12,21 +12,25 @@ import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import { Audio } from "expo-av";
+import { io, Socket } from "socket.io-client";
 
 import { ThemedText } from "@/components/ThemedText";
 import { Badge } from "@/components/Badge";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { useTheme } from "@/hooks/useTheme";
+import { useAuth } from "@/contexts/AuthContext";
 import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
-import { apiRequest } from "@/lib/query-client";
+import { apiRequest, getApiUrl } from "@/lib/query-client";
 
 export default function BusinessOrdersScreen() {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<"all" | "pending" | "active">("pending");
   const previousPendingCount = useRef(0);
+  const socketRef = useRef<Socket | null>(null);
   const [confirmModal, setConfirmModal] = useState<{
     visible: boolean;
     title: string;
@@ -34,6 +38,37 @@ export default function BusinessOrdersScreen() {
     onConfirm: () => void;
     variant?: "default" | "danger";
   }>({ visible: false, title: "", message: "", onConfirm: () => {} });
+
+  // WebSocket connection
+  useEffect(() => {
+    const socket = io(getApiUrl().replace('/api', ''), {
+      transports: ['websocket', 'polling'],
+    });
+
+    socket.on('connect', () => {
+      console.log('🔌 WebSocket connected');
+      // Join business room
+      socket.emit('join', { userId: user?.id, role: 'business_owner', businessId: user?.businessId });
+    });
+
+    socket.on('new_order', (order: any) => {
+      console.log('📦 New order received via WebSocket:', order);
+      playNotificationSound();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      loadOrders(); // Refresh orders
+    });
+
+    socket.on('payment_verified', ({ orderId }: { orderId: string }) => {
+      console.log('💳 Payment verified for order:', orderId);
+      loadOrders();
+    });
+
+    socketRef.current = socket;
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user?.id, user?.businessId]);
 
   const playNotificationSound = async () => {
     try {
@@ -70,7 +105,8 @@ export default function BusinessOrdersScreen() {
 
   useEffect(() => {
     loadOrders();
-    const interval = setInterval(loadOrders, 5000);
+    // Polling reducido a 30s como fallback
+    const interval = setInterval(loadOrders, 30000);
     return () => clearInterval(interval);
   }, []);
 

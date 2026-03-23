@@ -123,7 +123,6 @@ export type RootStackParamList = {
   BusinessHours: undefined;
   BusinessCategories: undefined;
   MyBusinesses: { openAddModal?: boolean; draft?: { name?: string; type?: string; address?: string; phone?: string } } | undefined;
-  BusinessStripeSetup: undefined;
   Terms: undefined;
   Privacy: undefined;
 };
@@ -332,11 +331,6 @@ export default function RootStackNavigator() {
           <Stack.Screen
             name="MyBusinesses"
             component={MyBusinessesScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="BusinessStripeSetup"
-            component={BusinessStripeSetupScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

@@ -1,6 +1,7 @@
 import express from "express";
 import { authenticateToken, requireRole } from "../authMiddleware";
 import { eq, and, inArray } from "drizzle-orm";
+import { sendOrderStatusNotification } from "../enhancedPushService";
 
 const router = express.Router();
 
@@ -239,6 +240,11 @@ router.patch("/orders/:id/status", authenticateToken, requireRole("delivery_driv
         ...(status === "delivered" && { deliveredAt: new Date() })
       })
       .where(eq(orders.id, req.params.id));
+
+    // Notificar al cliente del cambio de estado
+    if (["picked_up", "on_the_way", "arriving", "delivered"].includes(status)) {
+      await sendOrderStatusNotification(req.params.id, order.userId, status);
+    }
 
     res.json({ success: true, message: "Estado actualizado" });
   } catch (error: any) {

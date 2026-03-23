@@ -290,4 +290,50 @@ router.post("/export-csv", authenticateToken, requireRole("admin", "super_admin"
   }
 });
 
+// GET /api/admin/payouts/pending — payouts pendientes de pago
+router.get("/payouts/pending", authenticateToken, requireRole("admin", "super_admin"), async (req, res) => {
+  try {
+    const { payouts, users, businesses } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    const { eq } = await import("drizzle-orm");
+
+    const pending = await db.select().from(payouts).where(eq(payouts.status, "pending"));
+
+    const enriched = await Promise.all(pending.map(async (p) => {
+      let recipientName = "";
+      if (p.recipientType === "business") {
+        const [biz] = await db.select({ name: businesses.name }).from(businesses).where(eq(businesses.id, p.recipientId)).limit(1);
+        recipientName = biz?.name ?? "";
+      } else {
+        const [usr] = await db.select({ name: users.name }).from(users).where(eq(users.id, p.recipientId)).limit(1);
+        recipientName = usr?.name ?? "";
+      }
+      return { ...p, recipientName };
+    }));
+
+    res.json({ success: true, payouts: enriched });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// POST /api/admin/payouts/:id/mark-paid — marcar payout como pagado
+router.post("/payouts/:id/mark-paid", authenticateToken, requireRole("admin", "super_admin"), async (req, res) => {
+  try {
+    const { payouts } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    const { eq } = await import("drizzle-orm");
+
+    await db.update(payouts).set({
+      status: "paid",
+      paidBy: req.user!.id,
+      paidAt: new Date(),
+    }).where(eq(payouts.id, req.params.id));
+
+    res.json({ success: true });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 export default router;

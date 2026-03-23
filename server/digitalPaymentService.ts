@@ -5,7 +5,7 @@ import { eq, and, count, sum, gte } from "drizzle-orm";
 import { financialService } from "./unifiedFinancialService";
 import { autoVerificationService } from "./autoVerificationService";
 import { logger } from "./logger";
-import { notifyPagoMovilStatus } from "./enhancedPushService";
+import { notifyPagoMovilStatus, sendPushToUser } from "./enhancedPushService";
 import { createPayoutsForOrder } from "./payoutService";
 
 interface PaymentProofData {
@@ -234,6 +234,17 @@ export class DigitalPaymentService {
 
           // Push notification al cliente
           await notifyPagoMovilStatus(proof.userId, 'verified', order.id);
+
+          // Push notification al negocio para que empiece a preparar
+          const { businesses } = await import("@shared/schema-mysql");
+          const [biz] = await tx.select({ ownerId: businesses.ownerId }).from(businesses).where(eq(businesses.id, order.businessId)).limit(1);
+          if (biz?.ownerId) {
+            await sendPushToUser(biz.ownerId, {
+              title: "💳 Pago confirmado — ¡A preparar!",
+              body: `Pedido #${order.id.slice(-6)} pagado. Empieza la preparación.`,
+              data: { orderId: order.id, screen: "BusinessOrders" },
+            });
+          }
           // Payouts se crean cuando el CLIENTE confirma la entrega, no aquí
 
           // Distribute funds to PENDING BALANCE (not available yet)

@@ -27,6 +27,9 @@ import pagoMovilRoutes from "./pagoMovilRoutes";
 import digitalPaymentRoutes from "./routes/digitalPayments";
 import fundReleaseRoutes from "./routes/fundRelease";
 import payoutRoutes from "./payoutRoutes";
+import searchRoutes from "./routes/search";
+import couponRoutes from "./routes/coupons";
+import loyaltyRoutes from "./routes/loyalty";
 
 const router = express.Router();
 
@@ -108,5 +111,8 @@ router.use("/audit",                 financialAuditRoutes);
 router.use("/favorites",             favoritesRoutes);
 router.use("/business-verification", businessVerificationRoutes);
 router.use("/gps",                   gpsRoutes);
+router.use("/search",                searchRoutes);
+router.use("/coupons",               couponRoutes);
+router.use("/loyalty",               loyaltyRoutes);
 
 export default router;

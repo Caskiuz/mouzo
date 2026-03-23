@@ -6,6 +6,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { validateEnv } from './env';
+import { createServer } from 'http';
+import { initializeWebSocket } from './websocket';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,6 +15,7 @@ const __dirname = dirname(__filename);
 validateEnv();
 
 const app = express();
+const httpServer = createServer(app);
 const PORT = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -75,9 +78,13 @@ app.use((req, res) => {
 });
 
 // ─── START ────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+
+  // Inicializar WebSocket
+  initializeWebSocket(httpServer);
+  console.log('🔌 WebSocket initialized');
 
   if (!process.env.TWILIO_ACCOUNT_SID) console.warn('⚠️  Twilio not configured');
   if (!process.env.MOUZO_PAGO_MOVIL_PHONE) console.warn('⚠️  Pago Móvil no configurado - agrega MOUZO_PAGO_MOVIL_PHONE en .env');

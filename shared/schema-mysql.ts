@@ -720,3 +720,133 @@ export type PaymentMethod = typeof paymentMethods.$inferSelect;
 export type PaymentProof = typeof paymentProofs.$inferSelect;
 export type PaymentAccount = typeof paymentAccounts.$inferSelect;
 export type Payout = typeof payouts.$inferSelect;
+
+// Coupon Usage - Uso de cupones por usuario
+export const couponUsage = mysqlTable("coupon_usage", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  couponId: varchar("coupon_id", { length: 255 }).notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  orderId: varchar("order_id", { length: 255 }).notNull(),
+  discountApplied: int("discount_applied").notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Points - Puntos de lealtad por usuario
+export const loyaltyPoints = mysqlTable("loyalty_points", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull().unique(),
+  currentPoints: int("current_points").default(0),
+  totalEarned: int("total_earned").default(0),
+  totalRedeemed: int("total_redeemed").default(0),
+  tier: varchar("tier", { length: 20 }).default("bronze"),
+  tierUpdatedAt: timestamp("tier_updated_at"),
+  pointsToNextTier: int("points_to_next_tier").default(1000),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Transactions - Historial de puntos
+export const loyaltyTransactions = mysqlTable("loyalty_transactions", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(),
+  points: int("points").notNull(),
+  description: text("description"),
+  orderId: varchar("order_id", { length: 255 }),
+  rewardId: varchar("reward_id", { length: 255 }),
+  metadata: text("metadata"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Rewards - Recompensas disponibles
+export const loyaltyRewards = mysqlTable("loyalty_rewards", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  pointsCost: int("points_cost").notNull(),
+  type: varchar("type", { length: 50 }).notNull(),
+  value: int("value").notNull(),
+  isAvailable: boolean("is_available").default(true),
+  minTier: varchar("min_tier", { length: 20 }),
+  maxRedemptions: int("max_redemptions"),
+  currentRedemptions: int("current_redemptions").default(0),
+  expiresAt: timestamp("expires_at"),
+  imageUrl: text("image_url"),
+  terms: text("terms"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Redemptions - Canjes de recompensas
+export const loyaltyRedemptions = mysqlTable("loyalty_redemptions", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  rewardId: varchar("reward_id", { length: 255 }).notNull(),
+  pointsSpent: int("points_spent").notNull(),
+  status: varchar("status", { length: 20 }).default("active"),
+  couponCode: varchar("coupon_code", { length: 50 }),
+  usedAt: timestamp("used_at"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Challenges - Desafíos para ganar puntos
+export const loyaltyChallenges = mysqlTable("loyalty_challenges", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  type: varchar("type", { length: 50 }).notNull(),
+  target: int("target").notNull(),
+  rewardPoints: int("reward_points").notNull(),
+  isActive: boolean("is_active").default(true),
+  startsAt: timestamp("starts_at"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Loyalty Challenge Progress - Progreso de usuarios en challenges
+export const loyaltyChallengeProgress = mysqlTable("loyalty_challenge_progress", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  challengeId: varchar("challenge_id", { length: 255 }).notNull(),
+  progress: int("progress").default(0),
+  completed: boolean("completed").default(false),
+  completedAt: timestamp("completed_at"),
+  claimed: boolean("claimed").default(false),
+  claimedAt: timestamp("claimed_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// Achievements - Logros
+export const achievements = mysqlTable("achievements", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  icon: varchar("icon", { length: 100 }),
+  category: varchar("category", { length: 50 }),
+  requirementType: varchar("requirement_type", { length: 50 }),
+  requirementValue: int("requirement_value"),
+  rewardPoints: int("reward_points").default(0),
+  badgeImageUrl: text("badge_image_url"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// User Achievements - Logros desbloqueados por usuarios
+export const userAchievements = mysqlTable("user_achievements", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  achievementId: varchar("achievement_id", { length: 255 }).notNull(),
+  unlockedAt: timestamp("unlocked_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type CouponUsage = typeof couponUsage.$inferSelect;
+export type LoyaltyPoints = typeof loyaltyPoints.$inferSelect;
+export type LoyaltyTransaction = typeof loyaltyTransactions.$inferSelect;
+export type LoyaltyReward = typeof loyaltyRewards.$inferSelect;
+export type LoyaltyRedemption = typeof loyaltyRedemptions.$inferSelect;
+export type LoyaltyChallenge = typeof loyaltyChallenges.$inferSelect;
+export type LoyaltyChallengeProgress = typeof loyaltyChallengeProgress.$inferSelect;
+export type Achievement = typeof achievements.$inferSelect;
+export type UserAchievement = typeof userAchievements.$inferSelect;

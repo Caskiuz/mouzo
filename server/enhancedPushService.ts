@@ -174,6 +174,15 @@ export async function notifyPagoMovilStatus(
   await sendPushNotification(user.pushToken, notification);
 }
 
+export async function sendPushToUser(
+  userId: string,
+  payload: { title: string; body: string; data?: Record<string, any> }
+): Promise<void> {
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  if (!user?.pushToken) return;
+  await sendPushNotification(user.pushToken, payload);
+}
+
 export async function notifyDriverNewOrder(
   driverId: string,
   orderId: string

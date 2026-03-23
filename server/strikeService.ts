@@ -2,6 +2,7 @@ import { db } from "./db";
 import { deliveryDrivers, users } from "@shared/schema-mysql";
 import { eq } from "drizzle-orm";
 import { logger } from "./logger";
+import { sendPushToUser } from "./enhancedPushService";
 
 export async function addStrike(
   driverId: string,
@@ -37,6 +38,20 @@ export async function addStrike(
     orderId,
     blocked: shouldBlock,
   });
+
+  if (shouldBlock) {
+    await sendPushToUser(driverId, {
+      title: "⛔ Cuenta suspendida",
+      body: "Recibiste 3 strikes. Tu cuenta está suspendida por 7 días.",
+      data: { screen: "DriverProfile" },
+    });
+  } else {
+    await sendPushToUser(driverId, {
+      title: `⚠️ Strike ${newStrikes}/3`,
+      body: `${reason}. Al llegar a 3 strikes tu cuenta será suspendida.`,
+      data: { screen: "DriverProfile" },
+    });
+  }
 }
 
 export async function removeStrike(driverId: string): Promise<void> {

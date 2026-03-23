@@ -10,6 +10,8 @@ import {
 } from "../validateOwnership";
 import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from "../utils/distance";
 import { getDeliveryConfig } from "../services/deliveryConfigService";
+import { sendPushToUser, sendOrderStatusNotification } from "../enhancedPushService";
+import { LoyaltyService } from "../loyaltyService";
 
 const router = express.Router();
 
@@ -328,6 +330,9 @@ router.post(
         })
         .where(eq(orders.id, orderId));
 
+      // Notificar al cliente que su pedido fue entregado
+      await sendOrderStatusNotification(orderId, order.userId, "delivered");
+
       res.json({
         success: true,
         message: "Pedido marcado como entregado. Esperando confirmación del cliente.",
@@ -370,6 +375,14 @@ router.post(
         return res.status(400).json({ error: "Ya confirmaste este pedido" });
       }
 
+      // Award loyalty points
+      try {
+        await LoyaltyService.awardPointsForOrder(order.userId, order.id, order.total);
+        console.log(`✅ Puntos de lealtad otorgados para pedido ${order.id}`);
+      } catch (error) {
+        console.error('Error awarding loyalty points:', error);
+      }
+
       // Calculate commissions using centralized service
       const { financialService } = await import("../unifiedFinancialService");
       const commissions = await financialService.calculateCommissions(
@@ -400,14 +413,8 @@ router.post(
       const businessOwnerId = business?.ownerId || order.businessId;
 
       if (order.paymentMethod === "cash") {
-        const { cashSettlementService } = await import("../cashSettlementService");
-        await cashSettlementService.registerCashDebt(
-          order.id,
-          order.deliveryPersonId,
-          order.businessId,
-          order.total,
-          order.deliveryFee,
-        );
+        // Efectivo eliminado - todos los pagos son digitales
+        return res.status(400).json({ error: "Efectivo no disponible. Usa Pago Móvil, Binance, Zinli o Zelle." });
       } else {
         // Update business wallet (card only)
         const [businessWallet] = await db
@@ -489,6 +496,26 @@ router.post(
           driver: commissions.driver / 100,
         },
       });
+
+      // Notificar al negocio y repartidor que los fondos fueron liberados
+      const [biz] = await db.select({ ownerId: (await import("@shared/schema-mysql")).businesses.ownerId })
+        .from((await import("@shared/schema-mysql")).businesses)
+        .where(eq((await import("@shared/schema-mysql")).businesses.id, order.businessId))
+        .limit(1);
+      if (biz?.ownerId) {
+        await sendPushToUser(biz.ownerId, {
+          title: "💰 Pago liberado",
+          body: `El cliente confirmó la entrega del pedido #${order.id.slice(-6)}`,
+          data: { orderId: order.id, screen: "BusinessEarnings" },
+        });
+      }
+      if (order.deliveryPersonId) {
+        await sendPushToUser(order.deliveryPersonId, {
+          title: "💰 Pago liberado",
+          body: `Pedido #${order.id.slice(-6)} confirmado. Tu pago está disponible.`,
+          data: { orderId: order.id, screen: "DriverEarnings" },
+        });
+      }
     } catch (error: any) {
       console.error("Confirm receipt error:", error);
       res.status(500).json({ error: error.message });
@@ -539,6 +566,9 @@ router.post(
           driverPickedUpAt: new Date()
         })
         .where(eq(orders.id, orderId));
+
+      // Notificar al cliente que el repartidor recogió y va en camino
+      await sendOrderStatusNotification(orderId, order.userId, "picked_up");
 
       res.json({
         success: true,

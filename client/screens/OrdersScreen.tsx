@@ -19,6 +19,7 @@ import { Badge } from "@/components/Badge";
 import { EmptyState } from "@/components/EmptyState";
 import { OrderProgressBar } from "@/components/OrderProgressBar";
 import { useTheme } from "@/hooks/useTheme";
+import { useReorder } from "@/hooks/useReorder";
 import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/theme";
 import { Order, OrderStatus } from "@/types";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
@@ -67,6 +68,7 @@ export default function OrdersScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const navigation = useNavigation<OrdersScreenNavigationProp>();
   const { theme } = useTheme();
+  const { reorder } = useReorder();
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -201,7 +203,7 @@ export default function OrdersScreen() {
           </View>
         ) : (
           <Pressable
-            onPress={() => {}}
+            onPress={() => reorder(item)}
             style={[
               styles.reorderButton,
               { backgroundColor: theme.backgroundSecondary },
@@ -212,7 +214,7 @@ export default function OrdersScreen() {
               type="small"
               style={{ color: RabbitFoodColors.primary, marginLeft: Spacing.xs }}
             >
-              Reordenar
+              Pedir de nuevo
             </ThemedText>
           </Pressable>
         )}

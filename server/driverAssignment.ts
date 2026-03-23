@@ -2,6 +2,7 @@
 import { db } from "./db";
 import { orders, businesses, users, deliveryDrivers } from "@shared/schema-mysql";
 import { eq, and, isNull } from "drizzle-orm";
+import { notifyDriverNewOrder, sendPushToUser } from "./enhancedPushService";
 
 interface DriverLocation {
   driverId: string;
@@ -237,6 +238,15 @@ export async function autoAssignDriver(
       driverName: driverInfo?.name,
       distance: distance.toFixed(2) + "km",
       estimatedTime: estimatedTime + " minutes",
+    });
+
+    // Notificar al repartidor del nuevo pedido asignado
+    await notifyDriverNewOrder(selectedDriver.driverId, orderId);
+    // Notificar al cliente que se asignó un repartidor
+    await sendPushToUser(order.userId, {
+      title: `${driverInfo?.name?.split(" ")[0] || "Tu repartidor"} fue asignado 🚗`,
+      body: "Pronto recogerá tu pedido",
+      data: { orderId, screen: "OrderTracking" },
     });
 
     return {

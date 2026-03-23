@@ -356,6 +356,23 @@ export default function OrderTrackingScreen() {
           </View>
         )}
 
+        {/* Buscando repartidor */}
+        {(order as any).searchingDriver && (
+          <View style={[styles.statusCard, { backgroundColor: RabbitFoodColors.warning + '15', borderWidth: 1, borderColor: RabbitFoodColors.warning }, Shadows.md]}>
+            <View style={styles.businessRow}>
+              <ActivityIndicator size="small" color={RabbitFoodColors.warning} />
+              <View style={[styles.businessInfo, { marginLeft: Spacing.md }]}>
+                <ThemedText type="h4" style={{ color: RabbitFoodColors.warning }}>
+                  Buscando repartidor disponible...
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+                  Esto puede tomar unos minutos
+                </ThemedText>
+              </View>
+            </View>
+          </View>
+        )}
+
         {/* Progress Bar */}
         <OrderProgressBar status={order.status} />
 
@@ -601,11 +618,13 @@ export default function OrderTrackingScreen() {
                 });
                 if (response.success) {
                   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-                  Alert.alert(
-                    "¡Entrega confirmada!",
-                    "Los fondos han sido liberados al negocio y repartidor.",
-                    [{ text: "OK", onPress: () => navigation.goBack() }]
-                  );
+                  // Navegar automáticamente a la pantalla de reseña
+                  navigation.replace("Review", {
+                    orderId: order.id,
+                    businessId: order.businessId,
+                    businessName: order.businessName,
+                    deliveryPersonId: order.deliveryPersonId,
+                  });
                 } else {
                   throw new Error(response.message || "Error al confirmar");
                 }

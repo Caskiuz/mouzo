@@ -28,7 +28,7 @@ import { calculateDistance, calculateDeliveryFee, estimateDeliveryTime } from "@
 
 type SubstitutionOption = "refund" | "call" | "substitute";
 
-type PaymentMethod = "pago_movil" | "binance_pay" | "paypal" | "zinli" | "zelle";
+type PaymentMethod = "pago_movil" | "binance_pay" | "zinli" | "zelle";
 
 type CheckoutScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -141,8 +141,9 @@ export default function CheckoutScreen({ route }: any) {
 
   const deliveryFee = route?.params?.calculatedDeliveryFee ?? (dynamicDeliveryFee ?? (business?.deliveryFee ? business.deliveryFee / 100 : 0));
   
+  const [tip, setTip] = useState(0);
   const nemyCommission = subtotal * 0.15;
-  const total = subtotal + nemyCommission + deliveryFee - couponDiscount;
+  const total = subtotal + nemyCommission + deliveryFee - couponDiscount + tip;
 
   // Calcular delivery fee dinámico cuando cambia la dirección
   useEffect(() => {
@@ -155,8 +156,8 @@ export default function CheckoutScreen({ route }: any) {
     if (!business || !selectedAddress) return;
     
     const distance = calculateDistance(
-      business.latitude || 7.7708,
-      business.longitude || -104.3636,
+      business.latitude || 7.7669,
+      business.longitude || -72.2251,
       selectedAddress.latitude,
       selectedAddress.longitude
     );
@@ -197,6 +198,7 @@ export default function CheckoutScreen({ route }: any) {
         subtotal: productosBase,
         deliveryFee: Math.round(deliveryFee * 100),
         total: totalAmount,
+        tip: Math.round(tip * 100),
         paymentMethod: paymentMethod,
         deliveryAddressId: selectedAddress.id,
         deliveryAddress: `${selectedAddress.street}, ${selectedAddress.city}`,
@@ -257,10 +259,6 @@ export default function CheckoutScreen({ route }: any) {
             },
           ],
         });
-      } else if (paymentMethod === "paypal") {
-        // TODO: Integrar PayPal SDK
-        showToast("PayPal próximamente", "info");
-        setIsLoading(false);
       }
     } catch (error: any) {
       console.error("Error placing order:", error);
@@ -843,6 +841,33 @@ export default function CheckoutScreen({ route }: any) {
           ) : null}
         </View>
 
+        {/* Propina al repartidor */}
+        <View style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}>
+          <View style={styles.sectionHeader}>
+            <Feather name="heart" size={20} color={RabbitFoodColors.primary} />
+            <ThemedText type="h4" style={styles.sectionTitle}>Propina al repartidor</ThemedText>
+          </View>
+          <ThemedText type="small" style={{ color: theme.textSecondary, marginBottom: Spacing.md }}>
+            Opcional — 100% va al repartidor
+          </ThemedText>
+          <View style={{ flexDirection: "row", gap: Spacing.sm }}>
+            {[0, 1, 2, 5].map(t => (
+              <Pressable
+                key={t}
+                onPress={() => { setTip(t); Haptics.selectionAsync(); }}
+                style={[styles.tipChip, {
+                  backgroundColor: tip === t ? RabbitFoodColors.primary : theme.backgroundSecondary,
+                  borderColor: tip === t ? RabbitFoodColors.primary : theme.border,
+                }]}
+              >
+                <ThemedText type="small" style={{ color: tip === t ? "#FFF" : theme.text, fontWeight: "600" }}>
+                  {t === 0 ? "Sin propina" : `Bs. ${t}`}
+                </ThemedText>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
         <View
           style={[styles.section, { backgroundColor: theme.card }, Shadows.sm]}
         >
@@ -907,6 +932,12 @@ export default function CheckoutScreen({ route }: any) {
             <ThemedText type="body" style={{ color: RabbitFoodColors.success }}>
               -Bs. {couponDiscount.toFixed(2)}
             </ThemedText>
+          </View>
+        )}
+        {tip > 0 && (
+          <View style={styles.totalRow}>
+            <ThemedText type="body" style={{ color: theme.textSecondary }}>Propina</ThemedText>
+            <ThemedText type="body">Bs. {tip.toFixed(2)}</ThemedText>
           </View>
         )}
         <View style={[styles.totalRow, styles.grandTotal]}>
@@ -1106,6 +1137,13 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
     borderWidth: 2,
+  },
+  tipChip: {
+    flex: 1,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1.5,
+    alignItems: "center",
   },
   removeCouponButton: {
     padding: Spacing.xs,

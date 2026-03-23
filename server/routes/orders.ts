@@ -1,6 +1,8 @@
 import express from "express";
 import { authenticateToken, requireRole } from "../authMiddleware";
 import { eq, and, desc, inArray } from "drizzle-orm";
+import { sendPushToUser, sendOrderStatusNotification } from "../enhancedPushService";
+import { notifyNewOrder } from "../websocket";
 
 const router = express.Router();
 
@@ -64,11 +66,15 @@ router.get("/:id", authenticateToken, async (req, res) => {
       return res.status(403).json({ error: "No autorizado" });
     }
 
+    // Agregar flag si está buscando repartidor
+    const searchingDriver = order.order.status === "confirmed" && !order.order.deliveryPersonId;
+
     res.json({ 
       success: true, 
       order: {
         ...order.order,
         business: order.business,
+        searchingDriver,
       }
     });
   } catch (error: any) {
@@ -181,6 +187,18 @@ router.post("/", authenticateToken, async (req, res) => {
 
     await db.insert(orders).values(newOrder);
 
+    // Notificar al negocio del nuevo pedido
+    if (business.ownerId) {
+      await sendPushToUser(business.ownerId, {
+        title: "🛒 Nuevo pedido recibido",
+        body: `Pedido #${orderId.slice(-6)} — $${(total / 100).toFixed(2)}`,
+        data: { orderId, screen: "BusinessOrders" },
+      });
+    }
+
+    // WebSocket: Notificar en tiempo real
+    notifyNewOrder(businessId, { id: orderId, businessName: business.name, total, items: validItems });
+
     res.json({ 
       success: true,
       orderId,
@@ -208,6 +226,9 @@ router.post("/:id/confirm", authenticateToken, async (req, res) => {
       confirmedToBusinessAt: new Date(),
       updatedAt: new Date(),
     }).where(eq(orders.id, req.params.id));
+
+    // Notificar al cliente que el negocio aceptó
+    await sendOrderStatusNotification(req.params.id, order.userId, "accepted");
 
     res.json({ success: true, message: "Pedido confirmado" });
   } catch (error: any) {
@@ -297,6 +318,40 @@ router.patch("/:id/status", authenticateToken, async (req, res) => {
         updatedAt: new Date()
       })
       .where(eq(orders.id, req.params.id));
+
+    // Notificaciones según el nuevo estado
+    const o = order.order;
+    if (status === "preparing") {
+      await sendOrderStatusNotification(req.params.id, o.userId, "preparing");
+    } else if (status === "ready") {
+      await sendOrderStatusNotification(req.params.id, o.userId, "ready");
+      // Notificar al repartidor asignado que el pedido está listo para recoger
+      if (o.deliveryPersonId) {
+        await sendPushToUser(o.deliveryPersonId, {
+          title: "📦 Pedido listo para recoger",
+          body: `${o.businessName} — Pedido #${o.id.slice(-6)} listo`,
+          data: { orderId: o.id, screen: "DriverActiveOrder" },
+        });
+      }
+    } else if (status === "cancelled") {
+      await sendOrderStatusNotification(req.params.id, o.userId, "cancelled");
+      // Notificar al negocio si cancela el admin o el cliente
+      if (order.business?.ownerId) {
+        await sendPushToUser(order.business.ownerId, {
+          title: "❌ Pedido cancelado",
+          body: `Pedido #${o.id.slice(-6)} fue cancelado`,
+          data: { orderId: o.id, screen: "BusinessOrders" },
+        });
+      }
+      // Notificar al repartidor si ya estaba asignado
+      if (o.deliveryPersonId) {
+        await sendPushToUser(o.deliveryPersonId, {
+          title: "❌ Pedido cancelado",
+          body: `El pedido #${o.id.slice(-6)} fue cancelado`,
+          data: { orderId: o.id, screen: "DriverAvailable" },
+        });
+      }
+    }
 
     res.json({ success: true, message: "Estado actualizado" });
   } catch (error: any) {

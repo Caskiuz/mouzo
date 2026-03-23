@@ -7,6 +7,7 @@ import {
   RefreshControl,
   TextInput,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -76,6 +77,8 @@ export default function HomeScreen() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [featuredBusinesses, setFeaturedBusinesses] = useState<Business[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -93,8 +96,8 @@ export default function HomeScreen() {
         name: b.name,
         description: b.description || '',
         type: b.type || 'restaurant',
-        profileImage: b.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4',
-        bannerImage: b.cover_image || b.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4',
+        profileImage: b.image || require("../../assets/images/delivery-hero.png"),
+        bannerImage: b.cover_image || b.image || require("../../assets/images/delivery-hero.png"),
         rating: (b.rating || 0) / 100, // Convertir de centavos a decimal
         reviewCount: b.total_ratings || 0,
         deliveryTime: b.delivery_time || '30-45 min',
@@ -119,6 +122,31 @@ export default function HomeScreen() {
       setIsLoading(false);
     }
   }, []);
+
+  // Búsqueda de productos cross-negocio
+  useEffect(() => {
+    const searchProducts = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSearchResults([]);
+        return;
+      }
+      setSearchLoading(true);
+      try {
+        const response = await apiRequest('GET', `/api/search/products?q=${encodeURIComponent(searchQuery)}`);
+        const data = await response.json();
+        if (data.success) {
+          setSearchResults(data.results || []);
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+
+    const timer = setTimeout(searchProducts, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   useEffect(() => {
     loadData();
@@ -146,12 +174,12 @@ export default function HomeScreen() {
 
       if (activeCategory) {
         const categoryMap: Record<string, string[]> = {
-          tacos: ["tacos", "mexicana", "antojitos"],
-          burgers: ["burgers", "hamburguesas", "americana"],
-          pizza: ["pizza", "italiana", "pastas"],
-          sushi: ["sushi", "japonesa"],
-          pollo: ["pollo", "alitas"],
-          mariscos: ["mariscos", "pescado"],
+          arepas: ["arepas", "arepa", "reina pepiada"],
+          empanadas: ["empanadas", "empanada", "pastelitos"],
+          parrilla: ["parrilla", "carne", "asado", "churrasco"],
+          pollo: ["pollo", "alitas", "broaster"],
+          pastelitos: ["pastelitos", "tequeños", "pasapalos"],
+          cachapas: ["cachapas", "cachapa", "pabellon"],
         };
         const matchCategories = categoryMap[activeCategory] || [activeCategory];
         filtered = filtered.filter((b) =>
@@ -271,27 +299,12 @@ export default function HomeScreen() {
             contentContainerStyle={styles.quickAccessScroll}
           >
             {[
-              { id: "tacos", icon: "sun", label: "Tacos", color: "#FF8C00" },
-              {
-                id: "burgers",
-                icon: "coffee",
-                label: "Burgers",
-                color: "#E91E63",
-              },
-              { id: "pizza", icon: "disc", label: "Pizza", color: "#F44336" },
-              { id: "sushi", icon: "star", label: "Sushi", color: "#9C27B0" },
-              {
-                id: "pollo",
-                icon: "feather",
-                label: "Pollo",
-                color: "#FF5722",
-              },
-              {
-                id: "mariscos",
-                icon: "anchor",
-                label: "Mariscos",
-                color: "#03A9F4",
-              },
+              { id: "arepas", icon: "sun", label: "Arepas", color: "#FF8C00" },
+              { id: "empanadas", icon: "coffee", label: "Empanadas", color: "#E91E63" },
+              { id: "parrilla", icon: "award", label: "Parrilla", color: "#F44336" },
+              { id: "pollo", icon: "feather", label: "Pollo", color: "#FF5722" },
+              { id: "pastelitos", icon: "star", label: "Pastelitos", color: "#9C27B0" },
+              { id: "cachapas", icon: "disc", label: "Cachapas", color: "#FFB800" },
             ].map((item) => {
               const isActive = activeCategory === item.id;
               return (
@@ -357,7 +370,39 @@ export default function HomeScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
+          {searchLoading && <ActivityIndicator size="small" color={RabbitFoodColors.primary} />}
         </View>
+
+        {/* Resultados de búsqueda de productos */}
+        {searchQuery.trim().length >= 2 && searchResults.length > 0 && (
+          <View style={styles.section}>
+            <ThemedText type="h3" style={styles.sectionTitle}>
+              Productos ({searchResults.length})
+            </ThemedText>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: Spacing.sm }}>
+              {searchResults.map((product: any, idx: number) => (
+                <Pressable
+                  key={`${product.id}-${idx}`}
+                  onPress={() => navigation.navigate("BusinessDetail", { businessId: product.business.id })}
+                  style={[styles.productCard, { backgroundColor: theme.card }, Shadows.sm]}
+                >
+                  <Image source={{ uri: product.image }} style={styles.productImage} contentFit="cover" />
+                  <View style={{ padding: Spacing.sm }}>
+                    <ThemedText type="small" style={{ fontWeight: "600" }} numberOfLines={1}>
+                      {product.name}
+                    </ThemedText>
+                    <ThemedText type="caption" style={{ color: theme.textSecondary }} numberOfLines={1}>
+                      {product.business.name}
+                    </ThemedText>
+                    <ThemedText type="small" style={{ color: RabbitFoodColors.primary, marginTop: 2 }}>
+                      Bs. {(product.price / 100).toFixed(2)}
+                    </ThemedText>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
         {/* Quick Filters */}
         <ScrollView
@@ -1111,5 +1156,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,
     borderRadius: BorderRadius.full,
+  },
+  productCard: {
+    width: 140,
+    borderRadius: BorderRadius.md,
+    overflow: "hidden",
+  },
+  productImage: {
+    width: 140,
+    height: 100,
   },
 });

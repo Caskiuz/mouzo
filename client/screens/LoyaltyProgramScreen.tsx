@@ -50,106 +50,62 @@ export default function LoyaltyProgramScreen() {
   const loadLoyaltyData = async () => {
     setLoading(true);
     try {
-      // Mock data - in real app, fetch from API
-      const mockData: LoyaltyData = {
-        currentPoints: 2450,
-        totalEarned: 8750,
-        level: 'Gold',
-        nextLevel: 'Platinum',
-        pointsToNext: 550,
-        subscription: {
-          isActive: false,
-          type: 'premium',
-          benefits: [
-            'Entregas gratis ilimitadas',
-            '20% descuento en todos los pedidos',
-            'Soporte prioritario 24/7',
-            'Acceso a ofertas exclusivas',
-            'Puntos dobles en pedidos'
-          ],
-          monthlyFee: 9900,
-          savings: 15000,
-        },
-        rewards: [
-          {
-            id: '1',
-            title: 'Entrega Gratis',
-            description: 'Entrega gratuita en tu próximo pedido',
-            pointsCost: 500,
-            type: 'freeDelivery',
-            value: 2500,
-            available: true,
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/loyalty/dashboard`, {
+        headers: { 'Authorization': `Bearer ${user?.token}` },
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        const mockData: LoyaltyData = {
+          currentPoints: data.dashboard.points.currentPoints,
+          totalEarned: data.dashboard.points.totalEarned,
+          level: data.dashboard.points.tier as any,
+          nextLevel: getNextTierName(data.dashboard.points.tier),
+          pointsToNext: data.dashboard.points.pointsToNextTier,
+          subscription: {
+            isActive: false,
+            type: 'premium',
+            benefits: [
+              'Entregas gratis ilimitadas',
+              '20% descuento en todos los pedidos',
+              'Soporte prioritario 24/7',
+              'Acceso a ofertas exclusivas',
+              'Puntos dobles en pedidos'
+            ],
+            monthlyFee: 9900,
+            savings: 15000,
           },
-          {
-            id: '2',
-            title: '15% Descuento',
-            description: 'Descuento del 15% en cualquier pedido',
-            pointsCost: 750,
-            type: 'discount',
-            value: 15,
-            available: true,
-          },
-          {
-            id: '3',
-            title: 'Cashback $50',
-            description: 'Recibe $50 pesos de vuelta',
-            pointsCost: 1000,
-            type: 'cashback',
-            value: 5000,
-            available: true,
-          },
-          {
-            id: '4',
-            title: 'Pizza Gratis',
-            description: 'Pizza mediana gratis de Pizza Napoli',
-            pointsCost: 2000,
-            type: 'product',
-            value: 18000,
-            available: true,
-            expiresAt: '2024-02-15',
-          },
-          {
-            id: '5',
-            title: '25% Descuento VIP',
-            description: 'Descuento exclusivo para miembros Gold+',
-            pointsCost: 1500,
-            type: 'discount',
-            value: 25,
-            available: false,
-          },
-        ],
-        history: [
-          {
-            id: '1',
-            type: 'earned',
-            points: 150,
-            description: 'Pedido completado - Tacos El Güero',
-            date: '2024-01-10',
-          },
-          {
-            id: '2',
-            type: 'redeemed',
-            points: -500,
-            description: 'Canjeado: Entrega Gratis',
-            date: '2024-01-08',
-          },
-          {
-            id: '3',
-            type: 'earned',
-            points: 200,
-            description: 'Bonus por reseña 5 estrellas',
-            date: '2024-01-05',
-          },
-        ],
-      };
+          rewards: data.dashboard.rewards.map((r: any) => ({
+            id: r.id,
+            title: r.name,
+            description: r.description,
+            pointsCost: r.pointsCost,
+            type: r.type,
+            value: r.discountValue || r.cashbackAmount || 0,
+            available: r.isActive,
+          })),
+          history: data.dashboard.recentActivity.map((a: any) => ({
+            id: a.id,
+            type: a.type === 'earned' ? 'earned' : 'redeemed',
+            points: a.points,
+            description: a.description,
+            date: new Date(a.createdAt).toLocaleDateString(),
+          })),
+        };
+        setLoyaltyData(mockData);
+      }
 
-      setLoyaltyData(mockData);
     } catch (error) {
       console.error('Error loading loyalty data:', error);
-      Alert.alert('Error', 'No se pudieron cargar los datos de lealtad');
     } finally {
       setLoading(false);
     }
+  };
+
+  const getNextTierName = (tier: string) => {
+    const tiers = ['bronze', 'silver', 'gold', 'platinum'];
+    const idx = tiers.indexOf(tier.toLowerCase());
+    return idx >= 0 && idx < tiers.length - 1 ? tiers[idx + 1].charAt(0).toUpperCase() + tiers[idx + 1].slice(1) : 'Max';
   };
 
   const redeemReward = async (rewardId: string) => {
