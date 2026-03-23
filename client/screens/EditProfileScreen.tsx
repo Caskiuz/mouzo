@@ -18,8 +18,10 @@ import { Spacing, BorderRadius, RabbitFoodColors, Shadows } from "@/constants/th
 import { apiRequest, getApiUrl } from "@/lib/query-client";
 
 function resolveProfileImageUrl(profileImage: string): string {
-  const apiBase = getApiUrl().replace(/\/+$/, "");
+  // Base64 — no necesita resolución
+  if (profileImage.startsWith('data:image/')) return profileImage;
 
+  const apiBase = getApiUrl().replace(/\/+$/, "");
   if (/^https?:\/\//i.test(profileImage)) {
     try {
       const source = new URL(profileImage);
@@ -32,10 +34,8 @@ function resolveProfileImageUrl(profileImage: string): string {
     } catch {
       return profileImage;
     }
-
     return profileImage;
   }
-
   return `${apiBase}${profileImage.startsWith("/") ? "" : "/"}${profileImage}`;
 }
 
@@ -145,25 +145,32 @@ export default function EditProfileScreen() {
   const uploadImage = async (uri: string) => {
     setIsUploadingImage(true);
     try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const reader = new FileReader();
-      
-      reader.onloadend = async () => {
-        const base64data = reader.result as string;
-        
-        const apiResponse = await apiRequest('POST', '/api/user/profile-image', {
-          image: base64data,
-        });
+      // React Native: convertir URI a base64 directamente
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(xhr.response);
+        };
+        xhr.onerror = reject;
+        xhr.responseType = 'blob';
+        xhr.open('GET', uri);
+        xhr.send();
+      });
 
-        const data = await apiResponse.json();
-        if (data.success) {
-          await updateUser({ profileImage: data.profileImage });
-          showToast('Foto actualizada', 'success');
-        }
-      };
-      
-      reader.readAsDataURL(blob);
+      const apiResponse = await apiRequest('POST', '/api/user/profile-image', {
+        image: base64,
+      });
+
+      const data = await apiResponse.json();
+      if (data.success) {
+        await updateUser({ profileImage: data.profileImage });
+        showToast('Foto actualizada', 'success');
+      } else {
+        throw new Error(data.error || 'Error al subir imagen');
+      }
     } catch (error: any) {
       showToast('Error al subir imagen', 'error');
     } finally {

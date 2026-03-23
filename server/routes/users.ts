@@ -70,71 +70,26 @@ router.put("/profile", authenticateToken, async (req, res) => {
   }
 });
 
-// Upload profile image
+// Upload profile image — guarda base64 directo en DB (filesystem de Render es efímero)
 router.post("/profile-image", authenticateToken, async (req, res) => {
   try {
     const { image } = req.body;
-    
-    if (!image) {
-      return res.status(400).json({ error: "Imagen requerida" });
-    }
 
-    // Basic validation
-    if (!image.startsWith('data:image/')) {
-      return res.status(400).json({ error: "Formato de imagen inválido" });
-    }
+    if (!image) return res.status(400).json({ error: "Imagen requerida" });
+    if (!image.startsWith('data:image/')) return res.status(400).json({ error: "Formato de imagen inválido" });
 
-    // Size check (2MB limit)
+    // Límite 2MB
     const estimatedBytes = Math.ceil(image.length * 0.75);
     if (estimatedBytes > 2 * 1024 * 1024) {
-      return res.status(400).json({ 
-        error: "La imagen es muy pesada. Máximo 2MB" 
-      });
+      return res.status(400).json({ error: "La imagen es muy pesada. Máximo 2MB" });
     }
 
-    // Extract base64 data
-    const matches = image.match(/^data:image\/(\w+);base64,(.+)$/);
-    if (!matches) {
-      return res.status(400).json({ error: "Formato de imagen inválido" });
-    }
-
-    const extension = matches[1];
-    const base64Data = matches[2];
-    const buffer = Buffer.from(base64Data, 'base64');
-
-    // Create uploads directory if it doesn't exist
-    const fs = require('fs');
-    const path = require('path');
-    const uploadsDir = path.join(process.cwd(), 'server', 'uploads', 'profiles');
-    
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
-    // Save file
-    const filename = `${req.user!.id}_${Date.now()}.${extension}`;
-    const filepath = path.join(uploadsDir, filename);
-    fs.writeFileSync(filepath, buffer);
-
-    // Update user profile
-    const imagePath = `/uploads/profiles/${filename}`;
     const { users } = await import("@shared/schema-mysql");
     const { db } = await import("../db");
-    
-    await db
-      .update(users)
-      .set({ 
-        profileImage: imagePath
-      })
-      .where(eq(users.id, req.user!.id));
 
-    console.log(`Profile image saved: ${imagePath}`);
+    await db.update(users).set({ profileImage: image }).where(eq(users.id, req.user!.id));
 
-    res.json({ 
-      success: true, 
-      profileImage: imagePath,
-      message: "Imagen actualizada" 
-    });
+    res.json({ success: true, profileImage: image, message: "Imagen actualizada" });
   } catch (error: any) {
     console.error("Upload image error:", error);
     res.status(500).json({ error: error.message });
