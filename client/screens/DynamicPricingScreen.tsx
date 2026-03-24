@@ -159,7 +159,7 @@ export default function DynamicPricingScreen() {
             )}
             {rule.conditions.demandThreshold && (
               <Text style={styles.ruleCondition}>
-                📊 Demanda > {rule.conditions.demandThreshold}%
+                📊 Demanda {'>'}  {rule.conditions.demandThreshold}%
               </Text>
             )}
             {rule.conditions.dayOfWeek && (

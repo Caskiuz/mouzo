@@ -271,7 +271,7 @@ export default function SocialFeaturesScreen() {
             <Text style={styles.challengeDescription}>
               Prueba 5 restaurantes diferentes esta semana
             </Text>
-            <Text style={styles.challengeProgress">Progreso: 2/5</Text>
+            <Text style={styles.challengeProgress}>Progreso: 2/5</Text>
           </View>
         </View>
         
