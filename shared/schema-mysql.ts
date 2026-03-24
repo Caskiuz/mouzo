@@ -1020,3 +1020,91 @@ export const subscriptionBenefits = mysqlTable("subscription_benefits", {
 
 export type Subscription = typeof subscriptions.$inferSelect;
 export type SubscriptionBenefit = typeof subscriptionBenefits.$inferSelect;
+
+// Gift Cards - Tarjetas regalo
+export const giftCards = mysqlTable("gift_cards", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  code: varchar("code", { length: 20 }).notNull().unique(),
+  amount: int("amount").notNull(),
+  balance: int("balance").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("active"),
+  purchasedBy: varchar("purchased_by", { length: 255 }).notNull(),
+  recipientEmail: varchar("recipient_email", { length: 255 }),
+  recipientPhone: varchar("recipient_phone", { length: 20 }),
+  recipientName: varchar("recipient_name", { length: 255 }),
+  message: text("message"),
+  design: varchar("design", { length: 50 }).default("default"),
+  expiresAt: timestamp("expires_at"),
+  redeemedBy: varchar("redeemed_by", { length: 255 }),
+  redeemedAt: timestamp("redeemed_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const giftCardTransactions = mysqlTable("gift_card_transactions", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  giftCardId: varchar("gift_card_id", { length: 255 }).notNull(),
+  orderId: varchar("order_id", { length: 255 }),
+  amount: int("amount").notNull(),
+  balanceBefore: int("balance_before").notNull(),
+  balanceAfter: int("balance_after").notNull(),
+  transactionType: varchar("transaction_type", { length: 50 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const giftCardDesigns = mysqlTable("gift_card_designs", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  imageUrl: text("image_url").notNull(),
+  category: varchar("category", { length: 50 }).default("general"),
+  isActive: boolean("is_active").default(true),
+  displayOrder: int("display_order").default(0),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type GiftCard = typeof giftCards.$inferSelect;
+export type GiftCardTransaction = typeof giftCardTransactions.$inferSelect;
+export type GiftCardDesign = typeof giftCardDesigns.$inferSelect;
+
+// Gift Cards - Tarjetas regalo
+export const giftCards = mysqlTable("gift_cards", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  code: varchar("code", { length: 20 }).notNull().unique(),
+  amount: int("amount").notNull(),
+  balance: int("balance").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("active"),
+  purchasedBy: varchar("purchased_by", { length: 255 }).notNull(),
+  recipientEmail: varchar("recipient_email", { length: 255 }),
+  recipientPhone: varchar("recipient_phone", { length: 20 }),
+  recipientName: varchar("recipient_name", { length: 255 }),
+  message: text("message"),
+  design: varchar("design", { length: 50 }).default("default"),
+  expiresAt: timestamp("expires_at"),
+  redeemedBy: varchar("redeemed_by", { length: 255 }),
+  redeemedAt: timestamp("redeemed_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const giftCardTransactions = mysqlTable("gift_card_transactions", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  giftCardId: varchar("gift_card_id", { length: 255 }).notNull(),
+  orderId: varchar("order_id", { length: 255 }),
+  amount: int("amount").notNull(),
+  balanceBefore: int("balance_before").notNull(),
+  balanceAfter: int("balance_after").notNull(),
+  transactionType: varchar("transaction_type", { length: 50 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const giftCardDesigns = mysqlTable("gift_card_designs", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  imageUrl: text("image_url").notNull(),
+  category: varchar("category", { length: 50 }).default("general"),
+  isActive: boolean("is_active").default(true),
+  displayOrder: int("display_order").default(0),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type GiftCard = typeof giftCards.$inferSelect;
+export type GiftCardTransaction = typeof giftCardTransactions.$inferSelect;
+export type GiftCardDesign = typeof giftCardDesigns.$inferSelect;

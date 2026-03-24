@@ -41,6 +41,7 @@ import enhancedReviewsRoutes from "./routes/enhancedReviews";
 import businessAnalyticsRoutes from "./routes/businessAnalytics";
 import groupOrdersRoutes from "./routes/groupOrders";
 import gamificationRoutes from "./routes/gamification";
+import giftCardsRoutes from "./routes/giftCards";
 
 const router = express.Router();
 
@@ -136,5 +137,6 @@ router.use("/reviews",              enhancedReviewsRoutes);
 router.use("/analytics",            businessAnalyticsRoutes);
 router.use("/group-orders",         groupOrdersRoutes);
 router.use("/gamification",         gamificationRoutes);
+router.use("/gift-cards",           giftCardsRoutes);
 
 export default router;
