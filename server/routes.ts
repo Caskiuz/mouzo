@@ -40,6 +40,7 @@ import smartNotificationRoutes from "./routes/smartNotifications";
 import enhancedReviewsRoutes from "./routes/enhancedReviews";
 import businessAnalyticsRoutes from "./routes/businessAnalytics";
 import groupOrdersRoutes from "./routes/groupOrders";
+import gamificationRoutes from "./routes/gamification";
 
 const router = express.Router();
 
@@ -134,5 +135,6 @@ router.use("/smart-notifications",  smartNotificationRoutes);
 router.use("/reviews",              enhancedReviewsRoutes);
 router.use("/analytics",            businessAnalyticsRoutes);
 router.use("/group-orders",         groupOrdersRoutes);
+router.use("/gamification",         gamificationRoutes);
 
 export default router;
