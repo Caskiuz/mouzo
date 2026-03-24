@@ -19,7 +19,7 @@ import BusinessListScreen from "@/screens/BusinessListScreen";
 import PaymentMethodsScreen from "@/screens/PaymentMethodsScreen";
 import PaymentWalletSetupScreen from "@/screens/PaymentWalletSetupScreen";
 import SupportScreen from "@/screens/SupportScreen";
-import ReviewScreen from "@/screens/ReviewScreen";
+import ReviewScreen from "@/screens/ReviewScreenEnhanced";
 import LegalScreen from "@/screens/LegalScreen";
 import ScheduleOrderScreen from "@/screens/ScheduleOrderScreen";
 import OrderChatScreen from "@/screens/OrderChatScreen";

@@ -37,6 +37,7 @@ import supportRoutesV2 from "./routes/support";
 import enhancedTrackingRoutes from "./routes/enhancedTracking";
 import subscriptionRoutes from "./routes/subscriptions";
 import smartNotificationRoutes from "./routes/smartNotifications";
+import enhancedReviewsRoutes from "./routes/enhancedReviews";
 
 const router = express.Router();
 
@@ -128,5 +129,6 @@ router.use("/support",               supportRoutesV2);
 router.use("/tracking",              enhancedTrackingRoutes);
 router.use("/subscriptions",        subscriptionRoutes);
 router.use("/smart-notifications",  smartNotificationRoutes);
+router.use("/reviews",              enhancedReviewsRoutes);
 
 export default router;

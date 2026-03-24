@@ -532,13 +532,47 @@ export const reviews = mysqlTable("reviews", {
   userId: varchar("user_id", { length: 255 }).notNull(),
   orderId: varchar("order_id", { length: 255 }).notNull(),
   businessId: varchar("business_id", { length: 255 }).notNull(),
-  rating: int("rating").notNull(), // 1-5
+  rating: int("rating").notNull(), // 1-5 (rating general, legacy)
+  foodRating: int("food_rating"), // 1-5
+  deliveryRating: int("delivery_rating"), // 1-5
+  packagingRating: int("packaging_rating"), // 1-5
+  deliveryPersonId: varchar("delivery_person_id", { length: 255 }),
+  deliveryPersonRating: int("delivery_person_rating"), // 1-5
   comment: text("comment"),
+  photos: text("photos"), // JSON array de URLs
+  tags: text("tags"), // JSON array de tag IDs
   approved: boolean("approved").notNull().default(true),
   flagged: boolean("flagged").notNull().default(false),
   moderationReason: text("moderation_reason"),
   businessResponse: text("business_response"),
   businessResponseAt: timestamp("business_response_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Review Responses - Respuestas de negocios a reviews
+export const reviewResponses = mysqlTable("review_responses", {
+  id: varchar("id", { length: 255 })
+    .primaryKey()
+    .default(sql`(UUID())`),
+  reviewId: varchar("review_id", { length: 255 }).notNull(),
+  businessId: varchar("business_id", { length: 255 }).notNull(),
+  responseText: text("response_text").notNull(),
+  respondedBy: varchar("responded_by", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+// Review Tags - Tags predefinidos para reviews
+export const reviewTags = mysqlTable("review_tags", {
+  id: varchar("id", { length: 255 })
+    .primaryKey()
+    .default(sql`(UUID())`),
+  tagName: varchar("tag_name", { length: 100 }).notNull().unique(),
+  category: varchar("category", { length: 50 }).notNull(),
+  icon: varchar("icon", { length: 50 }),
+  isPositive: boolean("is_positive").default(true),
+  displayOrder: int("display_order").default(0),
+  isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
@@ -567,6 +601,8 @@ export type ScheduledOrder = typeof scheduledOrders.$inferSelect;
 export type SupportChat = typeof supportChats.$inferSelect;
 export type SupportMessage = typeof supportMessages.$inferSelect;
 export type Review = typeof reviews.$inferSelect;
+export type ReviewResponse = typeof reviewResponses.$inferSelect;
+export type ReviewTag = typeof reviewTags.$inferSelect;
 export type CallLog = typeof callLogs.$inferSelect;
 
 // Delivery Zones - Zonas de entrega
