@@ -68,133 +68,39 @@ export default function AIRecommendationsScreen() {
   const [activeTab, setActiveTab] = useState<'foryou' | 'trending' | 'predictions' | 'preferences'>('foryou');
 
   useEffect(() => {
-    loadRecommendations();
-    loadUserPreferences();
-  }, []);
+    if (user?.id) {
+      loadRecommendations();
+      loadUserPreferences();
+    }
+  }, [user?.id]);
 
   const loadRecommendations = async () => {
     try {
-      // Mock AI-powered recommendations
-      const mockData: RecommendationData = {
-        personalizedForYou: [
-          {
-            id: '1',
-            type: 'restaurant',
-            name: 'Tacos El Güero',
-            description: 'Basado en tus pedidos anteriores de comida mexicana',
-            imageUrl: 'https://via.placeholder.com/100x100',
-            rating: 4.8,
-            estimatedTime: 25,
-            confidence: 92,
-            reason: 'Pediste tacos 5 veces este mes',
-          },
-          {
-            id: '2',
-            type: 'product',
-            name: 'Pizza Hawaiana Mediana',
-            description: 'Tu pizza favorita está disponible con descuento',
-            imageUrl: 'https://via.placeholder.com/100x100',
-            rating: 4.6,
-            price: 15000,
-            confidence: 87,
-            reason: 'Ordenaste esta pizza 3 veces',
-          },
-          {
-            id: '3',
-            type: 'restaurant',
-            name: 'Sushi Zen',
-            description: 'Nuevo restaurante que coincide con tus gustos',
-            imageUrl: 'https://via.placeholder.com/100x100',
-            rating: 4.9,
-            estimatedTime: 35,
-            confidence: 78,
-            reason: 'Te gusta la comida asiática premium',
-          },
-        ],
-        trendingNow: [
-          {
-            id: '1',
-            name: 'Burger Clásica',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            orderCount: 156,
-            trendScore: 95,
-          },
-          {
-            id: '2',
-            name: 'Smoothie Verde',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            orderCount: 89,
-            trendScore: 88,
-          },
-          {
-            id: '3',
-            name: 'Ramen Picante',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            orderCount: 67,
-            trendScore: 82,
-          },
-        ],
-        basedOnWeather: [
-          {
-            id: '1',
-            name: 'Chocolate Caliente',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            weatherReason: 'Perfecto para este día frío',
-          },
-          {
-            id: '2',
-            name: 'Sopa de Tortilla',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            weatherReason: 'Ideal para calentarte',
-          },
-        ],
-        reorderSuggestions: [
-          {
-            id: '1',
-            name: 'Tu pedido del martes',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            lastOrdered: '2024-01-09',
-            frequency: 4,
-          },
-          {
-            id: '2',
-            name: 'Tu combo favorito',
-            imageUrl: 'https://via.placeholder.com/80x80',
-            lastOrdered: '2024-01-07',
-            frequency: 7,
-          },
-        ],
-        similarUsers: [
-          {
-            id: '1',
-            name: 'Usuario similar',
-            similarity: 89,
-            favoriteRestaurant: 'Pizza Napoli',
-          },
-          {
-            id: '2',
-            name: 'Gustos parecidos',
-            similarity: 76,
-            favoriteRestaurant: 'Café Central',
-          },
-        ],
-        predictedOrders: [
-          {
-            day: 'Viernes',
-            probability: 85,
-            suggestedTime: '20:30',
-            suggestedItems: ['Pizza', 'Refresco', 'Postre'],
-          },
-          {
-            day: 'Domingo',
-            probability: 72,
-            suggestedTime: '13:00',
-            suggestedItems: ['Tacos', 'Agua fresca'],
-          },
-        ],
-      };
-
-      setRecommendations(mockData);
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/ai/personalized`, {
+        headers: { 'Authorization': `Bearer ${user?.token}` },
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setRecommendations({
+          personalizedForYou: data.recommendations.map((r: any) => ({
+            id: r.id,
+            type: r.itemType,
+            name: r.itemData?.name || 'Producto',
+            description: r.reason,
+            imageUrl: r.itemData?.image || 'https://via.placeholder.com/100x100',
+            rating: r.itemData?.rating ? r.itemData.rating / 10 : 4.5,
+            price: r.itemData?.price,
+            confidence: r.confidenceScore,
+            reason: r.reason,
+          })),
+          trendingNow: [],
+          basedOnWeather: [],
+          reorderSuggestions: [],
+          similarUsers: [],
+          predictedOrders: [],
+        });
+      }
     } catch (error) {
       console.error('Error loading recommendations:', error);
     }
