@@ -945,3 +945,51 @@ export type UserFavorite = typeof userFavorites.$inferSelect;
 export type UserPreference = typeof userPreferences.$inferSelect;
 export type AIRecommendation = typeof aiRecommendations.$inferSelect;
 export type SupportTicket = typeof supportTickets.$inferSelect;
+
+// Group Orders - Pedidos grupales
+export const groupOrders = mysqlTable("group_orders", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  creatorId: varchar("creator_id", { length: 255 }).notNull(),
+  businessId: varchar("business_id", { length: 255 }).notNull(),
+  businessName: varchar("business_name", { length: 255 }).notNull(),
+  deliveryAddress: text("delivery_address").notNull(),
+  deliveryLatitude: text("delivery_latitude"),
+  deliveryLongitude: text("delivery_longitude"),
+  status: varchar("status", { length: 50 }).notNull().default("open"),
+  shareToken: varchar("share_token", { length: 255 }).notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  orderId: varchar("order_id", { length: 255 }),
+  totalAmount: int("total_amount").default(0),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  lockedAt: timestamp("locked_at"),
+  orderedAt: timestamp("ordered_at"),
+});
+
+export const groupOrderParticipants = mysqlTable("group_order_participants", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  groupOrderId: varchar("group_order_id", { length: 255 }).notNull(),
+  userId: varchar("user_id", { length: 255 }).notNull(),
+  userName: varchar("user_name", { length: 255 }).notNull(),
+  items: text("items").notNull(),
+  subtotal: int("subtotal").notNull(),
+  paymentStatus: varchar("payment_status", { length: 50 }).default("pending"),
+  paymentMethod: varchar("payment_method", { length: 50 }),
+  paymentProofUrl: text("payment_proof_url"),
+  joinedAt: timestamp("joined_at").default(sql`CURRENT_TIMESTAMP`),
+  paidAt: timestamp("paid_at"),
+});
+
+export const groupOrderInvitations = mysqlTable("group_order_invitations", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  groupOrderId: varchar("group_order_id", { length: 255 }).notNull(),
+  invitedBy: varchar("invited_by", { length: 255 }).notNull(),
+  invitedUserId: varchar("invited_user_id", { length: 255 }),
+  invitedPhone: varchar("invited_phone", { length: 20 }),
+  status: varchar("status", { length: 50 }).default("pending"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  respondedAt: timestamp("responded_at"),
+});
+
+export type GroupOrder = typeof groupOrders.$inferSelect;
+export type GroupOrderParticipant = typeof groupOrderParticipants.$inferSelect;
+export type GroupOrderInvitation = typeof groupOrderInvitations.$inferSelect;

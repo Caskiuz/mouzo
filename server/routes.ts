@@ -39,6 +39,7 @@ import subscriptionRoutes from "./routes/subscriptions";
 import smartNotificationRoutes from "./routes/smartNotifications";
 import enhancedReviewsRoutes from "./routes/enhancedReviews";
 import businessAnalyticsRoutes from "./routes/businessAnalytics";
+import groupOrdersRoutes from "./routes/groupOrders";
 
 const router = express.Router();
 
@@ -132,5 +133,6 @@ router.use("/subscriptions",        subscriptionRoutes);
 router.use("/smart-notifications",  smartNotificationRoutes);
 router.use("/reviews",              enhancedReviewsRoutes);
 router.use("/analytics",            businessAnalyticsRoutes);
+router.use("/group-orders",         groupOrdersRoutes);
 
 export default router;
