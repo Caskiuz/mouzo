@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
   Pressable,
   Dimensions,
   Platform,
+  Animated,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 
 let MapView: any = null;
 let Marker: any = null;
@@ -30,6 +32,7 @@ interface CollapsibleMapProps {
   customerLocation?: Location;
   isLoading?: boolean;
   driverName?: string;
+  driverPhoto?: string;
   eta?: string;
   status?: string;
   onCallDriver?: () => void;
@@ -57,8 +60,33 @@ const STATUS_LABELS: Record<string, { label: string; color: string; icon: string
 };
 
 function DriverMarker({ color }: { color: string }) {
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.3,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
   return (
     <View style={styles.pulsingWrapper}>
+      <Animated.View
+        style={[
+          styles.pulsingRing,
+          { borderColor: color, transform: [{ scale: pulseAnim }] },
+        ]}
+      />
       <View style={[styles.markerOuter, { backgroundColor: "#FFFFFF" }]}>
         <View style={[styles.markerInner, { backgroundColor: color }]}>
           <Feather name="navigation" size={14} color="#FFFFFF" />
@@ -74,6 +102,7 @@ export function CollapsibleMap({
   customerLocation,
   isLoading = false,
   driverName,
+  driverPhoto,
   eta,
   status = "preparing",
   onCallDriver,
@@ -207,9 +236,17 @@ export function CollapsibleMap({
       {hasDriver && (
         <View style={[styles.driverCard, { backgroundColor: theme.card }, Shadows.lg]}>
           <View style={styles.driverLeft}>
-            <View style={[styles.driverAvatar, { backgroundColor: RabbitFoodColors.primary + "20" }]}>
-              <Feather name="user" size={22} color={RabbitFoodColors.primary} />
-            </View>
+            {driverPhoto ? (
+              <Image
+                source={{ uri: driverPhoto }}
+                style={styles.driverAvatar}
+                contentFit="cover"
+              />
+            ) : (
+              <View style={[styles.driverAvatar, { backgroundColor: RabbitFoodColors.primary + "20" }]}>
+                <Feather name="user" size={22} color={RabbitFoodColors.primary} />
+              </View>
+            )}
             <View style={styles.driverInfo}>
               <ThemedText type="h4" numberOfLines={1}>{driverName ?? "Repartidor"}</ThemedText>
               <View style={styles.driverBadge}>

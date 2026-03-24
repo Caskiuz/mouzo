@@ -62,6 +62,7 @@ export default function OrderTrackingScreen() {
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [deliveryLocation, setDeliveryLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [businessLocation, setBusinessLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [driverPhoto, setDriverPhoto] = useState<string | null>(null);
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [tipSent, setTipSent] = useState(false);
   const [sendingTip, setSendingTip] = useState(false);
@@ -204,6 +205,17 @@ export default function OrderTrackingScreen() {
                 });
               }
             } catch { /* sin ubicación del negocio */ }
+          }
+
+          // Cargar foto del repartidor
+          if (apiOrder.deliveryPersonId) {
+            try {
+              const driverRes = await apiRequest("GET", `/api/users/${apiOrder.deliveryPersonId}`);
+              const driverData = await driverRes.json();
+              if (driverData.user?.profilePicture) {
+                setDriverPhoto(driverData.user.profilePicture);
+              }
+            } catch { /* sin foto del repartidor */ }
           }
           return;
         }
@@ -457,6 +469,7 @@ export default function OrderTrackingScreen() {
           deliveryPersonLocation={deliveryLocation || undefined}
           customerLocation={userLocation || undefined}
           driverName={order.deliveryPersonName}
+          driverPhoto={driverPhoto || undefined}
           eta={dynamicEta ?? undefined}
           status={order.status}
           onCallDriver={order.deliveryPersonPhone ? () => handleCall(order.deliveryPersonPhone!) : undefined}

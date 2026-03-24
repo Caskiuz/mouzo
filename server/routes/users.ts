@@ -39,6 +39,39 @@ router.get("/profile", authenticateToken, async (req, res) => {
   }
 });
 
+// Get user by ID (for driver photo, etc)
+router.get("/:userId", authenticateToken, async (req, res) => {
+  try {
+    const { users } = await import("@shared/schema-mysql");
+    const { db } = await import("../db");
+    
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, req.params.userId))
+      .limit(1);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        role: user.role,
+        profilePicture: user.profileImage,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error: any) {
+    console.error("Get user error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Update user profile
 router.put("/profile", authenticateToken, async (req, res) => {
   try {

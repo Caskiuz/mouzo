@@ -129,6 +129,55 @@ export class EnhancedTrackingService {
     }
   }
 
+  // Verificar y enviar alertas de tiempo (5 min, 2 min)
+  static async checkTimeAlerts(orderId: string, etaMinutes: number) {
+    const [order] = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.id, orderId))
+      .limit(1);
+
+    if (!order || !order.deliveryPersonId) return;
+
+    const timeAlerts = [
+      { type: 'eta_5min', threshold: 5, message: '¡Tu pedido llega en 5 minutos!' },
+      { type: 'eta_2min', threshold: 2, message: '¡Tu pedido llega en 2 minutos!' },
+    ];
+
+    for (const alert of timeAlerts) {
+      if (etaMinutes <= alert.threshold) {
+        // Verificar si ya se envió
+        const [existing] = await db
+          .select()
+          .from(proximityAlerts)
+          .where(
+            and(
+              eq(proximityAlerts.orderId, orderId),
+              eq(proximityAlerts.alertType, alert.type)
+            )
+          )
+          .limit(1);
+
+        if (!existing) {
+          await db.insert(proximityAlerts).values({
+            orderId,
+            driverId: order.deliveryPersonId,
+            alertType: alert.type,
+            distance: 0,
+            destinationType: 'customer',
+            notificationSent: true,
+          });
+
+          await sendPushToUser(order.userId, {
+            title: alert.message,
+            body: `Pedido #${orderId.slice(-6)}`,
+            data: { orderId, screen: 'OrderTracking', type: alert.type },
+          });
+        }
+      }
+    }
+  }
+
   // Obtener ubicación actual del repartidor
   static async getDriverLocation(orderId: string) {
     const [order] = await db
@@ -214,6 +263,9 @@ export class EnhancedTrackingService {
     }
 
     const etaDate = new Date(Date.now() + totalETA * 60 * 1000);
+
+    // Verificar alertas de tiempo
+    await this.checkTimeAlerts(orderId, totalETA);
 
     return {
       success: true,
