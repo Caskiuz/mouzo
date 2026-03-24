@@ -65,6 +65,7 @@ export default function OrderTrackingScreen() {
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [tipSent, setTipSent] = useState(false);
   const [sendingTip, setSendingTip] = useState(false);
+  const [dynamicETA, setDynamicETA] = useState<{ minutes: number; confidence: number } | null>(null);
 
   const tipOptions = [10, 20, 30, 50];
 
@@ -84,6 +85,29 @@ export default function OrderTrackingScreen() {
       setSendingTip(false);
     }
   };
+
+  // Poll for ETA updates every 30 seconds
+  useEffect(() => {
+    const fetchETA = async () => {
+      if (!orderId) return;
+      try {
+        const response = await apiRequest('GET', `/api/tracking/eta/${orderId}`);
+        const data = await response.json();
+        if (data.success && data.eta) {
+          setDynamicETA({
+            minutes: data.eta.minutes,
+            confidence: data.eta.confidence,
+          });
+        }
+      } catch (error) {
+        console.log('ETA not available');
+      }
+    };
+
+    fetchETA();
+    const interval = setInterval(fetchETA, 30000);
+    return () => clearInterval(interval);
+  }, [orderId]);
 
   // Poll for delivery person location every 10 seconds
   useEffect(() => {
@@ -302,8 +326,11 @@ export default function OrderTrackingScreen() {
     }
   };
 
-  const etaRange = getStatusMinutes(order.status);
-  const dynamicEta = etaRange ? `${etaRange.min}-${etaRange.max} min` : null;
+  const etaRange = dynamicETA 
+    ? `${dynamicETA.minutes} min` 
+    : getStatusMinutes(order.status) 
+    ? `${getStatusMinutes(order.status)!.min}-${getStatusMinutes(order.status)!.max} min` 
+    : null;
 
   const estimatedTime = order.estimatedDelivery
     ? new Date(order.estimatedDelivery).toLocaleTimeString("es-VE", {
