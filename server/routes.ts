@@ -36,6 +36,7 @@ import aiRecommendationsRoutes from "./routes/aiRecommendations";
 import supportRoutesV2 from "./routes/support";
 import enhancedTrackingRoutes from "./routes/enhancedTracking";
 import subscriptionRoutes from "./routes/subscriptions";
+import smartNotificationRoutes from "./routes/smartNotifications";
 
 const router = express.Router();
 
@@ -126,5 +127,6 @@ router.use("/ai",                    aiRecommendationsRoutes);
 router.use("/support",               supportRoutesV2);
 router.use("/tracking",              enhancedTrackingRoutes);
 router.use("/subscriptions",        subscriptionRoutes);
+router.use("/smart-notifications",  smartNotificationRoutes);
 
 export default router;
