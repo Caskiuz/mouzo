@@ -993,3 +993,30 @@ export const groupOrderInvitations = mysqlTable("group_order_invitations", {
 export type GroupOrder = typeof groupOrders.$inferSelect;
 export type GroupOrderParticipant = typeof groupOrderParticipants.$inferSelect;
 export type GroupOrderInvitation = typeof groupOrderInvitations.$inferSelect;
+
+// Subscriptions - Suscripciones premium
+export const subscriptions = mysqlTable("subscriptions", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  userId: varchar("user_id", { length: 255 }).notNull().unique(),
+  plan: varchar("plan", { length: 50 }).notNull().default("free"),
+  status: varchar("status", { length: 50 }).notNull().default("active"),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date"),
+  autoRenew: boolean("auto_renew").notNull().default(true),
+  cancelledAt: timestamp("cancelled_at"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`),
+});
+
+export const subscriptionBenefits = mysqlTable("subscription_benefits", {
+  id: varchar("id", { length: 255 }).primaryKey().default(sql`(UUID())`),
+  plan: varchar("plan", { length: 50 }).notNull(),
+  benefitType: varchar("benefit_type", { length: 50 }).notNull(),
+  benefitValue: varchar("benefit_value", { length: 255 }).notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type Subscription = typeof subscriptions.$inferSelect;
+export type SubscriptionBenefit = typeof subscriptionBenefits.$inferSelect;
