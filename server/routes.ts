@@ -35,6 +35,7 @@ import scheduledOrdersRoutes from "./routes/scheduledOrders";
 import aiRecommendationsRoutes from "./routes/aiRecommendations";
 import supportRoutesV2 from "./routes/support";
 import enhancedTrackingRoutes from "./routes/enhancedTracking";
+import subscriptionRoutes from "./routes/subscriptions";
 
 const router = express.Router();
 
@@ -124,5 +125,6 @@ router.use("/scheduled-orders",      scheduledOrdersRoutes);
 router.use("/ai",                    aiRecommendationsRoutes);
 router.use("/support",               supportRoutesV2);
 router.use("/tracking",              enhancedTrackingRoutes);
+router.use("/subscriptions",        subscriptionRoutes);
 
 export default router;
