@@ -72,6 +72,7 @@ export async function apiRequest(
   }
 
   const token = await getAuthToken();
+  console.log('🔑 Token:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
 
   const headers: Record<string, string> = {};
   if (data) {

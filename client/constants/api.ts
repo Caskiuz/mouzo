@@ -7,6 +7,10 @@ const DISABLE_GPS_IN_DEV = true;
 
 // Get API base URL dynamically at runtime
 export const getApiBaseUrl = (): string => {
+  // HARDCODED FOR DEVELOPMENT - Change back before production
+  console.log('🔧 Using HARDCODED localhost URL');
+  return "http://localhost:5000";
+
   // Check expo config first (from app.config.js) - works in both dev and prod
   const expoBackendUrl = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL;
   if (expoBackendUrl) {
@@ -21,11 +25,15 @@ export const getApiBaseUrl = (): string => {
     return envBackendUrl.trim();
   }
 
-  // Development mode - use Render backend
-  if (__DEV__) {
-    console.log('🔧 Using DEV URL: https://rabbitfood-backend.onrender.com');
-    return "https://rabbitfood-backend.onrender.com";
-  }
+  // HARDCODED FOR DEVELOPMENT - Change back before production
+  console.log('🔧 Using HARDCODED localhost URL');
+  return "http://localhost:5000";
+
+  // Development mode - use localhost backend
+  // if (__DEV__) {
+  //   console.log('🔧 Using DEV URL: http://localhost:5000');
+  //   return "http://localhost:5000";
+  // }
 
   // For web in production, use current origin (same domain)
   if (Platform.OS === "web" && typeof window !== "undefined" && window.location) {

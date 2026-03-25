@@ -64,7 +64,7 @@ export default {
         projectId: "8c58541f-bf02-4e36-bcf9-a2e64b126a5b"
       },
       // CRITICAL: Backend URL for production builds
-      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://rabbitfood-backend.onrender.com"
+      EXPO_PUBLIC_BACKEND_URL: "http://localhost:5000"
     },
     owner: "caskiuzs-organization"
   }

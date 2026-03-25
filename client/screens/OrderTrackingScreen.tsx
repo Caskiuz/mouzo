@@ -563,7 +563,13 @@ export default function OrderTrackingScreen() {
           <View style={styles.paymentRow}>
             <Feather name="credit-card" size={16} color={theme.textSecondary} />
             <ThemedText type="caption" style={{ color: theme.textSecondary, marginLeft: Spacing.xs }}>
-              Pagado con tarjeta
+              {order.paymentMethod === 'pago_movil' ? 'Pago Móvil' :
+               order.paymentMethod === 'binance_pay' ? 'Binance Pay' :
+               order.paymentMethod === 'zinli' ? 'Zinli' :
+               order.paymentMethod === 'zelle' ? 'Zelle' :
+               order.paymentMethod === 'paypal' ? 'PayPal' :
+               order.paymentMethod === 'cash' ? 'Efectivo' :
+               'Tarjeta'}
             </ThemedText>
           </View>
         </View>

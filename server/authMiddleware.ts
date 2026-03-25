@@ -95,6 +95,22 @@ export function requireRole(...allowedRoles: string[]) {
   };
 }
 
+// Require admin role (shorthand)
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!req.user) {
+    return res.status(401).json({ error: "No autenticado" });
+  }
+
+  if (req.user.role !== 'admin' && req.user.role !== 'super_admin') {
+    return res.status(403).json({
+      error: "Solo administradores pueden acceder",
+      yourRole: req.user.role,
+    });
+  }
+
+  next();
+}
+
 // Require minimum role level
 export function requireMinRole(minRole: string) {
   return (req: Request, res: Response, next: NextFunction) => {

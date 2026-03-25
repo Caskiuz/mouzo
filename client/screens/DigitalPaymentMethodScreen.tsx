@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -26,35 +26,54 @@ interface PaymentMethod {
 }
 
 interface Props {
-  orderTotal: number;
-  onSelectMethod: (method: PaymentMethod) => void;
-  onBack: () => void;
+  route?: {
+    params?: {
+      orderTotal?: number;
+    };
+  };
 }
 
-export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props) {
-  const { colors } = useTheme();
+export default function DigitalPaymentMethodScreen({ route }: Props) {
+  const { theme } = useTheme();
   const navigation = useNavigation();
   const [methods, setMethods] = useState<PaymentMethod[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
+  const [exchangeRate, setExchangeRate] = useState(36.50); // Tasa BsD/USD por defecto
+  
+  const orderTotal = route?.params?.orderTotal || 0;
 
   useEffect(() => {
     loadPaymentMethods();
+    loadExchangeRate();
   }, []);
 
   const loadPaymentMethods = async () => {
     try {
-      const response = await apiRequest('/digital-payments/methods', {
-        method: 'GET',
-      });
+      const response = await apiRequest('GET', '/api/digital-payments/methods');
+      const data = await response.json();
 
-      if (response.success) {
-        setMethods(response.methods);
+      if (data.success) {
+        console.log('Payment methods loaded:', data.methods);
+        setMethods(data.methods);
       }
     } catch (error) {
       console.error('Error loading payment methods:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadExchangeRate = async () => {
+    try {
+      // Intentar obtener tasa del backend
+      const response = await apiRequest('GET', '/api/system/exchange-rate');
+      const data = await response.json();
+      if (data.rate) {
+        setExchangeRate(data.rate);
+      }
+    } catch (error) {
+      console.log('Using default exchange rate:', exchangeRate);
     }
   };
 
@@ -86,7 +105,6 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
 
   const handleContinue = () => {
     if (selectedMethod) {
-      // Navegar de vuelta a Checkout con el método seleccionado
       navigation.navigate('Checkout', {
         selectedPaymentMethod: selectedMethod,
       });
@@ -95,38 +113,47 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
 
   if (loading) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.primary} />
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <ActivityIndicator size="large" color={theme.primary} />
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: colors.card }]}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+      <View style={[styles.header, { backgroundColor: theme.card }]}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={theme.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>
           Método de Pago
         </Text>
         <View style={{ width: 40 }} />
       </View>
 
       {/* Order Total */}
-      <View style={[styles.totalCard, { backgroundColor: colors.card }]}>
-        <Text style={[styles.totalLabel, { color: colors.textSecondary }]}>
+      <View style={[styles.totalCard, { backgroundColor: theme.card }]}>
+        <Text style={[styles.totalLabel, { color: theme.textSecondary }]}>
           Total a Pagar
         </Text>
-        <Text style={[styles.totalAmount, { color: colors.primary }]}>
+        <Text style={[styles.totalAmount, { color: theme.primary }]}>
           {orderTotal.toFixed(2)} Bs
         </Text>
+        {selectedMethod && ['binance_pay', 'zinli', 'zelle', 'paypal'].includes(selectedMethod.provider) && (
+          <Text style={[styles.totalUSD, { color: theme.textSecondary }]}>
+            ≈ ${(orderTotal / exchangeRate).toFixed(2)} USD
+          </Text>
+        )}
       </View>
 
       {/* Payment Methods */}
-      <ScrollView style={styles.methodsList} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+      <ScrollView 
+        style={styles.methodsList} 
+        contentContainerStyle={{ paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>
           Selecciona tu método de pago
         </Text>
 
@@ -140,8 +167,8 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
               style={[
                 styles.methodCard,
                 {
-                  backgroundColor: colors.card,
-                  borderColor: isSelected ? methodColor : colors.border,
+                  backgroundColor: theme.card,
+                  borderColor: isSelected ? methodColor : theme.border,
                   borderWidth: isSelected ? 2 : 1,
                 },
               ]}
@@ -162,7 +189,7 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
                 </View>
 
                 <View style={styles.methodInfo}>
-                  <Text style={[styles.methodName, { color: colors.text }]}>
+                  <Text style={[styles.methodName, { color: theme.text }]}>
                     {method.displayName}
                   </Text>
                   <View style={styles.methodDetails}>
@@ -186,7 +213,7 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
                   style={[
                     styles.radioButton,
                     {
-                      borderColor: isSelected ? methodColor : colors.border,
+                      borderColor: isSelected ? methodColor : theme.border,
                       backgroundColor: isSelected ? methodColor : 'transparent',
                     },
                   ]}
@@ -198,9 +225,19 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
               </View>
 
               {method.instructions && (
-                <Text style={[styles.methodInstructions, { color: colors.textSecondary }]}>
+                <Text style={[styles.methodInstructions, { color: theme.textSecondary }]}>
                   {method.instructions}
                 </Text>
+              )}
+              
+              {/* Mostrar monto en USD para métodos internacionales */}
+              {['binance_pay', 'zinli', 'zelle', 'paypal'].includes(method.provider) && orderTotal > 0 && (
+                <View style={[styles.usdBadge, { backgroundColor: theme.backgroundSecondary }]}>
+                  <Ionicons name="logo-usd" size={14} color={theme.primary} />
+                  <Text style={[styles.usdText, { color: theme.text }]}>
+                    ${((orderTotal * (1 + (method.commissionPercentage / 100))) / exchangeRate).toFixed(2)} USD
+                  </Text>
+                </View>
               )}
             </TouchableOpacity>
           );
@@ -208,31 +245,21 @@ export default function DigitalPaymentMethodScreen({ orderTotal, onBack }: Props
       </ScrollView>
 
       {/* Continue Button */}
-      <View style={[styles.footer, { backgroundColor: colors.card }]}>
-        <TouchableOpacity
-          style={[
-            styles.continueButton,
-            {
-              backgroundColor: selectedMethod ? colors.primary : colors.border,
-            },
-          ]}
-          onPress={handleContinue}
-          disabled={!selectedMethod}
-        >
-          <Text
+      <View style={[styles.footer, { backgroundColor: theme.card }]}>
+        {selectedMethod ? (
+          <TouchableOpacity
             style={[
-              styles.continueButtonText,
-              { color: selectedMethod ? '#FFF' : colors.textSecondary },
+              styles.continueButton,
+              { backgroundColor: '#E8B4A8' },
             ]}
+            onPress={handleContinue}
           >
-            Continuar
-          </Text>
-          <Ionicons
-            name="arrow-forward"
-            size={20}
-            color={selectedMethod ? '#FFF' : colors.textSecondary}
-          />
-        </TouchableOpacity>
+            <Text style={[styles.continueButtonText, { color: '#FFF' }]}>
+              Continuar
+            </Text>
+            <Ionicons name="arrow-forward" size={20} color="#FFF" />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
@@ -271,6 +298,10 @@ const styles = StyleSheet.create({
   totalAmount: {
     fontSize: 32,
     fontWeight: 'bold',
+  },
+  totalUSD: {
+    fontSize: 16,
+    marginTop: 4,
   },
   methodsList: {
     flex: 1,
@@ -340,7 +371,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 16,
-    borderTopWidth: 1,
+    backgroundColor: '#FFF',
+    borderTopWidth: 2,
     borderTopColor: '#E5E5E5',
   },
   continueButton: {
@@ -353,6 +385,20 @@ const styles = StyleSheet.create({
   },
   continueButtonText: {
     fontSize: 16,
+    fontWeight: '600',
+  },
+  usdBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    gap: 4,
+  },
+  usdText: {
+    fontSize: 13,
     fontWeight: '600',
   },
 });

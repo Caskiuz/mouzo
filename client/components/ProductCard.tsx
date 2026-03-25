@@ -64,7 +64,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
     >
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: product.image }}
+          source={product.image ? { uri: product.image } : require("../../assets/images/delivery-hero.png")}
           style={styles.image}
           contentFit="cover"
         />

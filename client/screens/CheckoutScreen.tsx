@@ -108,6 +108,7 @@ export default function CheckoutScreen({ route }: any) {
       
       // Manejar selección de método de pago
       if (route?.params?.selectedPaymentMethod) {
+        console.log('📱 Setting payment method:', route.params.selectedPaymentMethod);
         setSelectedPaymentMethod(route.params.selectedPaymentMethod);
         setPaymentMethod(route.params.selectedPaymentMethod.provider);
         // Limpiar el parámetro
@@ -213,7 +214,11 @@ export default function CheckoutScreen({ route }: any) {
       const order = await orderResponse.json();
 
       // Navegar según el método de pago seleccionado
-      if (selectedPaymentMethod?.requiresManualVerification) {
+      console.log('💳 Selected payment method:', selectedPaymentMethod);
+      console.log('💳 Payment method provider:', paymentMethod);
+      console.log('💳 Requires manual verification:', selectedPaymentMethod?.requiresManualVerification);
+      
+      if (selectedPaymentMethod?.requiresManualVerification && selectedPaymentMethod) {
         // Métodos que requieren comprobante manual
         await clearCart();
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -599,7 +604,7 @@ export default function CheckoutScreen({ route }: any) {
                 Haptics.selectionAsync();
                 navigation.navigate("DigitalPaymentMethod", {
                   orderTotal: total,
-                });
+                } as any);
               }}
               style={styles.inlineLink}
             >
@@ -621,9 +626,9 @@ export default function CheckoutScreen({ route }: any) {
           >
             <View style={styles.paymentContent}>
               <Feather 
-                name={selectedPaymentMethod?.provider === "binance_pay" ? "logo-bitcoin" :
-                      selectedPaymentMethod?.provider === "paypal" ? "logo-paypal" :
-                      selectedPaymentMethod?.provider === "zinli" ? "card" :
+                name={selectedPaymentMethod?.provider === "binance_pay" ? "dollar-sign" :
+                      selectedPaymentMethod?.provider === "paypal" ? "credit-card" :
+                      selectedPaymentMethod?.provider === "zinli" ? "credit-card" :
                       selectedPaymentMethod?.provider === "zelle" ? "dollar-sign" :
                       "smartphone"} 
                 size={24} 

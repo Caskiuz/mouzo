@@ -27,6 +27,9 @@ router.get("/metrics", authenticateToken, requireRole(["admin"]), async (req, re
 // POST /api/digital-payments/ocr — extraer datos de comprobante con Gemini (cualquier método)
 router.post("/ocr", authenticateToken, upload.single("proof"), async (req, res) => {
   try {
+    console.log('📸 OCR Request - File:', req.file);
+    console.log('📸 OCR Request - Body:', req.body);
+    
     if (!req.file) return res.status(400).json({ error: "No se subió imagen" });
     if (!process.env.GEMINI_API_KEY) return res.status(503).json({ error: "OCR no disponible" });
 
@@ -65,14 +68,69 @@ router.post("/ocr", authenticateToken, upload.single("proof"), async (req, res) 
 router.get("/methods", authenticateToken, async (req, res) => {
   try {
     const methods = await digitalPaymentService.getActivePaymentMethods();
+    console.log('📤 Sending payment methods:', JSON.stringify(methods, null, 2));
     res.json({ success: true, methods });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// Submit payment proof (Customer)
-router.post("/proof/submit", authenticateToken, async (req, res) => {
+// TEST endpoint sin auth
+router.get("/methods-test", async (req, res) => {
+  try {
+    const methods = await digitalPaymentService.getActivePaymentMethods();
+    res.json({ success: true, methods });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Submit payment proof with file upload (Customer)
+router.post("/proof/submit", authenticateToken, upload.single("proof"), async (req, res) => {
+  try {
+    console.log('📸 Proof Submit - File:', req.file);
+    console.log('📸 Proof Submit - Body:', req.body);
+    
+    const { orderId, paymentProvider, referenceNumber, amount } = req.body;
+
+    if (!orderId || !paymentProvider || !referenceNumber || !amount) {
+      return res.status(400).json({
+        success: false,
+        error: "Faltan datos requeridos: orderId, paymentProvider, referenceNumber, amount",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: "No se subió imagen del comprobante",
+      });
+    }
+
+    // Save file path as proof URL
+    const proofImageUrl = `/uploads/comprobantes/${req.file.filename}`;
+
+    const result = await digitalPaymentService.submitPaymentProof({
+      orderId,
+      userId: req.user!.id,
+      paymentProvider,
+      referenceNumber,
+      proofImageUrl,
+      amount: parseFloat(amount),
+    });
+
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Submit payment proof (JSON - legacy)
+router.post("/proof/submit-json", authenticateToken, async (req, res) => {
   try {
     const { orderId, paymentProvider, referenceNumber, proofImageUrl, amount } = req.body;
 

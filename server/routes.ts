@@ -11,6 +11,7 @@ import paymentRoutes from "./routes/payments";
 import walletRoutes from "./routes/wallet";
 import adminRoutes from "./routes/adminRoutes";
 import adminFinanceRoutes from "./routes/adminFinanceRoutes";
+import adminExchangeRateRoutes from "./routes/adminExchangeRate";
 import walletRoutesV2 from "./routes/walletRoutes";
 import bankAccountRoutes from "./routes/bankAccountRoutes";
 import deliveryConfigRoutes from "./routes/deliveryConfigRoutes";
@@ -25,6 +26,7 @@ import deliveryRoutesLegacy from "./deliveryRoutes";
 import gpsRoutes from "./gpsRoutes";
 import pagoMovilRoutes from "./pagoMovilRoutes";
 import digitalPaymentRoutes from "./routes/digitalPayments";
+import paymentAccountsRoutes from "./routes/paymentAccounts";
 import fundReleaseRoutes from "./routes/fundRelease";
 import payoutRoutes from "./payoutRoutes";
 import searchRoutes from "./routes/search";
@@ -58,6 +60,17 @@ router.get("/settings/public", async (req, res) => {
     res.json(result);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// ─── Exchange rate ────────────────────────────────────────────────────────────
+router.get("/system/exchange-rate", async (req, res) => {
+  try {
+    const { exchangeRateService } = await import("./exchangeRateService");
+    const result = await exchangeRateService.getCurrentRate();
+    res.json({ success: true, rate: result.rate, source: result.source, lastUpdated: result.lastUpdated });
+  } catch (error: any) {
+    res.json({ success: true, rate: 36.50, source: 'fallback' }); // Fallback
   }
 });
 
@@ -108,6 +121,7 @@ router.use("/delivery",              deliveryConfigRoutes);
 router.use("/payments",              paymentRoutes);
 router.use("/pago-movil",            pagoMovilRoutes);
 router.use("/digital-payments",      digitalPaymentRoutes);
+router.use("/payment-accounts",      paymentAccountsRoutes);
 router.use("/fund-release",          fundReleaseRoutes);
 router.use("/payouts",               payoutRoutes);
 router.use("/wallet",                walletRoutes);
@@ -115,6 +129,7 @@ router.use("/wallet",                walletRoutesV2);
 router.use("/bank-account",          bankAccountRoutes);
 router.use("/admin",                 adminRoutes);
 router.use("/admin/finance",         adminFinanceRoutes);
+router.use("/admin",                 adminExchangeRateRoutes);
 router.use("/support",               supportRoutes);
 router.use("/withdrawals",           withdrawalRoutes);
 router.use("/cash-settlement",       cashSettlementRoutes);

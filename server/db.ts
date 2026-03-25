@@ -25,11 +25,8 @@ function createConnectionConfig() {
       connectTimeout: 30000,
       enableKeepAlive: true,
       keepAliveInitialDelay: 10000,
+      charset: 'utf8mb4',
     };
-
-    const urlCharset = url.searchParams.get('charset') || undefined;
-    const configuredCharset = process.env.DB_CHARSET || urlCharset || 'utf8mb4';
-    config.charset = normalizeCharset(configuredCharset);
     
     // Handle SSL configuration
     if (url.searchParams.get('ssl-mode') === 'DISABLED') {

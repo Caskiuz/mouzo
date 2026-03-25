@@ -1,5 +1,5 @@
 // Payment Proof Upload Screen
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,31 +14,90 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '../hooks/useTheme';
-import { apiRequest } from '../lib/query-client';
+import { getApiUrl, apiRequest } from '../lib/query-client';
 
 interface Props {
-  orderId: string;
-  orderTotal: number;
-  paymentMethod: {
-    provider: string;
-    displayName: string;
-    instructions: string;
+  route: {
+    params: {
+      orderId: string;
+      orderTotal: number;
+      paymentMethod: {
+        provider: string;
+        displayName: string;
+        instructions: string;
+      };
+    };
   };
-  onSuccess: () => void;
-  onBack: () => void;
+  navigation: any;
 }
 
-export default function PaymentProofUploadScreen({
-  orderId,
-  orderTotal,
-  paymentMethod,
-  onSuccess,
-  onBack,
-}: Props) {
-  const { colors } = useTheme();
+export default function PaymentProofUploadScreen({ route, navigation }: Props) {
+  const { orderId, orderTotal, paymentMethod } = route.params;
+  const { theme } = useTheme();
   const [referenceNumber, setReferenceNumber] = useState('');
   const [proofImage, setProofImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [receivingAccounts, setReceivingAccounts] = useState<any>(null);
+  const [exchangeRate, setExchangeRate] = useState(36.50);
+
+  const onBack = () => navigation.goBack();
+  const onSuccess = () => navigation.navigate('OrderTracking', { orderId });
+
+  useEffect(() => {
+    loadReceivingAccounts();
+    loadExchangeRate();
+  }, []);
+
+  const loadReceivingAccounts = async () => {
+    try {
+      const response = await apiRequest('GET', '/api/payment-accounts/receiving-accounts');
+      const data = await response.json();
+      if (data.success) {
+        setReceivingAccounts(data.accounts);
+      }
+    } catch (error) {
+      console.error('Error loading receiving accounts:', error);
+    }
+  };
+
+  const loadExchangeRate = async () => {
+    try {
+      const response = await apiRequest('GET', '/api/system/exchange-rate');
+      const data = await response.json();
+      if (data.rate) {
+        setExchangeRate(data.rate);
+      }
+    } catch (error) {
+      console.log('Using default exchange rate:', exchangeRate);
+    }
+  };
+
+  // Validación de props requeridos
+  if (!paymentMethod) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <View style={[styles.header, { backgroundColor: theme.card }]}>
+          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color={theme.text} />
+          </TouchableOpacity>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>Error</Text>
+          <View style={{ width: 40 }} />
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <Ionicons name="alert-circle" size={64} color={theme.error} />
+          <Text style={[styles.headerTitle, { color: theme.text, marginTop: 16, textAlign: 'center' }]}>
+            Método de pago no seleccionado
+          </Text>
+          <TouchableOpacity
+            style={[styles.submitButton, { backgroundColor: theme.primary, marginTop: 24 }]}
+            onPress={onBack}
+          >
+            <Text style={styles.submitButtonText}>Volver</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -99,67 +158,63 @@ export default function PaymentProofUploadScreen({
     setUploading(true);
 
     try {
-      // Upload image first (you'll need to implement image upload endpoint)
       const formData = new FormData();
-      formData.append('image', {
-        uri: proofImage,
-        type: 'image/jpeg',
-        name: 'payment-proof.jpg',
-      } as any);
+      
+      // Convert image to blob for web compatibility
+      const response = await fetch(proofImage);
+      const blob = await response.blob();
+      const filename = `proof-${Date.now()}.jpg`;
+      formData.append('proof', blob, filename);
+      
+      formData.append('orderId', orderId);
+      formData.append('paymentProvider', paymentMethod.provider);
+      formData.append('referenceNumber', referenceNumber.trim());
+      formData.append('amount', orderTotal.toString());
 
-      const uploadResponse = await fetch(
-        `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/upload/payment-proof`,
+      // Get token
+      const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+      const token = await AsyncStorage.getItem('token');
+
+      const submitResponse = await fetch(
+        `${getApiUrl()}/api/digital-payments/proof/submit`,
         {
           method: 'POST',
-          body: formData,
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`,
           },
+          body: formData,
         }
       );
 
-      const uploadData = await uploadResponse.json();
+      console.log('📤 Submit response status:', submitResponse.status);
+      const data = await submitResponse.json();
+      console.log('📤 Submit response data:', data);
 
-      if (!uploadData.success) {
-        throw new Error('Error al subir la imagen');
-      }
+      setUploading(false);
 
-      // Submit payment proof
-      const response = await apiRequest('/digital-payments/proof/submit', {
-        method: 'POST',
-        body: JSON.stringify({
-          orderId,
-          paymentProvider: paymentMethod.provider,
-          referenceNumber: referenceNumber.trim(),
-          amount: Math.round(orderTotal * 100), // Convert to cents
-          proofImageUrl: uploadData.imageUrl,
-        }),
-      });
-
-      if (response.success) {
-        Alert.alert(
-          '¡Comprobante Enviado!',
-          'Tu comprobante será verificado en breve. Te notificaremos cuando sea aprobado.',
-          [{ text: 'OK', onPress: onSuccess }]
-        );
+      if (submitResponse.ok && data.success) {
+        console.log('✅ Success! Navigating to confirmation...');
+        const regretPeriodEndsAt = new Date(Date.now() + 60000).toISOString();
+        navigation.replace('OrderConfirmation', { orderId, regretPeriodEndsAt });
+        return;
       } else {
-        throw new Error(response.error || 'Error al enviar comprobante');
+        throw new Error(data.message || data.error || 'Error al enviar comprobante');
       }
     } catch (error: any) {
+      console.error('❌ Error submitting:', error);
       Alert.alert('Error', error.message || 'No se pudo enviar el comprobante');
-    } finally {
       setUploading(false);
     }
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: colors.card }]}>
+      <View style={[styles.header, { backgroundColor: theme.card }]}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Ionicons name="arrow-back" size={24} color={theme.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>
           Subir Comprobante
         </Text>
         <View style={{ width: 40 }} />
@@ -167,26 +222,26 @@ export default function PaymentProofUploadScreen({
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Payment Method Info */}
-        <View style={[styles.infoCard, { backgroundColor: colors.card }]}>
+        <View style={[styles.infoCard, { backgroundColor: theme.card }]}>
           <View style={styles.infoRow}>
-            <Ionicons name="card-outline" size={20} color={colors.primary} />
-            <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
+            <Ionicons name="card-outline" size={20} color={theme.primary} />
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>
               Método de Pago
             </Text>
           </View>
-          <Text style={[styles.infoValue, { color: colors.text }]}>
+          <Text style={[styles.infoValue, { color: theme.text }]}>
             {paymentMethod.displayName}
           </Text>
         </View>
 
-        <View style={[styles.infoCard, { backgroundColor: colors.card }]}>
+        <View style={[styles.infoCard, { backgroundColor: theme.card }]}>
           <View style={styles.infoRow}>
-            <Ionicons name="cash-outline" size={20} color={colors.primary} />
-            <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
+            <Ionicons name="cash-outline" size={20} color={theme.primary} />
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>
               Monto Total
             </Text>
           </View>
-          <Text style={[styles.infoValue, { color: colors.primary, fontSize: 24 }]}>
+          <Text style={[styles.infoValue, { color: theme.primary, fontSize: 24 }]}>
             {orderTotal.toFixed(2)} Bs
           </Text>
         </View>
@@ -195,40 +250,131 @@ export default function PaymentProofUploadScreen({
         <View style={[styles.instructionsCard, { backgroundColor: '#FF950020' }]}>
           <View style={styles.instructionsHeader}>
             <Ionicons name="information-circle" size={20} color="#FF9500" />
-            <Text style={styles.instructionsTitle}>Instrucciones</Text>
+            <Text style={styles.instructionsTitle}>Instrucciones de Pago</Text>
           </View>
           <Text style={styles.instructionsText}>
             {paymentMethod.instructions}
           </Text>
+          
+          {/* Datos de la cuenta receptora */}
+          <View style={[styles.accountDataCard, { backgroundColor: theme.card, marginTop: 12 }]}>
+            <Text style={[styles.accountDataTitle, { color: theme.text }]}>
+              💸 Enviar pago a:
+            </Text>
+            
+            {paymentMethod.provider === 'binance_pay' && receivingAccounts?.binance_pay && (
+              <>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Binance ID:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.binance_pay.binanceId}</Text>
+                </View>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Email:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.binance_pay.email}</Text>
+                </View>
+                <View style={[styles.accountDataRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#E5E5E5' }]}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary, fontSize: 15 }]}>Monto a enviar:</Text>
+                  <Text style={[styles.accountDataValue, { color: '#00C853', fontWeight: 'bold', fontSize: 18 }]}>
+                    ${(orderTotal / exchangeRate).toFixed(2)} USD
+                  </Text>
+                </View>
+              </>
+            )}
+            
+            {paymentMethod.provider === 'zinli' && receivingAccounts?.zinli && (
+              <>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Email Zinli:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.zinli.email}</Text>
+                </View>
+                <View style={[styles.accountDataRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#E5E5E5' }]}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary, fontSize: 15 }]}>Monto a enviar:</Text>
+                  <Text style={[styles.accountDataValue, { color: '#00C853', fontWeight: 'bold', fontSize: 18 }]}>
+                    ${(orderTotal / exchangeRate).toFixed(2)} USD
+                  </Text>
+                </View>
+              </>
+            )}
+            
+            {paymentMethod.provider === 'zelle' && receivingAccounts?.zelle && (
+              <>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Email Zelle:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.zelle.email}</Text>
+                </View>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Teléfono:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.zelle.phone}</Text>
+                </View>
+                <View style={[styles.accountDataRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#E5E5E5' }]}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary, fontSize: 15 }]}>Monto a enviar:</Text>
+                  <Text style={[styles.accountDataValue, { color: '#00C853', fontWeight: 'bold', fontSize: 18 }]}>
+                    ${(orderTotal / exchangeRate).toFixed(2)} USD
+                  </Text>
+                </View>
+              </>
+            )}
+            
+            {paymentMethod.provider === 'paypal' && receivingAccounts?.paypal && (
+              <>
+                <View style={styles.accountDataRow}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary }]}>Email PayPal:</Text>
+                  <Text style={[styles.accountDataValue, { color: theme.text }]}>{receivingAccounts.paypal.email}</Text>
+                </View>
+                <View style={[styles.accountDataRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: '#E5E5E5' }]}>
+                  <Text style={[styles.accountDataLabel, { color: theme.textSecondary, fontSize: 15 }]}>Monto a enviar:</Text>
+                  <Text style={[styles.accountDataValue, { color: '#00C853', fontWeight: 'bold', fontSize: 18 }]}>
+                    ${(orderTotal / exchangeRate).toFixed(2)} USD
+                  </Text>
+                </View>
+              </>
+            )}
+          </View>
         </View>
 
         {/* Reference Number Input */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Número de Referencia *
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            {paymentMethod.provider === 'binance_pay' ? 'Transaction ID (TxID) *' :
+             paymentMethod.provider === 'zinli' ? 'Número de Referencia *' :
+             paymentMethod.provider === 'zelle' ? 'Confirmation Number *' :
+             paymentMethod.provider === 'paypal' ? 'Transaction ID *' :
+             paymentMethod.provider === 'pago_movil' ? 'Número de Referencia *' :
+             'ID de Transacción *'}
           </Text>
           <TextInput
             style={[
               styles.input,
               {
-                backgroundColor: colors.card,
-                color: colors.text,
-                borderColor: colors.border,
+                backgroundColor: theme.card,
+                color: theme.text,
+                borderColor: theme.border,
               },
             ]}
-            placeholder="Ej: 1234567890"
-            placeholderTextColor={colors.textSecondary}
+            placeholder={
+              paymentMethod.provider === 'binance_pay' ? 'Ej: 1a2b3c4d5e6f7g8h9i0j' :
+              paymentMethod.provider === 'zinli' ? 'Ej: 12345678' :
+              paymentMethod.provider === 'zelle' ? 'Ej: ABC123XYZ456' :
+              paymentMethod.provider === 'paypal' ? 'Ej: 1AB23456CD789012E' :
+              paymentMethod.provider === 'pago_movil' ? 'Ej: 1234567890' :
+              'Ej: TXN123456789'
+            }
+            placeholderTextColor={theme.textSecondary}
             value={referenceNumber}
             onChangeText={setReferenceNumber}
-            keyboardType="numeric"
-            maxLength={20}
+            keyboardType={(paymentMethod.provider === 'pago_movil' || paymentMethod.provider === 'zinli') ? 'numeric' : 'default'}
+            maxLength={
+              paymentMethod.provider === 'pago_movil' ? 20 :
+              paymentMethod.provider === 'zinli' ? 10 :
+              50
+            }
           />
         </View>
 
         {/* Image Upload */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Comprobante de Pago *
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            Captura de Pantalla del Pago *
           </Text>
 
           {proofImage ? (
@@ -244,21 +390,21 @@ export default function PaymentProofUploadScreen({
           ) : (
             <View style={styles.uploadButtons}>
               <TouchableOpacity
-                style={[styles.uploadButton, { backgroundColor: colors.card }]}
+                style={[styles.uploadButton, { backgroundColor: theme.card }]}
                 onPress={takePhoto}
               >
-                <Ionicons name="camera" size={32} color={colors.primary} />
-                <Text style={[styles.uploadButtonText, { color: colors.text }]}>
+                <Ionicons name="camera" size={32} color={theme.primary} />
+                <Text style={[styles.uploadButtonText, { color: theme.text }]}>
                   Tomar Foto
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.uploadButton, { backgroundColor: colors.card }]}
+                style={[styles.uploadButton, { backgroundColor: theme.card }]}
                 onPress={pickImage}
               >
-                <Ionicons name="images" size={32} color={colors.primary} />
-                <Text style={[styles.uploadButtonText, { color: colors.text }]}>
+                <Ionicons name="images" size={32} color={theme.primary} />
+                <Text style={[styles.uploadButtonText, { color: theme.text }]}>
                   Desde Galería
                 </Text>
               </TouchableOpacity>
@@ -267,33 +413,33 @@ export default function PaymentProofUploadScreen({
         </View>
 
         {/* Tips */}
-        <View style={[styles.tipsCard, { backgroundColor: colors.card }]}>
-          <Text style={[styles.tipsTitle, { color: colors.text }]}>
+        <View style={[styles.tipsCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.tipsTitle, { color: theme.text }]}>
             💡 Consejos para una verificación rápida:
           </Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
-            • Asegúrate que la foto sea clara y legible
+          <Text style={[styles.tipText, { color: theme.textSecondary }]}>
+            • Toma captura de pantalla de la transacción completada
           </Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
-            • Incluye el número de referencia completo
+          <Text style={[styles.tipText, { color: theme.textSecondary }]}>
+            • Asegúrate que se vea el ID de transacción
           </Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
-            • Verifica que el monto coincida
+          <Text style={[styles.tipText, { color: theme.textSecondary }]}>
+            • Verifica que el monto en USD coincida
           </Text>
-          <Text style={[styles.tipText, { color: colors.textSecondary }]}>
+          <Text style={[styles.tipText, { color: theme.textSecondary }]}>
             • La verificación toma entre 5-30 minutos
           </Text>
         </View>
       </ScrollView>
 
       {/* Submit Button */}
-      <View style={[styles.footer, { backgroundColor: colors.card }]}>
+      <View style={[styles.footer, { backgroundColor: theme.card }]}>
         <TouchableOpacity
           style={[
             styles.submitButton,
             {
               backgroundColor:
-                referenceNumber && proofImage ? colors.primary : colors.border,
+                referenceNumber && proofImage ? '#E8B4A8' : theme.border,
             },
           ]}
           onPress={handleSubmit}
@@ -375,6 +521,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
+  },
+  accountDataCard: {
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E5E5E5',
+  },
+  accountDataTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  accountDataRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  accountDataLabel: {
+    fontSize: 13,
+  },
+  accountDataValue: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   section: {
     marginBottom: 24,

@@ -63,14 +63,25 @@ export default function PagoMovilPaymentScreen({ route }: any) {
       setIsOcrLoading(true);
       try {
         const formData = new FormData();
-        const filename = uri.split("/").pop();
-        const match = /\.(\w+)$/.exec(filename || "");
-        const type = match ? `image/${match[1]}` : "image/jpeg";
-        formData.append("proof", { uri, name: filename, type } as any);
+        
+        // Convertir URI a Blob para web
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        const filename = uri.split("/").pop() || 'proof.jpg';
+        
+        formData.append("proof", blob, filename);
+        
+        // Obtener token de autenticación
+        const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+        const token = await AsyncStorage.getItem('token');
+        console.log('🔑 OCR Token:', token?.substring(0, 20) + '...');
+        
         const res = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL}/api/digital-payments/ocr`, {
           method: "POST",
           body: formData,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+            "Authorization": `Bearer ${token}`,
+          },
         });
         const data = await res.json();
         if (data.success && data.extracted) {
@@ -111,16 +122,23 @@ export default function PagoMovilPaymentScreen({ route }: any) {
       formData.append("amount", String(amount));
 
       if (proofImage) {
-        const filename = proofImage.split("/").pop();
-        const match = /\.(\w+)$/.exec(filename || "");
-        const type = match ? `image/${match[1]}` : "image/jpeg";
-        formData.append("proof", { uri: proofImage, name: filename, type } as any);
+        // Convertir URI a Blob para web
+        const response = await fetch(proofImage);
+        const blob = await response.blob();
+        const filename = proofImage.split("/").pop() || 'proof.jpg';
+        
+        formData.append("proof", blob, filename);
       }
+
+      const AsyncStorage = (await import('@react-native-async-storage/async-storage')).default;
+      const token = await AsyncStorage.getItem('token');
 
       await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL}/api/pago-movil/submit/${orderId}`, {
         method: "POST",
         body: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+        },
       });
 
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -171,15 +189,15 @@ export default function PagoMovilPaymentScreen({ route }: any) {
           </ThemedText>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Teléfono:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.phone}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood?.phone || 'N/A'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Banco:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.bankName}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood?.bankName || 'N/A'}</ThemedText>
           </View>
           <View style={styles.infoRow}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Cédula:</ThemedText>
-            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood.cedula}</ThemedText>
+            <ThemedText type="body" style={{ fontWeight: "600" }}>{rabbitfood?.cedula || 'N/A'}</ThemedText>
           </View>
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <ThemedText type="body" style={{ color: theme.textSecondary }}>Referencia:</ThemedText>

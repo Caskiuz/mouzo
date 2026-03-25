@@ -98,6 +98,13 @@ const menuSections: MenuSection[] = [
         color: "#00BCD4",
       },
       {
+        title: "Tasa de Cambio",
+        subtitle: "Configurar tasa USD/Bs",
+        icon: "dollar-sign",
+        route: "/admin/exchange-rate",
+        color: "#4CAF50",
+      },
+      {
         title: "Cupones",
         subtitle: "Promociones y descuentos",
         icon: "tag",

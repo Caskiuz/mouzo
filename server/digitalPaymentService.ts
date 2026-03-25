@@ -37,10 +37,17 @@ export class DigitalPaymentService {
 
   // Get active payment methods
   async getActivePaymentMethods() {
-    return await db
-      .select()
-      .from(paymentMethods)
-      .where(eq(paymentMethods.isActive, true));
+    try {
+      const methods = await db
+        .select()
+        .from(paymentMethods)
+        .where(eq(paymentMethods.isActive, true));
+      
+      return methods;
+    } catch (error: any) {
+      logger.error("Error getting active payment methods:", error);
+      return [];
+    }
   }
 
   // Submit payment proof (Pago Móvil, Binance Pay, Zinli, Zelle)
@@ -78,8 +85,11 @@ export class DigitalPaymentService {
         return { success: false, message: "Este método no requiere comprobante" };
       }
 
-      // Create payment proof
-      const [proof] = await db.insert(paymentProofs).values({
+      // Create payment proof with UUID
+      const proofId = crypto.randomUUID();
+      
+      await db.insert(paymentProofs).values({
+        id: proofId,
         orderId: data.orderId,
         userId: data.userId,
         paymentProvider: data.paymentProvider,
@@ -88,7 +98,14 @@ export class DigitalPaymentService {
         amount: data.amount,
         status: "pending",
         submittedAt: new Date(),
-      }).$returningId();
+      });
+
+      // Fetch the created proof
+      const [proof] = await db
+        .select()
+        .from(paymentProofs)
+        .where(eq(paymentProofs.id, proofId))
+        .limit(1);
 
       logger.info(`💳 Payment proof submitted: Order ${data.orderId} - ${data.paymentProvider}`, {
         orderId: data.orderId,
@@ -96,56 +113,61 @@ export class DigitalPaymentService {
         reference: data.referenceNumber,
       });
 
-      // 🤖 INTENTAR AUTO-VERIFICACIÓN
-      const autoVerification = await autoVerificationService.shouldAutoApprove(proof.id);
+      // 🤖 INTENTAR AUTO-VERIFICACIÓN (DESACTIVADO EN DESARROLLO)
+      const SKIP_AUTO_VERIFICATION = process.env.NODE_ENV === 'development';
+      
+      if (!SKIP_AUTO_VERIFICATION) {
+        const autoVerification = await autoVerificationService.shouldAutoApprove(proof.id);
 
-      if (autoVerification.autoApprove) {
-        // ✅ AUTO-APROBAR
-        logger.info(`🤖 Auto-approving payment proof ${proof.id}`, {
-          proofId: proof.id,
-          confidence: autoVerification.confidence,
-          riskScore: autoVerification.riskScore,
-        });
-
-        // Verificar automáticamente
-        const verificationResult = await this.verifyPaymentProof(
-          proof.id,
-          "SYSTEM_AUTO",
-          true,
-          `Auto-aprobado (Confianza: ${(autoVerification.confidence * 100).toFixed(0)}%, Riesgo: ${(autoVerification.riskScore * 100).toFixed(0)}%)`
-        );
-
-        if (verificationResult.success) {
-          return {
-            success: true,
+        if (autoVerification.autoApprove) {
+          // ✅ AUTO-APROBAR
+          logger.info(`🤖 Auto-approving payment proof ${proof.id}`, {
             proofId: proof.id,
-            message: "¡Pago verificado automáticamente! Tu pedido está confirmado.",
-          };
+            confidence: autoVerification.confidence,
+            riskScore: autoVerification.riskScore,
+          });
+
+          // Verificar automáticamente
+          const verificationResult = await this.verifyPaymentProof(
+            proof.id,
+            "SYSTEM_AUTO",
+            true,
+            `Auto-aprobado (Confianza: ${(autoVerification.confidence * 100).toFixed(0)}%, Riesgo: ${(autoVerification.riskScore * 100).toFixed(0)}%)`
+          );
+
+          if (verificationResult.success) {
+            return {
+              success: true,
+              proofId: proof.id,
+              message: "¡Pago verificado automáticamente! Tu pedido está confirmado.",
+            };
+          }
+        } else {
+          // ⚠️ REQUIERE VERIFICACIÓN MANUAL
+          logger.warn(`⚠️ Payment proof ${proof.id} requires manual verification`, {
+            proofId: proof.id,
+            reason: autoVerification.reason,
+            confidence: autoVerification.confidence,
+            riskScore: autoVerification.riskScore,
+          });
+
+          // Si el riesgo es muy alto, registrar como posible fraude
+          if (autoVerification.riskScore > 0.7) {
+            await autoVerificationService.logFraudAttempt(
+              data.userId,
+              proof.id,
+              autoVerification.reason
+            );
+          }
         }
       } else {
-        // ⚠️ REQUIERE VERIFICACIÓN MANUAL
-        logger.warn(`⚠️ Payment proof ${proof.id} requires manual verification`, {
-          proofId: proof.id,
-          reason: autoVerification.reason,
-          confidence: autoVerification.confidence,
-          riskScore: autoVerification.riskScore,
-        });
-
-        // Si el riesgo es muy alto, registrar como posible fraude
-        if (autoVerification.riskScore > 0.7) {
-          await autoVerificationService.logFraudAttempt(
-            data.userId,
-            proof.id,
-            autoVerification.reason
-          );
-        }
+        logger.info(`⏭️ Skipping auto-verification in development mode`);
       }
 
-      // Update order status
+      // Update order status to pending (waiting for payment verification)
       await db
         .update(orders)
         .set({
-          status: "payment_verification",
           paymentMethod: data.paymentProvider,
           paymentProvider: data.paymentProvider,
           updatedAt: new Date(),
@@ -209,11 +231,11 @@ export class DigitalPaymentService {
             })
             .where(eq(paymentProofs.id, proofId));
 
-          // Update order to confirmed
+          // Update order to confirmed (accepted by system, waiting for business)
           await tx
             .update(orders)
             .set({
-              status: "confirmed",
+              status: "accepted",
               paidAt: new Date(),
               updatedAt: new Date(),
             })
