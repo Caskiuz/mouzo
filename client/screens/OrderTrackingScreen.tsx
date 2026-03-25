@@ -8,6 +8,7 @@ import {
   Dimensions,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
@@ -374,7 +375,7 @@ export default function OrderTrackingScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Countdown Timer */}
-        {dynamicEta && (
+        {dynamicETA && (
           <View style={[styles.statusCard, { backgroundColor: theme.card }, Shadows.md]}>
             <View style={styles.businessRow}>
               <View style={[styles.iconContainer, { backgroundColor: RabbitFoodColors.primary + '20' }]}>
@@ -388,7 +389,7 @@ export default function OrderTrackingScreen() {
                    order.status === 'on_the_way' ? 'En camino' : 'Procesando'}
                 </ThemedText>
                 <ThemedText type="h3" style={{ color: RabbitFoodColors.primary }}>
-                  {dynamicEta}
+                  {dynamicETA.minutes} min
                 </ThemedText>
               </View>
             </View>
@@ -438,7 +439,7 @@ export default function OrderTrackingScreen() {
                 Pedido #{order.id.slice(-6)}
               </ThemedText>
             </View>
-            {dynamicEta ? (
+            {dynamicETA ? (
               <View style={styles.etaContainer}>
                 <ThemedText
                   type="caption"
@@ -447,7 +448,7 @@ export default function OrderTrackingScreen() {
                   ETA
                 </ThemedText>
                 <ThemedText type="h3" style={{ color: RabbitFoodColors.primary }}>
-                  {dynamicEta}
+                  {etaRange}
                 </ThemedText>
               </View>
             ) : order.status === "delivered" ? (
@@ -470,7 +471,7 @@ export default function OrderTrackingScreen() {
           customerLocation={userLocation || undefined}
           driverName={order.deliveryPersonName}
           driverPhoto={driverPhoto || undefined}
-          eta={dynamicEta ?? undefined}
+          eta={etaRange ?? undefined}
           status={order.status}
           onCallDriver={order.deliveryPersonPhone ? () => handleCall(order.deliveryPersonPhone!) : undefined}
           onChatDriver={order.deliveryPersonId ? () => navigation.navigate("OrderChat", {
